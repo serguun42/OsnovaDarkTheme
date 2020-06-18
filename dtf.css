@@ -1,0 +1,20 @@
+:root {
+	--primary-color: #66D7FF;
+	--primary-color--faded: #66D7FFAA;
+	--primary-color--faded26: #66d6ff42;
+	--primary-color--faded50: #66d6ff80;
+	--lighter-color: #66D7FF;
+	--scroll-color: #D9F5FF;
+	--logo-img-data: url(https://serguun42.ru/tampermonkey/osnova/dtf.png);
+}
+
+:root {
+	--current-platform-icon-mouth: url('https://serguun42.ru/tampermonkey/osnova/svgs/mouth--color-dtf.svg');
+}
+
+.main_menu__logo {
+	width: 75px!important;
+	height: 34px!important;
+	background-repeat: no-repeat;
+	background-position: center center;
+}

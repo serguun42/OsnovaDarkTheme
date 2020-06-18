@@ -1,0 +1,294 @@
+/*
+	NOV 2019 BACKGROUND COLOR #333 -> #121212
+	SUPER DARK THEME
+	@serguun42
+ */
+
+:root {
+	--material-theme-gradient-color: #333;
+	--current-theme-gradient-color-huge-tabs: #333;
+	--current-theme-gradient-color-small-tabs: #1B1B1B;
+	--material-theme-shadow-color: rgba(110, 110, 110, 0.15);
+	--switcher-layout-background: #1B1B1B;
+	--switcher-layout-text: #e1e1e1;
+}
+
+body, .main.layout, .sidebar, .live {
+	color: #DDD;
+	background-color: #121212 !important;
+}
+
+.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .content-feed[air-module="module.entry"] {
+	background-color: #333 !important;
+}
+
+.entry_stub {
+	background-color: #242424 !important;
+}
+
+.layout--entry {
+	background-color: #1B1B1B !important;
+	border-radius: 0 0 var(--br) var(--br);
+}
+
+.layout--entry~.layout--bg {
+	background-color: #1B1B1B !important;
+	border-radius: var(--br);
+}
+
+.subsite_about, .subsite_settings, .hashtag_head {
+	background-color: #333 !important;
+}
+
+.layout--bg[air-module="module.notifiesList"] {
+	background-color: #333 !important;
+}
+
+.profile_comment_favorite {
+	background-color: #333 !important;
+}
+
+.thesis__upload_file, .thesis__attach_video {
+	color: var(--primary-color);
+	background-color: #333;
+}
+
+.comments_pseudo_form__button {
+	background-color: #333;
+}
+
+.head-notifies__items-wrapper::-webkit-scrollbar,
+.head-notifies__items-wrapper::-webkit-scrollbar-track {
+	background-color: #252525 !important;
+}
+
+.creation_button__subitems {
+	background-color: #121212;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.page.page--editor .header {
+	background-color: #121212 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+.messenger {
+	background-color: #121212 !important;
+}
+
+.aside {
+	border-right: 1px solid #333 !important;
+}
+
+.chat-messages__unread-label span {
+	background-color: #121212 !important;
+}
+
+.chat-form__textarea {
+	background-color: #121212 !important;
+	color: #e1e1e1 !important;
+}
+
+.chat-bottom-actions {
+	background-color: #333 !important;
+}
+
+.aside-search input {
+	background-color: #121212 !important;
+	color: #e1e1e1 !important;
+}
+
+.chat__dropdown-pointer {
+	background-color: rgba(34, 34, 34, 0.8) !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	MESSENGER JAN 2020
+ */
+.m-floating {
+	background-color: #121212 !important;
+}
+
+.m-floating__header:hover {
+	background-color: #252525 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	RATING DECEMBER 2019
+ */
+.table__row--me {
+	background-color: #222 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	SUBSITES ADMINISTRATING
+ */
+.chart[air-module="module.charts"] .tg-header__type-switcher {
+	background: #121212;
+	color: var(--primary-color);
+	border: 1px solid var(--primary-color);
+}
+
+.chart[air-module="module.charts"] .tg-header__type-switcher--current {
+	background: var(--primary-color);
+	color: #121212;
+}
+
+.chart[air-module="module.charts"] .tg-tooltip {
+	background-color: #121212;
+}
+
+
+
+
+
+
+/*
+	AUTH
+ */
+
+.auth-form {
+	background-color: #121212;
+}
+
+.auth-form .social-auth__button {
+	border: 1px solid #888;
+}
+
+
+
+
+
+.authorCard {
+	background-color: #333 !important;
+}
+
+
+
+
+
+
+.tjnames__list.active {
+	background-color: #121212;
+}
+
+
+
+
+
+.igrozhur-sidebar {
+	background-color: #121212;
+}
+
+.igrozhur-sidebar__button {
+	background-color: #121212;
+	border-bottom: 1px solid #555;
+}
+
+.igrozhur-menu__title--active {
+	background-color: #333;
+}
+
+@media (min-width: 840px) {
+	.igrozhur-sidebar__container {
+		border-right: 4px solid #1C1C1C;
+	}
+}
+
+.igrozhur-menu__title-progress {
+	background-color: #555;
+}
+
+.igrozhur-promo-popover {
+	background-color: #333;
+}
+
+.igrozhur-promo-popover__inner {
+	background: #333 !important;
+}
+
+.igrozhur-promo-button {
+	color: #333 !important;
+}
+
+.igrozhur-info-popover {
+	background-color: #333;
+}

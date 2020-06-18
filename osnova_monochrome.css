@@ -1,0 +1,208 @@
+/*
+	APR 2020
+	MONOCHROME THEME
+	@serguun42
+ */
+
+:root {
+	--primary-color: #AAAAAA;
+	--primary-color--faded: #AAAAAAAA;
+	--primary-color--faded26: #AAAAAA42;
+	--primary-color--faded50: #AAAAAA80;
+	--lighter-color: #E1E1E1;
+	--scroll-color: #EEEEEE;
+}
+
+.main_menu, .live_head {
+	background-color: #F4F4F4;
+}
+
+.main_menu__write-button {
+	border-color: var(--lighter-color) !important;
+}
+
+.ui-tab--active .ui-tab__label:after,
+.ui-tab__counter--notify {
+	background-color: var(--primary-color) !important;
+}
+
+.plus-badge {
+	background: var(--primary-color) !important;
+}
+
+.subsite_head__karma--positive,
+.subsite_head__karma--negative,
+.authorCard__karma,
+.authorCard__karma--positive,
+.authorCard__karma--negative {
+	color: #818181 !important;
+}
+
+.vote .vote__users__item--plus,
+.vote .vote__users__item--minus,
+.vote--sum-positive .vote__value,
+.vote--sum-negative .vote__value {
+	color: #818181 !important;
+}
+
+.vote--comment.vote--sum-positive .vote__value,
+.vote--comment.vote--sum-negative .vote__value {
+	background-color: #EEEEEE !important;
+}
+
+.comments__item__self--author .comments__item__user__name .user_name,
+.comments__item__user__status {
+	background-color: var(--lighter-color) !important;
+}
+
+.comments_counter--has_new .comments_counter__count__ico svg,
+.comments_counter--has_new .comments_counter__count__value_new svg,
+.favorite_marker--active .icon {
+	fill: #818181 !important;
+}
+
+.comments_counter__count__value_new,
+.favorite_marker--active .favorite_marker__count {
+	color: #818181 !important;
+}
+
+.content-editorial-tick {
+	color: #818181 !important;
+}
+
+.entry_flash {
+	border-color: #818181 !important;
+}
+
+.entry_flash .icon {
+	fill: #818181 !important;
+}
+
+.widget_wrapper--type-yellow,
+.widget_wrapper--type-pink,
+.widget_wrapper--type-red,
+.widget_wrapper--type-best_comments,
+.widget_wrapper--type-popular_3_entries,
+.widget_wrapper--type-top_commented_entries,
+.widget_wrapper--type-blue,
+.block-warning,
+.island.island--blogs_entrie,
+.content-image--with_background,
+.block-quote--centered, .block-quote--default, .block-incut, .block-number, .block-code {
+	background-color: var(--lighter-color) !important;
+}
+
+.quiz {
+	background-color: var(--lighter-color) !important;
+}
+
+.quiz__loader {
+	background-color: var(--primary-color) !important;
+}
+
+.quiz__panel__button {
+	color: #818181 !important;
+}
+
+.quiz__panel__button__label {
+	border-bottom-color: var(--primary-color) !important;
+}
+
+.quiz__item__check {
+	border-color: #818181 !important;
+}
+
+.quiz__item__progressbar {
+    background-color: #818181 !important;
+}
+
+.quiz__item__progressbar__runner {
+    background-color: #818181 !important;
+}
+
+.quiz__item__voted__count {
+	color: #818181 !important;
+}
+
+
+
+
+
+
+.widget_wrapper--type-red .widget_wrapper__title, 
+.widget_wrapper--type-pink .widget_wrapper__title, 
+.widget_wrapper--type-blue .widget_wrapper__title, 
+.widget_wrapper--type-yellow .widget_wrapper__title {
+	color: #818181 !important;
+}
+
+.comments__item__space--pinned,
+.comments__item__space--new,
+.comments__item__space--highlighted {
+	background-color: var(--lighter-color) !important;
+}
+
+.sidebar__footer__item--sponsor span {
+	-webkit-text-fill-color: unset !important;
+	animation: none !important;
+	background-image: none !important;
+	color: rgba(0,0,0,0.75) !important;
+}
+
+.sidebar__tree-list__item__badge {
+	background-color: #818181 !important;
+}
+
+.sidebar__tree-list__item__favourite--active {
+	color: #818181 !important;
+}
+
+
+
+
+.table__row--me {
+	background-color: var(--lighter-color) !important;
+}
+
+.new_entries {
+	color: #818181 !important;
+}
+
+.new_entries:hover {
+	background-color: #EEEEEE !important;
+}
+
+.new_entries__counter {
+	background-color: #818181 !important;
+}
+
+.new_entries .icon {
+	fill: #818181 !important;
+}
+
+.igrozhur-teaser {
+	background-color: #fff;
+}
+
+.igrozhur-teaser .igrozhur-teaser__subtitle {
+	color: #555;
+}
+
+.igrozhur-teaser .igrozhur-teaser__title::before {
+	filter: contrast(0);
+}
+
+.igrozhur-teaser .igrozhur-teaser__button {
+	border-color: #818181;
+}
+
+
+
+
+.videoStratum {
+	background-color: #CCC;
+}
+
+.videoStratum__icon {
+	background-color: #666;
+}

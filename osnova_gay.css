@@ -1,0 +1,426 @@
+/**
+ * GAY THEME
+ * @serguun42
+ * Feb 2020
+ */
+
+body {
+	background-image: var(--gay-theme-flag) !important;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+:root {
+	--gc1: #670775;
+	--gc2: #003ac2;
+	--gc3: #008a29;
+	--gc4: #ccbe00;
+	--gc5: #dd7a01;
+	--gc6: #e20000;
+}
+
+.main.layout, .sidebar, .live {
+	background-color: transparent !important;
+}
+
+
+
+
+.sidebar__tree-list__title {
+	color: #FFF !important;
+}
+
+.sidebar__tree-list__item {
+	color: #FFF;
+	margin-top: 4px !important;
+}
+
+.sidebar__tree-list__item:nth-of-type(6n),
+.sidebar__tree-list__item.sidebar__tree-list__item--active:nth-of-type(6n) {
+	background-color: var(--gc6) !important;
+	color: #E1E1E1 !important;
+}
+
+.sidebar__tree-list__item:nth-of-type(6n+1),
+.sidebar__tree-list__item.sidebar__tree-list__item--active:nth-of-type(6n+1) {
+	background-color: var(--gc5) !important;
+	color: #000 !important;
+}
+
+.sidebar__tree-list__item:nth-of-type(6n+2),
+.sidebar__tree-list__item.sidebar__tree-list__item--active:nth-of-type(6n+2) {
+	background-color: var(--gc4) !important;
+	color: #000 !important;
+}
+
+.sidebar__tree-list__item:nth-of-type(6n+3),
+.sidebar__tree-list__item.sidebar__tree-list__item--active:nth-of-type(6n+3) {
+	background-color: var(--gc3) !important;
+	color: #FFF !important;
+}
+
+.sidebar__tree-list__item:nth-of-type(6n+4),
+.sidebar__tree-list__item.sidebar__tree-list__item--active:nth-of-type(6n+4) {
+	background-color: var(--gc2) !important;
+	color: #E1E1E1 !important;
+}
+
+.sidebar__tree-list__item:nth-of-type(6n+5),
+.sidebar__tree-list__item.sidebar__tree-list__item--active:nth-of-type(6n+5) {
+	background-color: var(--gc1) !important;
+	color: #E1E1E1 !important;
+}
+
+.sidebar__footer__container {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}
+
+
+
+
+
+.live__item.live__item--comment {
+	padding: 8px 16px;
+	margin: 4px 0;
+	border-radius: 3px;
+	box-sizing: border-box;
+	width: calc(100% - 12px) !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n) {
+	background-color: var(--gc6) !important;
+	color: #E1E1E1 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+1) {
+	background-color: var(--gc5) !important;
+	color: #000 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+2) {
+	background-color: var(--gc4) !important;
+	color: #000 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+3) {
+	background-color: var(--gc3) !important;
+	color: #E1E1E1 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+4) {
+	background-color: var(--gc2) !important;
+	color: #E1E1E1 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+5) {
+	background-color: var(--gc1) !important;
+	color: #E1E1E1 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n) .live__item__user__name,
+.live__item.live__item--comment:nth-of-type(6n) .time[air-module="module.date"],
+.live__item.live__item--comment:nth-of-type(6n) .live__item__text,
+.live__item.live__item--comment:nth-of-type(6n) .live__item__title,
+.live__item.live__item--comment:nth-of-type(6n) .live__item__title span {
+	text-decoration: none !important;
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+1) .live__item__user__name,
+.live__item.live__item--comment:nth-of-type(6n+1) .time[air-module="module.date"],
+.live__item.live__item--comment:nth-of-type(6n+1) .live__item__text,
+.live__item.live__item--comment:nth-of-type(6n+1) .live__item__title,
+.live__item.live__item--comment:nth-of-type(6n+1) .live__item__title span {
+	text-decoration: none !important;
+	border: none !important;
+	color: #000 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+2) .live__item__user__name,
+.live__item.live__item--comment:nth-of-type(6n+2) .time[air-module="module.date"],
+.live__item.live__item--comment:nth-of-type(6n+2) .live__item__text,
+.live__item.live__item--comment:nth-of-type(6n+2) .live__item__title,
+.live__item.live__item--comment:nth-of-type(6n+2) .live__item__title span {
+	text-decoration: none !important;
+	border: none !important;
+	color: #000 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+3) .live__item__user__name,
+.live__item.live__item--comment:nth-of-type(6n+3) .time[air-module="module.date"],
+.live__item.live__item--comment:nth-of-type(6n+3) .live__item__text,
+.live__item.live__item--comment:nth-of-type(6n+3) .live__item__title,
+.live__item.live__item--comment:nth-of-type(6n+3) .live__item__title span {
+	text-decoration: none !important;
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+4) .live__item__user__name,
+.live__item.live__item--comment:nth-of-type(6n+4) .time[air-module="module.date"],
+.live__item.live__item--comment:nth-of-type(6n+4) .live__item__text,
+.live__item.live__item--comment:nth-of-type(6n+4) .live__item__title,
+.live__item.live__item--comment:nth-of-type(6n+4) .live__item__title span {
+	text-decoration: none !important;
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.live__item.live__item--comment:nth-of-type(6n+5) .live__item__user__name,
+.live__item.live__item--comment:nth-of-type(6n+5) .time[air-module="module.date"],
+.live__item.live__item--comment:nth-of-type(6n+5) .live__item__text,
+.live__item.live__item--comment:nth-of-type(6n+5) .live__item__title,
+.live__item.live__item--comment:nth-of-type(6n+5) .live__item__title span {
+	text-decoration: none !important;
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+
+
+
+.u-notification.u-notification--border {
+	border-radius: 4px;
+	margin: 4px;
+	box-sizing: border-box;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n) {
+	background-color: var(--gc6) !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+1) {
+	background-color: var(--gc5) !important;
+	color: #000 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+2) {
+	background-color: var(--gc4) !important;
+	color: #000 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+3) {
+	background-color: var(--gc3) !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+4) {
+	background-color: var(--gc2) !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+5) {
+	background-color: var(--gc1) !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n) a,
+.u-notification.u-notification--border:nth-of-type(6n) .u-notification__content__button {
+	text-decoration: underline !important;
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+1) a,
+.u-notification.u-notification--border:nth-of-type(6n+1) .u-notification__content__button {
+	text-decoration: underline !important;
+	border: none !important;
+	color: #000 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+2) a,
+.u-notification.u-notification--border:nth-of-type(6n+2) .u-notification__content__button {
+	text-decoration: underline !important;
+	border: none !important;
+	color: #000 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+3) a,
+.u-notification.u-notification--border:nth-of-type(6n+3) .u-notification__content__button {
+	text-decoration: underline !important;
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+4) a,
+.u-notification.u-notification--border:nth-of-type(6n+4) .u-notification__content__button {
+	text-decoration: underline !important;
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+5) a,
+.u-notification.u-notification--border:nth-of-type(6n+5) .u-notification__content__button {
+	text-decoration: underline !important;
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n) .u-notification__content__date {
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+1) .u-notification__content__date {
+	border: none !important;
+	color: #000 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+2) .u-notification__content__date {
+	border: none !important;
+	color: #000 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+3) .u-notification__content__date {
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+4) .u-notification__content__date {
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border:nth-of-type(6n+5) .u-notification__content__date {
+	border: none !important;
+	color: #E1E1E1 !important;
+}
+
+.u-notification.u-notification--border.u-notification--unread {
+	border: 6px solid var(--current-gay-theme-entry-background) !important;
+}
+
+
+
+
+
+.layout--bg[air-module="module.entry"],
+.layout--entry~.layout--bg,
+.miniEditor__dummy,
+.subsite_about, .subsite_settings, .hashtag_head,
+.subsite_head,
+.subsite_settings.layout--bg,
+.subsite_head~.ui-tabs.ui-tabs--default.layout--bg,
+.editor.layout--bg,
+.layout--bg[air-module="module.subsiteSettings"],
+#page_wrapper>.ui-tabs,
+.u-notification:not(.u-notification--border),
+.news_widget[air-module="module.news_widget"],
+.layout--bg[air-module="module.subsites_rating"] {
+	background-color: var(--current-gay-theme-entry-background) !important; /* defined in either osnova_light or osnova_dark */
+}
+
+.comments__navigation.layout--bg.ui-border--bottom,
+.ui-tabs.layout--bg,
+.editor__title {
+	background-color: transparent !important;
+}
+
+.layout--entry {
+	border-radius: 0 0 var(--br) var(--br);
+}
+
+.layout--entry~.layout--bg {
+	border-radius: var(--br);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.icon.icon--ui_arrow_up {
+	background-image: url('https://serguun42.ru/tampermonkey/osnova/svgs/penis_up.svg');
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.vote .vote__button--plus:hover .icon, .vote--voted-positive .vote__button--plus .icon {
+	background-image: url('https://serguun42.ru/tampermonkey/osnova/svgs/penis_up--color.svg');
+}
+
+.icon.icon--ui_arrow_up * {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.icon.icon--ui_arrow_down {
+	background-image: url('https://serguun42.ru/tampermonkey/osnova/svgs/penis_down.svg');
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.vote .vote__button--minus:hover .icon, .vote--voted-negative .vote__button--minus .icon {
+	background-image: url('https://serguun42.ru/tampermonkey/osnova/svgs/penis_down--color.svg');
+}
+
+.icon.icon--ui_arrow_down * {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.icon.icon--ui_comments {
+	background-image: url('https://serguun42.ru/tampermonkey/osnova/svgs/mouth.svg');
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.comments_counter--has_new .comments_counter__count__ico svg,
+.comments_counter--has_new .comments_counter__count__value_new svg {
+	background-image: var(--gay-theme-icon-mouth);
+}
+
+.icon.icon--ui_comments * {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.icon.icon--favorite_marker {
+	background-image: url('https://serguun42.ru/tampermonkey/osnova/svgs/vagina.svg');
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.favorite_marker--active .icon {
+	background-image: url('https://serguun42.ru/tampermonkey/osnova/svgs/vagina--color.svg');
+}
+
+.favorite_marker:hover:not(.favorite_marker--just_clicked) .icon {
+	background-image: url('https://serguun42.ru/tampermonkey/osnova/svgs/vagina--color.svg');
+}
+
+.icon.icon--favorite_marker *,
+.icon.icon--favorite_marker_filled * {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}
