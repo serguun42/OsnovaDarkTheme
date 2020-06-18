@@ -1,5 +1,5 @@
 # OsnovaDarkTheme
-Userscript adding dark theme Osnova. With multiple custom subthemes and modules
+Userscript adding dark theme on Osnova. With multiple custom subthemes and modules
 
 
 ## Main File
