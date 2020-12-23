@@ -1,0 +1,29 @@
+@media (min-width: 1600px) {
+	.main.layout {
+		max-width: 1600px;
+		margin: 0 auto;
+	}
+
+	.page.page--entry {
+		margin: 0;
+	}
+
+	.main_menu.layout {
+		padding: 0 calc(50% - 750px) !important;
+		box-sizing: border-box;
+	}
+	
+	.layout__content .messenger {
+		margin: 0 12px;
+	}
+}
+
+.layout--live-forcibly-collapsed .live_head__button:before {
+	height: 50px !important;
+}
+
+@media (min-width: 1260px) {
+	.layout--content.layout--column-left-on.layout--column-right-on.layout--ad-blocked.layout--live-forcibly-collapsed .layout__column--right .live_head__button:before,.layout--content.layout--column-left-on.layout--column-right-on.layout--live-priority.layout--live-forcibly-collapsed .layout__column--right .live_head__button:before {
+		height: 50px !important;
+	}
+}

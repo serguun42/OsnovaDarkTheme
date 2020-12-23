@@ -1,0 +1,8 @@
+:root {
+	--primary-color--for-badge: #1989b6;
+	--logo-img-data: url(https://serguun42.ru/tampermonkey/osnova/dtf.png);
+}
+
+.site-header .icon.icon--site_logo {
+	color: var(--primary-color);
+}

@@ -8,6 +8,7 @@
 	--material-theme-gradient-color: #333;
 	--current-theme-gradient-color-huge-tabs: #333;
 	--current-theme-gradient-color-small-tabs: #1B1B1B;
+	--current-theme-gradient-color-v-tabs: #121212;
 	--material-theme-shadow-color: rgba(110, 110, 110, 0.15);
 	--switcher-layout-background: #1B1B1B;
 	--switcher-layout-text: #e1e1e1;
@@ -31,7 +32,8 @@ body, .main.layout, .sidebar, .live {
 	border-radius: 0 0 var(--br) var(--br);
 }
 
-.layout--entry~.layout--bg {
+.layout--entry~.layout--bg,
+.layout--entry~.l-island-bg {
 	background-color: #1B1B1B !important;
 	border-radius: var(--br);
 }
@@ -40,7 +42,10 @@ body, .main.layout, .sidebar, .live {
 	background-color: #333 !important;
 }
 
-.layout--bg[air-module="module.notifiesList"] {
+.layout--bg[air-module="module.notifiesList"],
+[air-module="module.donatesCabinet"] .layout--bg,
+.l-island-bg[air-module="module.notifiesList"],
+[air-module="module.donatesCabinet"] .l-island-bg {
 	background-color: #333 !important;
 }
 
@@ -48,7 +53,12 @@ body, .main.layout, .sidebar, .live {
 	background-color: #333 !important;
 }
 
-.thesis__upload_file, .thesis__attach_video {
+.thesis__upload_file, .thesis__attach_video, .thesis__attach_something.attacher__button, .thesis__spy_button.thesis__attach_something {
+	color: var(--primary-color);
+	background-color: #333;
+}
+
+.neural-panel__control.thesis__attach_something, .neural-panel__info, .neural-comment__button, .neural-comment__button--update {
 	color: var(--primary-color);
 	background-color: #333;
 }
@@ -57,8 +67,8 @@ body, .main.layout, .sidebar, .live {
 	background-color: #333;
 }
 
-.head-notifies__items-wrapper::-webkit-scrollbar,
-.head-notifies__items-wrapper::-webkit-scrollbar-track {
+body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollbar,
+body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollbar-track {
 	background-color: #252525 !important;
 }
 
@@ -246,8 +256,8 @@ body, .main.layout, .sidebar, .live {
 
 
 
-.tjnames__list.active {
-	background-color: #121212;
+.tjnames__list, .tjnames__list.active {
+	background-color: #121212 !important;
 }
 
 
@@ -290,5 +300,81 @@ body, .main.layout, .sidebar, .live {
 }
 
 .igrozhur-info-popover {
+	background-color: #333;
+}
+
+
+
+
+.chat-info__bottom,
+.chat-info__search {
+	background-color: #121212 !important;
+}
+
+
+
+
+.neural-tooltip,
+.neural-tooltip::after {
+	background-color: #121212 !important;
+}
+
+.neural-comment {
+	background-color: #252525 !important;
+}
+
+
+
+
+.v-popup-window__content {
+	background-color: #121212;
+}
+
+
+.app--content-feed.app--left-column-on.app--right-column-on .subsite_settings__form .l-island-a {
+	background-color: #121212 !important;
+	border-color: #333;
+}
+
+
+
+
+
+
+:root {
+	--primary-color--for-badge: #444;
+}
+
+
+
+
+
+.wtf_bc--skin--bg-primary {
+	background: #242424 !important;
+}
+
+.wtf_bc--skin--bg-gray {
+	background: #333 !important;
+}
+
+
+
+
+
+.content-stats {
+	background-color: #242424;
+	border-bottom-color: #666;
+}
+
+.gallery-image--with-background .gallery-image__media {
+	background-color: #333;
+}
+
+
+
+
+
+
+.donate-attachment {
 	background-color: #333;
 }

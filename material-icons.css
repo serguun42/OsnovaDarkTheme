@@ -2,7 +2,7 @@
 	font-family: 'Material Icons';
 	font-style: normal;
 	font-weight: 400;
-	src: local('Material Icons'), local('MaterialIcons-Regular'), url(/resources/fonts/material-icons-v41.woff2?main) format('woff2');
+	src: url(/resources/fonts/material-icons-v53.woff2?main) format('woff2');
 }
 
 .material-icons {
@@ -27,7 +27,7 @@
 	font-family: 'Material Icons Round';
 	font-style: normal;
 	font-weight: 400;
-	src: url(/resources/fonts/material-icons-round-v9.woff2?main) format('woff2');
+	src: url(/resources/fonts/material-icons-round-v22.woff2?main) format('woff2');
 }
 
 .material-icons-round {
@@ -52,7 +52,7 @@
 	font-family: 'Material Icons Outlined';
 	font-style: normal;
 	font-weight: 400;
-	src: url(/resources/fonts/material-icons-outlined-v8.woff2?main) format('woff2');
+	src: url(/resources/fonts/material-icons-outlined-v22.woff2?main) format('woff2');
 }
 
 .material-icons-outlined {
@@ -77,7 +77,7 @@
 	font-family: 'Material Icons Two Tone';
 	font-style: normal;
 	font-weight: 400;
-	src: url(/resources/fonts/material-icons-two-tone-v8.woff2?main) format('woff2');
+	src: url(/resources/fonts/material-icons-two-tone-v22.woff2?main) format('woff2');
 }
 
 .material-icons-two-tone {

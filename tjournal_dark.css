@@ -1,0 +1,18 @@
+:root {
+	--logo-img-data: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTA1IiB2aWV3Qm94PSIwIDAgMTAwIDEwNSI+ICA8ZyBmaWxsPSIjRkZCOTAwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICA8cG9seWdvbiBwb2ludHM9IjAgNzkuMTY3IDMwLjQxNyA3OS4xNjcgMzUuNDE3IDEwNC4xNjcgMCAxMDQuMTY3Ii8+ICAgIDxwb2x5Z29uIHBvaW50cz0iMCAyOS4xNjcgMzUuNDE3IDI5LjE2NyAzNS40MTcgMTA0LjE2NyA2Mi41IDc5LjE2NyA2Mi41IDI5LjE2NyAxMDAgMjkuMTY3IDEwMCAwIDAgMCIvPiAgPC9nPjwvc3ZnPg==);
+}
+
+.site-header-logo {
+	height: 40px;
+	margin: 10px;
+
+	background-image: var(--logo-img-data);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	position: relative;
+}
+
+#site_logo {
+	visibility: hidden;
+}

@@ -1,0 +1,75 @@
+#open-bank-quiz,
+.carantingo,
+.carantingo--index,
+.igrozhur-partner,
+.igrozhur-promo-block,
+.daily-promo-unit,
+.daily-promo-unit--mode-event.daily-promo-unit--wide .daily-promo-unit__inner,
+.daily-promo-unit-label,
+.events_widget[air-module="module.events_widget"],
+.vacancies_widget[air-module="module.vacancy_widget"][data-location="entry"],
+.citymobil-marks, [air-module="module.citymobilMarks"],
+.layout--entry__banner[air-module="module.entry_banners"],
+.reposters_list--overflowed:after,
+.sber-countdown__inner,
+.site-header:after, .site-header::before,
+.microsoft-ticker-special__container,
+.special-yandex-scale,
+.l-entry__banner, [air-module="module.entry_banners"],
+.content-banners, .content-banners__sticky,
+.l-wide_container .propaganda, .vacancies_widget,
+.shares--mobile .shares__open,
+.vk-happy-birthday,
+.vk-happy-birthday--entry-page,
+.hp-branding-head__container,
+.kp-branding,
+.kp-branding-header,
+.special-reaction-test,
+.bitrix-countdown,
+.special-job-teaser,
+.booster-unit,
+.booster-promo,
+.booster-promo--feed,
+[air-module="module.boosterPromo"],
+.vk-results-of-the-year,
+.wow-shadowland,
+.s-asus,
+#special-asus,
+.special-appgallery,
+.special-appgallery-teaser
+{
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+}
+
+.igrozhur-promo-block {
+	display: none !important;
+	opacity: 0 !important;
+	visibility: hidden !important;
+	background-color: transparent !important;
+}
+
+.page--subsite .subsite__header--wrappable:before
+{
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+	content: none !important;
+}
+
+body > .propaganda.propaganda--shown,
+.kinopoisk-branding-head,
+.kinopoisk-branding-head__container,
+.kinopoisk-branding__container,
+.kinopoisk-branding,
+.kp-branding-teaser,
+.kp-branding-teaser__inner
+{
+	display: none !important;
+	visibility: hidden !important;
+	background-color: transparent !important;
+	opacity: 0 !important;
+	height: 0 !important;
+	width: 0 !important;
+}

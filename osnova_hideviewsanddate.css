@@ -1,0 +1,11 @@
+/**
+ * Hide Views and Date in Feed's Posts
+ * @serguun42
+ * Nov 2020
+ */
+
+.content-feed .content-info.content-info--short {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}

@@ -1,0 +1,13 @@
+/**
+ * Beautiful Feed Posts
+ * @serguun42
+ * Nov 2020
+ */
+
+.vote--content.vote--voted-positive .vote__button--plus:before,
+.vote--content.vote--voted-negative .vote__button--minus:before,
+.vote--content .vote__button--plus:hover:before,
+.vote--content .vote__button--minus:hover:before {
+	background-color: transparent;
+	display: none;
+}

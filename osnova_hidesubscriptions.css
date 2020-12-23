@@ -1,0 +1,11 @@
+/**
+ * Hide Subscriptions
+ * @serguun42
+ * Sep 2020
+ */
+
+.sidebar-tree-list-item[href="/subs"] {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0;
+}

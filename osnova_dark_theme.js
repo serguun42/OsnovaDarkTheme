@@ -1,14 +1,12 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://serguun42.ru/
-// @version      7.2.3-R (2020-06-17)
+// @version      8.6.6-R-OBLIVION (2020-12-21)
 // @author       serguun42
 // @icon         https://tjournal.ru/static/build/tjournal.ru/favicons/favicon.ico
 // @match        https://tjournal.ru/*
 // @match        https://dtf.ru/*
 // @match        https://vc.ru/*
-// @match        https://instagram.com/*
-// @match        https://www.instagram.com/*
 // @updateURL    https://serguun42.ru/tampermonkey/osnova_dark_theme.js
 // @downloadURL  https://serguun42.ru/tampermonkey/osnova_dark_theme.js
 // @run-at       document-start
@@ -23,51 +21,126 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
+	VERSION = "8.6.6",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
 			default: false,
-			dark: true
+			dark: true,
+			priority: 4
 		},
 		{
 			name: "deep_blue",
 			default: false,
-			dark: true
+			dark: true,
+			priority: 4
 		},
 		{
 			name: "covfefe",
 			default: false,
-			dark: true
+			dark: true,
+			priority: 4
+		},
+		{
+			name: "blackchrome",
+			default: false,
+			dark: true,
+			priority: 4
 		},
 		{
 			name: "monochrome",
 			default: false,
-			light: true
+			light: true,
+			priority: 4
 		},
 		{
 			name: "material",
-			default: true
+			default: true,
+			priority: 5
 		},
 		{
-			name: "columns",
-			default: false
+			name: "columns_narrow",
+			default: false,
+			priority: 5
+		},
+		{
+			name: "hidesubscriptions",
+			default: false,
+			priority: 5
+		},
+		{
+			name: "beautifulfeedposts",
+			default: true,
+			priority: 5
+		},
+		{
+			name: "favouritesicon",
+			default: true,
+			priority: 5
 		},
 		{
 			name: "gay",
-			default: false
+			default: false,
+			priority: 6
 		}
 	],
-	SITES_COLOR = {
+	ALL_MODULES = [
+		{
+			name: "light",
+			default: true,
+			light: true,
+			priority: 2
+		},
+		{
+			name: "dark",
+			default: true,
+			dark: true,
+			priority: 2
+		},
+		{
+			name: "tjournal",
+			default: true,
+			light: true,
+			priority: 1
+		},
+		{
+			name: "tjournal_dark",
+			default: true,
+			dark: true,
+			priority: 3
+		},
+		{
+			name: "dtf",
+			default: true,
+			light: true,
+			priority: 1
+		},
+		{
+			name: "dtf_dark",
+			default: true,
+			dark: true,
+			priority: 3
+		},
+		{
+			name: "vc",
+			default: true,
+			light: true,
+			priority: 1
+		},
+		{
+			name: "vc_dark",
+			default: true,
+			dark: true,
+			priority: 3
+		},
+		...ALL_ADDITIONAL_MODULES
+	],
+	SITES_COLORS = {
 		"tjournal.ru": "#E8A427",
 		"dtf.ru": "#66D7FF",
 		"vc.ru": "#E25A76"
 	};
 
-
-
-const L = function(arg) {
-	if (RESOURCES_DOMAIN === "localhost") console.log(...arguments);
-};
 
 /**
  * @param {String} iKey
@@ -97,69 +170,6 @@ const GlobalWaitForElement = iKey => {
 			}, 50);
 		});
 	};
-};
-
-if (window.location.hostname === "instagram.com" || window.location.hostname === "www.instagram.com") {
-	let instDarkThemeEnabled = window.location.search.match(/s42-inst-dark-theme=true/i);
-
-
-	if (instDarkThemeEnabled) {
-		if (/\/embed/.test(window.location.pathname)) {
-			if (document.body) document.body.style.background = "transparent";
-			if (document.querySelector("html")) document.querySelector("html").style.background = "transparent";
-
-			GlobalWaitForElement("document.body").then(() => {
-				document.head.appendChild(document.createElement("style")).innerHTML = `
-					html, body {
-						background: transparent !important;
-					}
-
-					.Embed .Header .UsernameText {
-						color: #E1E1E1 !important;
-					}
-
-					.Embed a {
-						color: #E1E1E1 !important;
-					}
-
-					.PrimaryCTA, .HoverCard .HoverCardRoot {
-						background-color: transparent !important;
-					}
-
-					.PrimaryCTA {
-						border-bottom: 1px solid #555555;
-					}
-
-					.HoverCard:hover .HoverCardRoot {
-						background-color: #333333 !important;
-					}
-
-					.HoverCardUserName .Username {
-						color: #E1E1E1 !important;
-					}
-
-					.Feedback .Likes, .Feedback .Comments, .Feedback .Share, .Feedback .Save {
-						filter: brightness(5);
-					}
-
-					.Footer {
-						border-top: 1px solid #555555;
-					}
-
-					.Footer .Glyph .Sprite {
-						filter: invert(0.7);
-					}
-				`;
-
-				GlobalWaitForElement("html").then((html) => {
-					document.body.style.background = "transparent";
-					html.style.background = "transparent";
-				});
-			});
-		};
-	};
-
-	return false;
 };
 
 /**
@@ -282,12 +292,18 @@ const GetMode = iReturning => {
 const SetMode = iNightMode => {
 	if (window.top === window) window.top.S42_DARK_THEME_ENABLED = iNightMode;
 
+	GlobalWaitForElement("document.body").then(() => {
+		if (iNightMode)
+			document.body.classList.add("s42-is-dark")
+		else
+			document.body.classList.remove("s42-is-dark")
+	});
 
-	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}.css`, "site");
-	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${iNightMode ? "dark" : "light"}.css`, "osnova");
+	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}.css`, 1, "site");
+	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${iNightMode ? "dark" : "light"}.css`, 2, "osnova");
 
 	if (iNightMode) {
-		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}_dark.css`, "site");
+		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}_dark.css`, 3, "site");
 
 		GlobalWaitForElement(`meta[name="theme-color"]`).then(() =>
 			document.querySelector(`meta[name="theme-color"]`).setAttribute("content", "#232323")
@@ -306,12 +322,12 @@ const SetMode = iNightMode => {
 		if (addon.dark === true && !iNightMode) return false;
 		if (addon.light === true && iNightMode) return false;
 
-		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${addon.name}.css`, "additional");
+		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${addon.name}.css`, addon.priority, "additional");
 	});
 };
 
 /** @type {Object.<string, HTMLElement>} */
-let CUSTOM_ELEMENTS = new Object();
+const CUSTOM_ELEMENTS = new Object();
 window.CUSTOM_ELEMENTS = CUSTOM_ELEMENTS;
 
 /**
@@ -320,82 +336,109 @@ window.CUSTOM_ELEMENTS = CUSTOM_ELEMENTS;
  * @param {Boolean} [iWithoutPrefix=false]
  */
 const ManageModule = (iModuleName, iStatus, iWithoutPrefix = false) => {
-	let moduleKey = `https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${iModuleName}.css`;
-	if (iWithoutPrefix)
-		moduleKey = `https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${iModuleName}.css`;
+	if (iModuleName === "dark" && iStatus)
+		GlobalWaitForElement("document.body").then(() =>
+			document.body.classList.add("s42-is-dark")
+		);
 
-	if (CUSTOM_ELEMENTS[moduleKey] && !iStatus) {
-		GlobalRemove(CUSTOM_ELEMENTS[moduleKey]);
-		delete CUSTOM_ELEMENTS[moduleKey];
-	} else if (!CUSTOM_ELEMENTS[moduleKey] && iStatus) {
-		GlobalAddStyle(moduleKey);
+	if (iModuleName === "light" && iStatus)
+		GlobalWaitForElement("document.body").then(() =>
+			document.body.classList.remove("s42-is-dark")
+		);
+
+
+	const moduleURL = `https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${(iWithoutPrefix ? "" : "osnova_") + iModuleName}.css`;
+
+	if (CUSTOM_ELEMENTS[moduleURL] && !iStatus) {
+		GlobalRemove(CUSTOM_ELEMENTS[moduleURL]);
+		delete CUSTOM_ELEMENTS[moduleURL];
+	} else if (!CUSTOM_ELEMENTS[moduleURL] && iStatus) {
+		const moduleSpecWithPriority = ALL_MODULES.find((moduleSpec) => moduleSpec.name === iModuleName);
+
+		GlobalAddStyle(moduleURL, moduleSpecWithPriority.priority);
 	};
 };
 
 /**
  * @param {String} iLink
+ * @param {Number} iPriority
  * @param {String} [iDataFor]
  */
-const GlobalAddStyle = (iLink, iDataFor = false) => {
-	let stylesNode = document.createElement("link");
-		stylesNode.setAttribute("data-author", "serguun42");
-		
+const GlobalAddStyle = (iLink, iPriority, iDataFor = false) => {
+	const stylesNode = document.createElement("link");
+		  stylesNode.setAttribute("data-priority", iPriority);
+		  stylesNode.setAttribute("data-author", "serguun42");
+		  stylesNode.setAttribute("rel", "stylesheet");
+		  stylesNode.setAttribute("href", iLink);
+
+
 	if (iDataFor)
 		stylesNode.setAttribute("data-for", iDataFor);
 	else
 		stylesNode.setAttribute("data-for", "site");
 
 
-		stylesNode.setAttribute("rel", "stylesheet");
-		stylesNode.setAttribute("href", iLink);
-
-
-	GlobalWaitForElement("document.body").then(() => {
-		document.body.appendChild(stylesNode);
-		window.CUSTOM_ELEMENTS[iLink] = stylesNode;
-	});
+	GlobalWaitForElement(`#container-for-custom-elements-${iPriority}`).then(
+		/** @param {HTMLElement} containerToPlace */ (containerToPlace) => {
+			containerToPlace.appendChild(stylesNode);
+			CUSTOM_ELEMENTS[iLink] = stylesNode;
+		}
+	);
 };
 
 /**
  * @param {String} iLink
+ * @param {Number} iPriority
  * @param {String} [iDataFor]
  */
-const GlobalAddScript = (iLink, iDataFor = false) => {
-	let scriptNode = document.createElement("script");
-		scriptNode.setAttribute("data-author", "serguun42");
-		
+const GlobalAddScript = (iLink, iPriority, iDataFor = false) => {
+	const scriptNode = document.createElement("script");
+		  scriptNode.setAttribute("data-priority", iPriority);
+		  scriptNode.setAttribute("data-author", "serguun42");
+		  scriptNode.setAttribute("src", iLink);
+
+
 	if (iDataFor)
 		scriptNode.setAttribute("data-for", iDataFor);
 	else
 		scriptNode.setAttribute("data-for", "site");
 
 
-	scriptNode.setAttribute("src", iLink);
-
-
-
-	GlobalWaitForElement("document.body").then((body) => {
-		document.body.appendChild(scriptNode);
-		window.CUSTOM_ELEMENTS[iLink] = scriptNode;
-	});
+	GlobalWaitForElement(`#container-for-custom-elements-${iPriority}`).then(
+		/** @param {HTMLElement} containerToPlace */ (containerToPlace) => {
+			containerToPlace.appendChild(scriptNode);
+			CUSTOM_ELEMENTS[iLink] = scriptNode;
+		}
+	);
 };
 
+/**
+ * 
+ * @param {String} iName
+ * @param {String} iValue
+ * @param {{infinite?: true, erase?: true, Path?: string, Domain?: string}} iOptions 
+ */
 const SetCookie = (iName, iValue, iOptions) => {
 	let cCookie = iName + "=" + encodeURIComponent(iValue);
 
 	if (typeof iOptions !== "object") iOptions = new Object();
 
 	if (iOptions.infinite)
-		cCookie += ";expires=" + new Date(new Date().getTime() + 1e11).toUTCString();
+		cCookie += "; Expires=" + new Date(new Date().getTime() + 1e11).toUTCString();
 	else if (iOptions.erase)
-		cCookie += ";expires=" + new Date(-1).toUTCString();
+		cCookie += "; Expires=" + new Date(new Date().getTime() - 1e7).toUTCString();
 
+	delete iOptions.infinite;
+	delete iOptions.erase;
 
 	for (let key in iOptions) {
-		if (iOptions[key])
-			cCookie += `;${key}=${iOptions[key]}`;
-		else
-			cCookie += ";" + key;
+		if (iOptions[key]) {
+			if (key === "Path")
+				cCookie += `; ${key}=${iOptions[key]}`;
+			else
+				cCookie += `; ${key}=${encodeURIComponent(iOptions[key])}`;
+		} else
+			cCookie += "; " + key;
 	};
 
 	document.cookie = cCookie;
@@ -404,68 +447,6 @@ const SetCookie = (iName, iValue, iOptions) => {
 const GetCookie = iName => {
 	let matches = document.cookie.match(new RegExp("(?:^|; )" + iName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
 	return matches ? decodeURIComponent(matches[1]) : undefined;
-};
-
-const GlobalPlaceEditorialButton = () => {
-	GlobalWaitForElement(".sidebar__tree-list__item:nth-of-type(2)").then(() => {
-		const
-			sidebarLinkToNew = document.querySelector(".sidebar__tree-list__item:nth-of-type(2)"),
-			sidebarLinkToNewName = sidebarLinkToNew.querySelector(".sidebar__tree-list__item__name"),
-			list = document.querySelector(".sidebar__tree-list"),
-			ratingButton = document.querySelector(`.sidebar__tree-list__item[href="/rating"]`);
-
-
-		let parentTags = {},
-			childTags = {};
-
-		sidebarLinkToNew.getAttributeNames().forEach((tag) =>
-			parentTags[tag] = sidebarLinkToNew.getAttribute(tag)
-		);
-
-		sidebarLinkToNewName.getAttributeNames().forEach((tag) =>
-			childTags[tag] = sidebarLinkToNewName.getAttribute(tag)
-		);
-
-
-		parentTags["href"] = "/editorial";
-		parentTags["class"] = (parentTags["class"] || "").replace("sidebar__tree-list__item--active", "");
-
-
-		let editorialButton = document.createElement("a");
-			editorialButton.id = "s42-editorial-link-btn";
-			Object.keys(parentTags).forEach((tag) => editorialButton.setAttribute(tag, parentTags[tag]));
-
-		let editorialButtonInner = document.createElement("p");
-			Object.keys(childTags).forEach((tag) => editorialButtonInner.setAttribute(tag, childTags[tag]));
-			editorialButtonInner.innerText = "От редакции";
-
-		editorialButton.appendChild(editorialButtonInner);
-		list.appendChild(editorialButton);
-
-
-
-		document.querySelectorAll(".sidebar__tree-list__item").forEach((sidebarLink) =>
-			sidebarLink.addEventListener("click", (e) => {
-				if (/^\/rating/i.test(sidebarLink.getAttribute("href")) || /^\/editorial/i.test(sidebarLink.getAttribute("href"))) {
-					document.querySelectorAll(".sidebar__tree-list__item").forEach((otherSidebarLink) =>
-						otherSidebarLink.classList.remove("sidebar__tree-list__item--active")
-					);
-
-					sidebarLink.classList.add("sidebar__tree-list__item--active");
-				} else {
-					editorialButton.classList.remove("sidebar__tree-list__item--active");
-					if (ratingButton) ratingButton.classList.remove("sidebar__tree-list__item--active");
-				};
-			})
-		);
-
-
-		if (/^\/rating/i.test(window.location.pathname) && ratingButton)
-			ratingButton.classList.add("sidebar__tree-list__item--active");
-
-		if (/^\/editorial/i.test(window.location.pathname))
-			editorialButton.classList.add("sidebar__tree-list__item--active");
-	});
 };
 
 const BOTS_RULES = {
@@ -540,7 +521,8 @@ const GlobalFilterProcedure = () => {
 
 
 
-	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_style.css`, "osnova");
+		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_style.css`, 0, "osnova");
+
 		BOTS_RULES.processingRules = true;
 		fetch(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_rules.json`, {
 			method: "GET",
@@ -647,32 +629,6 @@ const GlobalFilterProcedure = () => {
 				};
 
 				if (isNaN(complaintPostID) | isNaN(complaintUserID)) return;
-
-				let complainButton = document.createElement("a");
-					complainButton.className = "content-feed__s42-message--float-right";
-					complainButton.innerText = "Пожаловаться";
-					complainButton.addEventListener("click", () => {
-						fetch(`https://${window.location.hostname}/contents/complain`, {
-							"headers": {
-								"content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-								"sec-fetch-dest": "empty",
-								"sec-fetch-mode": "cors",
-								"sec-fetch-site": "same-origin",
-								"x-js-version": "b0a5e2e7",
-								"x-this-is-csrf": "THIS IS SPARTA!"
-							},
-							"referrerPolicy": "origin",
-							"body": `content_id=${complaintPostID}&user_id=${complaintUserID}&mode=raw`,
-							"method": "POST",
-							"mode": "cors",
-							"credentials": "include"
-						})
-						.then((res) => res.json())
-						.then(L)
-						.catch(L);
-					});
-
-				hiddenMessage.appendChild(complainButton);
 			};
 		});
 
@@ -741,9 +697,85 @@ const GlobalFilterProcedure = () => {
 				commentSpace.appendChild(hiddenMessage);
 			};
 		});
-	}).catch(L);
+	}).catch(console.warn);
 };
 
+const GlobalPlaceEditorialButton = () => {
+	GlobalWaitForElement(`.sidebar-tree-list-item[href="/m"]`).then(() => {
+		const messengerButton = document.querySelector(`.sidebar-tree-list-item[href="/m"]`);
+		if (!messengerButton) return console.warn("No messenger button!");
+
+
+		const editorialButton = document.createElement("div");
+		messengerButton.after(editorialButton);
+
+
+		editorialButton.outerHTML = messengerButton.outerHTML
+															.replace(/sidebar-tree-list-item"/gi, `sidebar-tree-list-item" id="s42-editorial-link-btn"`)
+															.replace(/href="\/m"/gi, `href="/editorial"`)
+															.replace(/style="[^"]+"/gi, "")
+															.replace(/Сообщения/gi, "От редакции")
+															.replace(/icon icon--ui_sidebar_messenger/gi, "icon icon--ui_check")
+															.replace(/xlink:href="#ui_sidebar_messenger"/gi, `xlink:href="#ui_check"`)
+															.replace(/sidebar-tree-list-item--active/gi, "");
+
+
+		const sidebarButtons = document.querySelectorAll(".sidebar-tree-list-item");
+		sidebarButtons.forEach((sidebarButton) => {
+			sidebarButton.addEventListener("click", () => {
+				sidebarButtons.forEach((sidebarButtonToChangeClass) => {
+					if (sidebarButton !== sidebarButtonToChangeClass)
+						sidebarButtonToChangeClass.classList.remove("sidebar-tree-list-item--active");
+				});
+
+				if (sidebarButton.id === "s42-editorial-link-btn") {
+					sidebarButton.classList.add("sidebar-tree-list-item--active");
+				};
+			});
+		});
+
+
+		if (window.location.pathname.search(/^\/editorial/) > -1) {
+			sidebarButtons.forEach((sidebarButtonToChangeClass) => {
+				sidebarButtonToChangeClass.classList.remove("sidebar-tree-list-item--active");
+			});
+
+			document.getElementById("s42-editorial-link-btn").classList.add("sidebar-tree-list-item--active");
+		};
+	});
+};
+
+
+
+GlobalRemove(document.getElementById("custom_subsite_css"));
+
+
+GlobalWaitForElement("document.body").then(() => {
+	const maxPriority = ALL_MODULES.reduce((accumulator, moduleSpec) => {
+		if (moduleSpec.priority > accumulator)
+			return moduleSpec.priority;
+		else
+			return accumulator;
+	}, 0);
+
+
+	for (let i = 0; i <= maxPriority; i++) {
+		if (!document.getElementById("container-for-custom-elements-" + i)) {
+			const container = document.createElement("div");
+				  container.id = "container-for-custom-elements-" + i;
+				  container.dataset.author = "serguun42";
+
+			document.body.appendChild(container);
+		};
+	};
+});
+
+
+GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/mdl-switchers.css`, 0, "osnova");
+GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/material-icons.css`, 0, "osnova");
+GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_com_rules.css`, 0, "osnova");
+GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/switchers.css`, 0, "osnova");
+GlobalAddScript(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/getmdl.min.js`, 0, "osnova");
 
 
 if (GetCookie("s42_turn_off") === "1")
@@ -755,13 +787,15 @@ else
 
 
 
+const DEFAULT_COOKIES_OPTIONS = { infinite: true, Path: "/", Domain: window.location.hostname };
 window.GetCookie = GetCookie;
 window.SetCookie = SetCookie;
 window.UNLOAD_COOKIES = () => {
 	[
 		"s42_always",
-		"s42_columns",
+		"s42_columns_narrow",
 		"s42_covfefe",
+		"s42_blackchrome",
 		"s42_deep_blue",
 		"s42_filter",
 		"s42_gay",
@@ -769,31 +803,31 @@ window.UNLOAD_COOKIES = () => {
 		"s42_lastkarmaandsub",
 		"s42_material",
 		"s42_messageslinkdisabled",
+		"s42_defaultscrollers",
 		"s42_monochrome",
 		"s42_qrcode",
 		"s42_turn_off",
 		"s42_ultra_dark",
 		"s42_vbscroller",
+		"s42_editorial",
+		"s42_columns_narrow",
+		"s42_hidesubscriptions",
+		"s42_beautifulfeedposts",
+		"s42_favouritesicon",
+		"s42_hideviewsanddate",
+		"s42_newentriesbadge",
 		"s42_donate"
-	].forEach((cookieName) => SetCookie(cookieName, "1", { erase: true, path: "/", domain: window.location.hostname }));
+	].forEach((cookieName) => SetCookie(cookieName, "1", { erase: true, Path: "/", Domain: window.location.hostname }));
 };
-
-
-GlobalRemove(document.getElementById("custom_subsite_css"));
-
-
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/mdl-switchers.css`, "osnova");
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/material-icons.css`, "osnova");
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/switchers.css`, "osnova");
-GlobalAddScript(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/getmdl.min.js`, "osnova");
 
 
 
 let customDataContainer = document.createElement("div");
 	customDataContainer.id = "custom-data-container";
+	customDataContainer.className = "custom-data-container--for-big-header";
 
-GlobalWaitForElement(".main_menu__auth").then(() => {
-	document.querySelector(".main_menu__auth").after(customDataContainer);
+GlobalWaitForElement(".site-header-user").then(() => {
+	document.querySelector(".site-header-user").after(customDataContainer);
 
 
 	let switchersBtn = document.createElement("div");
@@ -801,6 +835,11 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 		switchersBtn.id = "switchers-btn";
 		switchersBtn.className = "mdl-js-button mdl-js-ripple-effect";
 		switchersBtn.addEventListener("click", (e) => {
+			let smallScreenFlag = false;
+			if ((window.innerWidth - e.clientX) * 2 + 500 > window.innerWidth) smallScreenFlag = true;
+			if (window.innerHeight <= 660) smallScreenFlag = true;
+
+
 			const SWITCHERS_LAYOUT =
 			`<div id="switcher-layout__header">Выбор тем и модулей</div>
 			<ul id="switcher-layout__list">
@@ -823,9 +862,9 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 						<span class="mdl-radio__label">По расписанию (после заката)</span>
 					</label>
 				</li>
-				${(!GetCookie("s42_donate") || (Date.now() - new Date(parseInt(GetCookie("s42_donate")))) > 86400 * 5 * 1e3) ? `<div class="switcher-layout__list__separator switcher-layout__list__donate"></div>
-				<a class="switcher-layout__list__subheader switcher-layout__list__donate" href="https://yasobe.ru/na/dark_mode" target="_blank" style="color: ${SITES_COLOR[window.location.hostname]}; text-decoration: underline;">
-					Поддержать автора в столь непростое время
+				${(Date.now() - parseInt(GetCookie("s42_donate")) || 0) > 86400 * 5 * 1e3 ? `<div class="switcher-layout__list__separator switcher-layout__list__donate"></div>
+				<a class="switcher-layout__list__subheader switcher-layout__list__donate" href="https://sobe.ru/na/dark_mode" target="_blank" style="color: ${SITES_COLORS[window.location.hostname]}; text-decoration: underline;">
+					Поддержать автора
 				</a>
 				<li class="switcher-layout__list__subheader switcher-layout__list__donate">
 					Можете просто скрыть это сообщение, нажав на него или сюда 👆🏻
@@ -851,8 +890,14 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 					</label>
 				</li>
 				<li class="switcher-layout__list__item">
+					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="blackchrome" data-serguun42-labels data-serguun42-add-dark>
+						<input type="radio" id="blackchrome" class="mdl-radio__button" name="add-dark" value="blackchrome" ${GetCookie("s42_blackchrome") === "1" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-radio__label">Black Monochrome</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
 					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="nothing" data-serguun42-labels data-serguun42-add-dark>
-						<input type="radio" id="nothing" class="mdl-radio__button" name="add-dark" value="nothing" ${(GetCookie("s42_ultra_dark") !== "1" && GetCookie("s42_deep_blue") !== "1" && GetCookie("s42_covfefe") !== "1") ? "checked" : ""} data-serguun42-switchers>
+						<input type="radio" id="nothing" class="mdl-radio__button" name="add-dark" value="nothing" ${(GetCookie("s42_ultra_dark") !== "1" && GetCookie("s42_deep_blue") !== "1" && GetCookie("s42_covfefe") !== "1" && GetCookie("s42_blackchrome") !== "1") ? "checked" : ""} data-serguun42-switchers>
 						<span class="mdl-radio__label">Без дополнений к тёмной теме</span>
 					</label>
 				</li>
@@ -871,35 +916,11 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 					</label>
 				</li>
 				<div class="switcher-layout__list__separator"></div>
-				<div class="switcher-layout__list__subheader">Другие дополнительные модули</div>
+				<div class="switcher-layout__list__subheader">Кнопки в левом меню</div>
 				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="material" data-serguun42-labels>
-						<input type="checkbox" id="material" class="mdl-checkbox__input" ${GetCookie("s42_material") === "0" ? "" : "checked"} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Добавить оформление «Material»</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="columns" data-serguun42-labels>
-						<input type="checkbox" id="columns" class="mdl-checkbox__input" ${GetCookie("s42_columns") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Прижать боковые колонки к бокам экрана</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="filter" data-serguun42-labels title="Такие как «Прошу о помощи», стихи и прочее">
-						<input type="checkbox" id="filter" class="mdl-checkbox__input" ${GetCookie("s42_filter") !== "0" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Скрывать в ленте посты от ботов</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item" title="Gorgeous, astonishing, yummy(?)">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="gay" data-serguun42-labels>
-						<input type="checkbox" id="gay" class="mdl-checkbox__input" ${GetCookie("s42_gay") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label" title="Gorgeous, astonishing, yummy(?)">Добавить оформление «G.A.Y»</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma" data-serguun42-labels>
-						<input type="checkbox" id="karma" class="mdl-checkbox__input" ${GetCookie("s42_karma") !== "off" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Карма включена</span>
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="newentriesbadge" data-serguun42-labels>
+						<input type="checkbox" id="newentriesbadge" class="mdl-checkbox__input" ${GetCookie("s42_newentriesbadge") !== "0" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Улучшенный индикатор новых записей</span>
 					</label>
 				</li>
 				<li class="switcher-layout__list__item">
@@ -909,51 +930,121 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 					</label>
 				</li>
 				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="vbscroller" data-serguun42-labels>
-						<input type="checkbox" id="vbscroller" class="mdl-checkbox__input" ${GetCookie("s42_vbscroller") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Пофиксить скроллер в левом меню (для маленьких экранов)</span>
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="hidesubscriptions" data-serguun42-labels>
+						<input type="checkbox" id="hidesubscriptions" class="mdl-checkbox__input" ${GetCookie("s42_hidesubscriptions") === "1" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Скрыть кнопку подписок</span>
 					</label>
 				</li>
 				<li class="switcher-layout__list__item">
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="messageslinkdisabled" data-serguun42-labels>
 						<input type="checkbox" id="messageslinkdisabled" class="mdl-checkbox__input" ${GetCookie("s42_messageslinkdisabled") === "0" ? "" : "checked"} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Отключить кнопки «Сообщения», «Вакансии», «Компании» и «Мероприятия» в левом меню</span>
+						<span class="mdl-checkbox__label">Скрыть кнопки «Сообщения», «Вакансии», «Компании», «Мероприятия», «Хакатоны» и «Трансляции» в левом меню</span>
 					</label>
 				</li>
-			</ul>`;
+				<div class="switcher-layout__list__separator"></div>
+				<div class="switcher-layout__list__subheader">Настройки ленты</div>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="filter" data-serguun42-labels title="Такие как «Прошу о помощи», стихи и прочее">
+						<input type="checkbox" id="filter" class="mdl-checkbox__input" ${GetCookie("s42_filter") !== "0" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Скрывать в ленте посты от ботов</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="beautifulfeedposts" data-serguun42-labels>
+						<input type="checkbox" id="beautifulfeedposts" class="mdl-checkbox__input" ${GetCookie("s42_beautifulfeedposts") !== "0" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Кнопки оценки постов без теней</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="favouritesicon" data-serguun42-labels>
+						<input type="checkbox" id="favouritesicon" class="mdl-checkbox__input" ${GetCookie("s42_favouritesicon") !== "0" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Красная иконка закладок</span>
+					</label>
+				</li>
+				<div class="switcher-layout__list__separator"></div>
+				<div class="switcher-layout__list__subheader">Другие дополнительные модули</div>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="material" data-serguun42-labels>
+						<input type="checkbox" id="material" class="mdl-checkbox__input" ${GetCookie("s42_material") === "0" ? "" : "checked"} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Добавить оформление «Material»</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="defaultscrollers" data-serguun42-labels>
+						<input type="checkbox" id="defaultscrollers" class="mdl-checkbox__input" ${GetCookie("s42_defaultscrollers") === "1" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Включить стандартные полосы прокрутки</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="columns_narrow" data-serguun42-labels>
+						<input type="checkbox" id="columns_narrow" class="mdl-checkbox__input" ${GetCookie("s42_columns_narrow") === "1" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Прижать боковые колонки к центру экрана (убрать пространство между колонками и контентом в центре)</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma" data-serguun42-labels>
+						<input type="checkbox" id="karma" class="mdl-checkbox__input" ${GetCookie("s42_karma") !== "off" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Карма включена</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item" title="Gorgeous, astonishing, yummy(?)">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="gay" data-serguun42-labels>
+						<input type="checkbox" id="gay" class="mdl-checkbox__input" ${GetCookie("s42_gay") === "1" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label" title="Gorgeous, astonishing, yummy(?)">Добавить оформление «G.A.Y»</span>
+					</label>
+				</li>
+			</ul>
 
 
-			let switchersContainer = document.createElement("div");
-				switchersContainer.id = "switcher-layout";
-				switchersContainer.style.width = 0;
-				switchersContainer.style.height = 0;
+			${smallScreenFlag ?
+				`<div class="switcher-layout__list__separator"></div>
+				<div id="switcher-layout__close-button-container">
+					<div class="mdl-js-button mdl-js-ripple-effect" id="switcher-layout__close-button" data-serguun42-labels>
+						Закрыть опции
+					</div>
+				</div>`
+				:
+				""}`;
+
+
+			const switchersContainer = document.createElement("div");
+				  switchersContainer.id = "switcher-layout";
+				  switchersContainer.style.width = 0;
+				  switchersContainer.style.height = 0;
+
+			if (smallScreenFlag)
+				switchersContainer.classList.add("switcher-layout--small-screen");
+			else
 				switchersContainer.style.right = (window.innerWidth - e.clientX) + "px";
 
 			document.body.appendChild(switchersContainer);
 
 
-			let switchersScroller = document.createElement("div");
-				switchersScroller.id = "switcher-layout--scroller";
+			const switchersScroller = document.createElement("div");
+				  switchersScroller.id = "switcher-layout--scroller";
 
 			switchersContainer.appendChild(switchersScroller);
 			switchersScroller.innerHTML = SWITCHERS_LAYOUT;
 
-			let switchersObfuscator = document.createElement("div");
-				switchersObfuscator.id = "switcher-layout--obfuscator";
+			const switchersObfuscator = document.createElement("div");
+				  switchersObfuscator.id = "switcher-layout--obfuscator";
+
 			document.body.appendChild(switchersObfuscator);
 
 
+			const switchersContainerMaxHeight = smallScreenFlag ? window.innerHeight - 60 : 600;
+			const switchersContainerMaxWidth = smallScreenFlag ? window.innerWidth : 500;
 
 			GlobalAnimation(4e2, (iProgress) => {
-				switchersContainer.style.width = iProgress * 500 + "px";
-				switchersContainer.style.height = iProgress * 500 + "px";
+				switchersContainer.style.width = iProgress * switchersContainerMaxWidth + "px";
+				switchersContainer.style.height = iProgress * switchersContainerMaxHeight + "px";
 				if (iProgress < 0.25)
 					switchersContainer.style.opacity = iProgress * 4;
 				else
 					switchersContainer.style.opacity = 1;
 			}).then(() => {
-				switchersContainer.style.width = "500px";
-				switchersContainer.style.height = "500px";
+				switchersContainer.style.width = switchersContainerMaxWidth + "px";
+				switchersContainer.style.height = switchersContainerMaxHeight + "px";
 				switchersContainer.style.opacity = 1;
 				switchersScroller.style.overflowY = "auto";
 			});
@@ -967,7 +1058,9 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 			};
 
 
-			switchersObfuscator.addEventListener("click", () => {
+
+
+			const LocalCloseSwitchers = () => {
 				switchersScroller.style.overflowY = "hidden";
 
 				GlobalAnimation(4e2, (iProgress) => {
@@ -976,57 +1069,100 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 					GlobalRemove(switchersContainer);
 					GlobalRemove(switchersObfuscator);
 				});
-			});
+			};
+
+			switchersObfuscator.addEventListener("click", () => LocalCloseSwitchers());
 
 			switchersObfuscator.addEventListener("contextmenu", () => {
-				switchersScroller.style.overflowY = "hidden";
-
-				GlobalAnimation(4e2, (iProgress) => {
-					switchersContainer.style.opacity = 1 - iProgress;
-				}).then(() => {
-					GlobalRemove(switchersContainer);
-					GlobalRemove(switchersObfuscator);
-				});
-
+				LocalCloseSwitchers();
 				return false;
 			});
+
+			if (smallScreenFlag) {
+				if (document.getElementById("switcher-layout__close-button"))
+					document.getElementById("switcher-layout__close-button").addEventListener("click", () => LocalCloseSwitchers());
+			};
 
 
 
 			document.querySelectorAll("[data-serguun42-switchers]").forEach((switcher) => {
 				switcher.addEventListener("change", (e) => {
 					if (e.currentTarget.id === "material") {
-						SetCookie("s42_material", (e.currentTarget.checked ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
+						SetCookie("s42_material", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
 						ManageModule("material", e.currentTarget.checked);
 					};
 
-					if (e.currentTarget.id === "columns") {
-						SetCookie("s42_columns", (e.currentTarget.checked ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
+					if (e.currentTarget.id === "columns_narrow") {
+						SetCookie("s42_columns_narrow", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
-						ManageModule("columns", e.currentTarget.checked);
+						ManageModule("columns_narrow", e.currentTarget.checked);
 					};
 
 					if (e.currentTarget.id === "filter") {
-						SetCookie("s42_filter", (e.currentTarget.checked ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
+						SetCookie("s42_filter", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
 						if (e.currentTarget.checked) GlobalFilterProcedure();
 					};
 
 					if (e.currentTarget.id === "gay") {
-						SetCookie("s42_gay", (e.currentTarget.checked ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
+						SetCookie("s42_gay", e.currentTarget.checked ? "1" : "0", DEFAULT_COOKIES_OPTIONS);
 
 						ManageModule("gay", e.currentTarget.checked);
 					};
 
 					if (e.currentTarget.id === "karma") {
-						SetCookie("s42_karma", e.currentTarget.checked ? "on" : "off", { infinite: true, path: "/", domain: window.location.hostname });
+						SetCookie("s42_karma", e.currentTarget.checked ? "on" : "off", DEFAULT_COOKIES_OPTIONS);
 
 						alert("Чтобы отключить/включить отображение кармы, перезагрузите страницу");
 					};
 
+					if (e.currentTarget.id === "hidesubscriptions") {
+						SetCookie("s42_hidesubscriptions", e.currentTarget.checked ? "1" : "0", DEFAULT_COOKIES_OPTIONS);
+
+						ManageModule("hidesubscriptions", e.currentTarget.checked);
+					};
+
+					if (e.currentTarget.id === "beautifulfeedposts") {
+						SetCookie("s42_beautifulfeedposts", e.currentTarget.checked ? "1" : "0", DEFAULT_COOKIES_OPTIONS);
+
+						ManageModule("beautifulfeedposts", e.currentTarget.checked);
+					};
+
+					if (e.currentTarget.id === "favouritesicon") {
+						SetCookie("s42_favouritesicon", e.currentTarget.checked ? "1" : "0", DEFAULT_COOKIES_OPTIONS);
+
+						ManageModule("favouritesicon", e.currentTarget.checked);
+					};
+
+					if (e.currentTarget.id === "messageslinkdisabled") {
+						SetCookie("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
+
+						if (e.currentTarget.checked) {
+							GlobalSetSidebarItemsStyle("none");
+						} else {
+							GlobalSetSidebarItemsStyle("");
+						};
+					};
+
+					if (e.currentTarget.id === "defaultscrollers") {
+						SetCookie("s42_defaultscrollers", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
+
+						if (e.currentTarget.checked) {
+							GlobalSetScrollers("default");
+						} else {
+							GlobalSetScrollers("custom");
+						};
+					};
+
+					if (e.currentTarget.id === "newentriesbadge") {
+						SetCookie("s42_newentriesbadge", e.currentTarget.checked ? "1" : "0", DEFAULT_COOKIES_OPTIONS);
+
+						addBadgeFlag = !!e.currentTarget.checked;
+					};
+
 					if (e.currentTarget.id === "editorial") {
-						SetCookie("s42_editorial", e.currentTarget.checked ? "1" : "0", { infinite: true, path: "/", domain: window.location.hostname });
+						SetCookie("s42_editorial", e.currentTarget.checked ? "1" : "0", DEFAULT_COOKIES_OPTIONS);
 
 						if (e.currentTarget.checked) {
 							GlobalPlaceEditorialButton();
@@ -1035,55 +1171,17 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 						};
 					};
 
-					if (e.currentTarget.id === "vbscroller") {
-						SetCookie("s42_vbscroller", (e.currentTarget.checked ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
-
-						if (e.currentTarget.checked)
-							if (confirm("Примениться после обновления страницы. Обновить сейчас?"))
-								window.location.reload();
-					};
-
-					if (e.currentTarget.id === "messageslinkdisabled") {
-						SetCookie("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
-
-						if (e.currentTarget.checked) {
-							if (document.querySelector(`.sidebar__tree-list__item[href="/m"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/m"]`).style.display = "none";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/job"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/job"]`).style.display = "none";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/companies_new"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/companies_new"]`).style.display = "none";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/companies/new"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/companies/new"]`).style.display = "none";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/companies"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/companies"]`).style.display = "none";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/events"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/events"]`).style.display = "none";
-						} else {
-							if (document.querySelector(`.sidebar__tree-list__item[href="/m"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/m"]`).style.display = "";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/job"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/job"]`).style.display = "";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/companies_new"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/companies_new"]`).style.display = "";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/companies/new"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/companies/new"]`).style.display = "";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/companies"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/companies"]`).style.display = "";
-							if (document.querySelector(`.sidebar__tree-list__item[href="/events"]`))
-								document.querySelector(`.sidebar__tree-list__item[href="/events"]`).style.display = "";
-						};
-					};
-
 					if (e.currentTarget.getAttribute("name") === "add-dark") {
-						SetCookie("s42_ultra_dark", (e.currentTarget.value === "ultra_dark" ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
-						SetCookie("s42_deep_blue", (e.currentTarget.value === "deep_blue" ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
-						SetCookie("s42_covfefe", (e.currentTarget.value === "covfefe" ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
+						SetCookie("s42_ultra_dark", (e.currentTarget.value === "ultra_dark" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
+						SetCookie("s42_deep_blue", (e.currentTarget.value === "deep_blue" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
+						SetCookie("s42_covfefe", (e.currentTarget.value === "covfefe" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
+						SetCookie("s42_blackchrome", (e.currentTarget.value === "blackchrome" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
 						if (
 							e.currentTarget.value === "ultra_dark" ||
 							e.currentTarget.value === "deep_blue" ||
-							e.currentTarget.value === "covfefe"
+							e.currentTarget.value === "covfefe" ||
+							e.currentTarget.value === "blackchrome"
 						) {
 							if (
 								GetCookie("s42_turn_off") && parseInt(GetCookie("s42_turn_off")) ||
@@ -1096,8 +1194,8 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 								document.querySelector(`[for="usual"]`).classList.remove("is-checked");
 								document.querySelector(`[value="usual"]`).checked = false;
 
-								SetCookie("s42_always", "1", { infinite: true, path: "/", domain: window.location.hostname });
-								SetCookie("s42_turn_off", "0", { infinite: true, path: "/", domain: window.location.hostname });
+								SetCookie("s42_always", "1", DEFAULT_COOKIES_OPTIONS);
+								SetCookie("s42_turn_off", "0", DEFAULT_COOKIES_OPTIONS);
 
 								ManageModule("monochrome", false);
 								ManageModule("dark", true);
@@ -1109,10 +1207,11 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 						ManageModule("ultra_dark", e.currentTarget.value === "ultra_dark");
 						ManageModule("deep_blue", e.currentTarget.value === "deep_blue");
 						ManageModule("covfefe", e.currentTarget.value === "covfefe");
+						ManageModule("blackchrome", e.currentTarget.value === "blackchrome");
 					};
 
 					if (e.currentTarget.getAttribute("name") === "add-light") {
-						SetCookie("s42_monochrome", (e.currentTarget.value === "monochrome" ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
+						SetCookie("s42_monochrome", (e.currentTarget.value === "monochrome" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
 						if (
 							e.currentTarget.value === "monochrome"
@@ -1127,13 +1226,14 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 								document.querySelector(`[for="usual"]`).classList.remove("is-checked");
 								document.querySelector(`[value="usual"]`).checked = false;
 
-								SetCookie("s42_always", "0", { infinite: true, path: "/", domain: window.location.hostname });
-								SetCookie("s42_turn_off", "1", { infinite: true, path: "/", domain: window.location.hostname });
+								SetCookie("s42_always", "0", DEFAULT_COOKIES_OPTIONS);
+								SetCookie("s42_turn_off", "1", DEFAULT_COOKIES_OPTIONS);
 
 
 								ManageModule("ultra_dark", false);
 								ManageModule("deep_blue", false);
 								ManageModule("covfefe", false);
+								ManageModule("blackchrome", false);
 								ManageModule("dark", false);
 								ManageModule(`${SITE}_dark`, false, true);
 								ManageModule("light", true);
@@ -1144,8 +1244,8 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 					};
 
 					if (e.currentTarget.getAttribute("name") === "time") {
-						SetCookie("s42_always", (e.currentTarget.value === "always" ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
-						SetCookie("s42_turn_off", (e.currentTarget.value === "turn_off" ? 1 : 0).toString(), { infinite: true, path: "/", domain: window.location.hostname });
+						SetCookie("s42_always", (e.currentTarget.value === "always" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
+						SetCookie("s42_turn_off", (e.currentTarget.value === "turn_off" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
 
 						document.querySelector(`[for="ultra_dark"]`).classList.remove("is-checked");
@@ -1154,6 +1254,8 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 						document.querySelector(`[value="deep_blue"]`).checked = false;
 						document.querySelector(`[for="covfefe"]`).classList.remove("is-checked");
 						document.querySelector(`[value="covfefe"]`).checked = false;
+						document.querySelector(`[for="blackchrome"]`).classList.remove("is-checked");
+						document.querySelector(`[value="blackchrome"]`).checked = false;
 						document.querySelector(`[for="nothing"]`).classList.add("is-checked");
 						document.querySelector(`[value="nothing"]`).checked = true;
 
@@ -1161,6 +1263,7 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 						ManageModule("ultra_dark", false);
 						ManageModule("deep_blue", false);
 						ManageModule("covfefe", false);
+						ManageModule("blackchrome", false);
 						ManageModule("monochrome", false);
 
 
@@ -1169,20 +1272,33 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 							ManageModule(`${SITE}_dark`, true, true);
 							ManageModule("light", false);
 
-							["ultra_dark", "deep_blue", "covfefe"].forEach((addDarkModuleName) => {
+							["ultra_dark", "deep_blue", "covfefe", "blackchrome"].forEach((addDarkModuleName) => {
 								if (GetCookie("s42_" + addDarkModuleName) === "1") {
 									ManageModule(addDarkModuleName, true);
 
 									document.querySelector(`[for="${addDarkModuleName}"]`).classList.add("is-checked");
 									document.querySelector(`[value="${addDarkModuleName}"]`).checked = true;
-									document.querySelector(`[for="nothing"]`).classList.remove("is-checked");
-									document.querySelector(`[value="nothing"]`).checked = false;
 								};
 							});
+
+							document.querySelector(`[for="nothing"]`).classList.remove("is-checked");
+							document.querySelector(`[value="nothing"]`).checked = false;
 						} else if (e.currentTarget.value === "turn_off") {
 							ManageModule("dark", false);
 							ManageModule(`${SITE}_dark`, false, true);
 							ManageModule("light", true);
+
+							["monochrome"].forEach((addLightModuleName) => {
+								if (GetCookie("s42_" + addLightModuleName) === "1") {
+									ManageModule(addLightModuleName, true);
+
+									document.querySelector(`[for="${addLightModuleName}"]`).classList.add("is-checked");
+									document.querySelector(`[value="${addLightModuleName}"]`).checked = true;
+								};
+							});
+
+							document.querySelector(`[for="nothing"]`).classList.remove("is-checked");
+							document.querySelector(`[value="nothing"]`).checked = false;
 						} else {
 							GetMode().then((iNightMode) => {
 								if (iNightMode) {
@@ -1191,7 +1307,7 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 									ManageModule(`${SITE}_dark`, true, true);
 									ManageModule("light", false);
 
-									["ultra_dark", "deep_blue", "covfefe"].forEach((addDarkModuleName) => {
+									["ultra_dark", "deep_blue", "covfefe", "blackchrome"].forEach((addDarkModuleName) => {
 										if (GetCookie("s42_" + addDarkModuleName) === "1") {
 											ManageModule(addDarkModuleName, true);
 
@@ -1202,7 +1318,7 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 										};
 									});
 								} else {
-									document.querySelector(`meta[name="theme-color"]`).setAttribute("content", SITES_COLOR[window.location.hostname]);
+									document.querySelector(`meta[name="theme-color"]`).setAttribute("content", SITES_COLORS[window.location.hostname]);
 									ManageModule("dark", false);
 									ManageModule(`${SITE}_dark`, false, true);
 									ManageModule("light", true);
@@ -1215,7 +1331,7 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 
 			document.querySelectorAll(".switcher-layout__list__donate").forEach((donatePromoteElem) => {
 				donatePromoteElem.addEventListener("click", () => {
-					SetCookie("s42_donate", Date.now().toString(), { infinite: true, path: "/", domain: window.location.hostname });
+					SetCookie("s42_donate", Date.now().toString(), DEFAULT_COOKIES_OPTIONS);
 
 
 					document.querySelectorAll(".switcher-layout__list__donate").forEach((donatePromoteElemToHide, donatePromoteElemToHideIndex) => {
@@ -1243,21 +1359,51 @@ GlobalWaitForElement(".main_menu__auth").then(() => {
 
 
 
-if (GetCookie("s42_messageslinkdisabled") !== "0") {
-	GlobalWaitForElement(".sidebar").then(() => {
-		if (document.querySelector(`.sidebar__tree-list__item[href="/m"]`))
-			document.querySelector(`.sidebar__tree-list__item[href="/m"]`).style.display = "none";
-		if (document.querySelector(`.sidebar__tree-list__item[href="/job"]`))
-			document.querySelector(`.sidebar__tree-list__item[href="/job"]`).style.display = "none";
-		if (document.querySelector(`.sidebar__tree-list__item[href="/companies_new"]`))
-			document.querySelector(`.sidebar__tree-list__item[href="/companies_new"]`).style.display = "none";
-		if (document.querySelector(`.sidebar__tree-list__item[href="/companies/new"]`))
-			document.querySelector(`.sidebar__tree-list__item[href="/companies/new"]`).style.display = "none";
-		if (document.querySelector(`.sidebar__tree-list__item[href="/companies"]`))
-			document.querySelector(`.sidebar__tree-list__item[href="/companies"]`).style.display = "none";
-		if (document.querySelector(`.sidebar__tree-list__item[href="/events"]`))
-			document.querySelector(`.sidebar__tree-list__item[href="/events"]`).style.display = "none";
+
+const GlobalSetSidebarItemsStyle = iStyle => {
+	if (document.querySelector(`.sidebar-tree-list-item[href="/m"]`))
+		document.querySelector(`.sidebar-tree-list-item[href="/m"]`).style.display = iStyle;
+	if (document.querySelector(`.sidebar-tree-list-item[href="/job"]`))
+		document.querySelector(`.sidebar-tree-list-item[href="/job"]`).style.display = iStyle;
+	if (document.querySelector(`.sidebar-tree-list-item[href="/companies_new"]`))
+		document.querySelector(`.sidebar-tree-list-item[href="/companies_new"]`).style.display = iStyle;
+	if (document.querySelector(`.sidebar-tree-list-item[href="/companies/new"]`))
+		document.querySelector(`.sidebar-tree-list-item[href="/companies/new"]`).style.display = iStyle;
+	if (document.querySelector(`.sidebar-tree-list-item[href="/companies"]`))
+		document.querySelector(`.sidebar-tree-list-item[href="/companies"]`).style.display = iStyle;
+	if (document.querySelector(`.sidebar-tree-list-item[href="/events"]`))
+		document.querySelector(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
+	if (document.querySelector(`.sidebar-tree-list-item[href="/events"]`))
+		document.querySelector(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
+
+
+	document.querySelectorAll(`.sidebar-tree-list-item--custom-html`).forEach((sidebarLink) => {
+		sidebarLink.style.display = iStyle;
 	});
+
+	document.querySelectorAll(`.sidebar-tree-list-item--colored`).forEach((sidebarLink) => {
+		sidebarLink.style.display = iStyle;
+	});
+};
+
+const GlobalSetScrollers = iScrollersMode => {
+	if (iScrollersMode === "default") {
+		GlobalWaitForElement("document.body").then(() =>
+			document.body.classList.add("s42-default-scrollers")
+		);
+	} else {
+		GlobalWaitForElement("document.body").then(() =>
+			document.body.classList.remove("s42-default-scrollers")
+		);
+	};
+};
+
+if (GetCookie("s42_messageslinkdisabled") !== "0") {
+	GlobalWaitForElement(".sidebar").then(() => GlobalSetSidebarItemsStyle("none"));
+};
+
+if (GetCookie("s42_defaultscrollers") === "1") {
+	GlobalSetScrollers("default");
 };
 
 if (GetCookie("s42_editorial") === "1") {
@@ -1266,215 +1412,233 @@ if (GetCookie("s42_editorial") === "1") {
 
 
 
+let windowLoaded = false;
+let addBadgeFlag = (GetCookie("s42_newentriesbadge") !== "0");
 
-const GlobalCacheProcedure = () => {
-	if (!(SITE === "tjournal" || SITE === "dtf")) return;
+const GlobalBadgeProcedure = () => {
+	let startedBadgeProcedure = false;
 
-
-	let lastURL = "";
-
-	setInterval(() => {
-		if (lastURL === window.location.pathname) return;
-		if (document.querySelector(".main_progressbar--in_process")) return;
-
-		lastURL = window.location.pathname;
+	const LocalStartBadgeProcedure = () => {
+		if (startedBadgeProcedure) return;
+		startedBadgeProcedure = true;
 
 
-		/* Actual Cache Procedure */
-		let cURL = lastURL,
-			id = -2;
+		try {
+			const newEntriesModule = Air.get("module.new_entries");
 
-		if (cURL.slice(0, 3) === "/u/") {
-			cURL = cURL.slice(1).split("/");
-			if (cURL.length < 3) return;
+			const badge = document.createElement("span");
+				  badge.id = "s42-feed-link-new-entries-badge";
+				  badge.className = "is-hidden";
 
-			id = parseInt(cURL[2]);
-			if (isNaN(id)) return;
-		} else {
-			if (cURL.slice(0, 3) === "/m/") return;
-
-			if (cURL.slice(0, 3) === "/s/")
-				cURL = cURL.slice(3);
-			else
-				cURL = cURL.slice(1);
-
-			if (!cURL) return;
-
-			cURL = cURL.split("/");
-			if (cURL.length < 2) return;
-
-			id = parseInt(cURL[1]);
-			if (isNaN(id)) return;
-		};
+			document.querySelector(".sidebar-tree-list-item").querySelector(".sidebar-tree-list-item__link").appendChild(badge);
 
 
-
-		GlobalWaitForElement(`[data-error-code="404"], .layout--entry`).then((postElement) => {
-			if (!postElement) return;
-			if (postElement.classList.contains("layout--entry")) return;
-
-
-			let errorMessage = document.querySelector(".page--error .error__message");
-
-			if (errorMessage) {
-				fetch(`https://serguun42.ru/tj?check-for-presence&site=${SITE === "tjournal" ? "tj" : "dtf"}&id=${id}`)
-				.then((res) => {
-					if (res.status === 200)
-						return res.text();
-					else
-						return Promise.reject(`Status code <${res.status}> | "${res.statusText}"`);
-				})
-				.then((text) => {
-					if (parseInt(text) !== id) return Promise.reject(`Ids don't match`);
-
-
-					GlobalRemove(document.querySelector(".error__ico"));
-
-
-					errorMessage.innerHTML = errorMessage.innerHTML.trim() + `. Или найдена? 🤔<br>Конечно же да!<br><a class="s42-404-error-cached-post-button" href="https://serguun42.ru/tj?site=${SITE === "tjournal" ? "tj" : "dtf"}&id=${id}" target="_blank">Смотри вот эту страницу</a> – там закэширован этот пост. И, скорее всего, даже есть комментарии!`;
-					errorMessage.style.paddingLeft = "0";
-
-
-					document.querySelector(".error__code").style.paddingLeft = "0";
-					document.querySelector(".error__code").style.textAlign = "center";
-				})
-				.catch(L);
+			const count = newEntriesModule.getUnreadCount();
+			if (count) {
+				badge.classList.remove("is-hidden");
+				badge.innerText = count;
 			};
-		});
-	}, 200);
-};
-
-const GlobalInstagramProcedure = () => {
-	let lastURL = "";
-
-	setInterval(() => {
-		if (lastURL === window.location.pathname) return;
-		if (document.querySelector(".main_progressbar--in_process")) return;
-
-		lastURL = window.location.pathname;
 
 
-		/* Actual Instagram Frames Procedure */
-		GlobalWaitForElement(`[data-error-code="404"], .layout--entry`).then((postElement) => {
-			if (!postElement) return;
-			if (!postElement.classList.contains("layout--entry")) return;
+			newEntriesModule.on("Unread count changed", (count) => {
+				if (!startedBadgeProcedure) return;
 
-
-			postElement.querySelectorAll("iframe").forEach((iframe) => {
-				let src = iframe.getAttribute("src"),
-					search = "";
-
-				try {
-					search = new URL(src).search;
-				} catch (e) {
-					return console.warn(e);
-				};
-
-
-				let instDarkThemeEnabled = false;
-
-
-				if (GetCookie("s42_turn_off") === "1")
-					instDarkThemeEnabled = false;
-				else if (GetCookie("s42_always") === "1")
-					instDarkThemeEnabled = true;
-				else if (GetMode(true))
-					instDarkThemeEnabled = true;
-
-
-				if (instDarkThemeEnabled) {
-					if (!search.match(/s42-inst-dark-theme=true/i))
-						iframe.setAttribute("src", `${src}${search ? "&" : "?"}s42-inst-dark-theme=true`);	
+				if (count) {
+					badge.classList.remove("is-hidden");
+					badge.innerText = count;
+				} else {
+					badge.classList.add("is-hidden");
 				};
 			});
-		});
-	}, 200);
+
+
+			const LocalSidebarListItemClickListener = () => {
+				badge.classList.add("is-hidden");
+
+				setTimeout(() => {
+					const count = newEntriesModule.getUnreadCount();
+					if (count) {
+						badge.classList.remove("is-hidden");
+						badge.innerText = count;
+					};
+				}, 2e3);
+			};
+
+
+			document.body.classList.add("s42-has-counter");
+			document.querySelector(".sidebar-tree-list-item").addEventListener("click", LocalSidebarListItemClickListener);
+
+
+			const checkForDisablingInterval = setInterval(() => {
+				if (!addBadgeFlag) {
+					window.clearInterval(checkForDisablingInterval);
+					newEntriesModule.off("Unread count changed");
+					document.body.classList.remove("s42-has-counter");
+					document.querySelector(".sidebar-tree-list-item").removeEventListener("click", LocalSidebarListItemClickListener);
+					GlobalRemove(badge);
+					startedBadgeProcedure = false;
+				};
+			}, 1e3);
+		} catch (e) {
+			console.warn(e);
+		};
+	};
+
+
+	setInterval(() => {
+		if (addBadgeFlag) {
+			if (windowLoaded) {
+				LocalStartBadgeProcedure();
+			} else {
+				window.addEventListener("load", () => {
+					setTimeout(() => LocalStartBadgeProcedure(), 2e3);
+				});
+			};
+		};
+	}, 250);
 };
 
-
-
-
 const SetStatsDash = () => {
-	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css?id=${((window.__delegated_data || {})["module.auth"] || {})["id"] || "-723"}&name=${encodeURIComponent(((window.__delegated_data || {})["module.auth"] || {})["name"] || "Семь два три")}&site=${SITE}&version=7.2.3`, "osnova");
+	GlobalWaitForElement("#custom-data-container").then(() => {
+		if (document.querySelector(".site-header") && document.querySelector(".site-header").clientHeight == 45) {
+			customDataContainer.classList.add("for-narrow-header");
+		};
+	});
+
+
+	setTimeout(() =>
+		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css?id=${((window.__delegated_data || {})["module.auth"] || {})["id"] || "-" + VERSION}&name=${encodeURIComponent(((window.__delegated_data || {})["module.auth"] || {})["name"] || VERSION)}&site=${SITE}&version=${VERSION}&modules=${encodeURIComponent(Object.keys(CUSTOM_ELEMENTS).map((moduleURL) => moduleURL.replace("https://" + RESOURCES_DOMAIN + "/tampermonkey/osnova/", "")).join(",") || "")}`, 0, "osnova")
+	, 1e3);
 
 
 	if (GetCookie("s42_karma") === "off") return false;
 
 
-	const userID = document.querySelector(".main_menu__auth__logged_in").getAttribute("href").replace(/[^\d]/g, "");
+	const additionalStyleForAccountsBubble = document.createElement("style");
+		  additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: 120px; }`;
+		  document.body.appendChild(additionalStyleForAccountsBubble);
 
-	const LocalFetch = () => {
-		fetch(`/u/${userID}`)
-		.then((res) => {
-			if (res.status === 200)
-				return res.text();
-			else
-				return Promise.reject(503);
-		})
-		.then((page) => {
-			let karma = page.match(/class=\"[^"]*subsite_head__karma[^"]*\"(\s[\w-]+=\"[^"]*\")*>([^<]*)</),
-				subs = page.match(/class=\"[^"]*subscribers_widget__count[^"]*\"(\s[\w-]+=\"[^"]*\")*>([^<]*)</);
+	GlobalWaitForElement("#custom-data-container").then(() => {
+		customDataContainer.parentNode.classList.add("s42-karma-shown");
 
-			if (!(subs && subs[2] && typeof subs[2] == "string" && !isNaN(parseInt(subs[2].trim())))) subs = [0, 0, "0"];
+		const userID = ((window.__delegated_data || {})["module.auth"] || {})["id"];
 
-			if (karma && karma[2]) {
+		const LocalFetch = () => {
+			fetch(`/u/${userID}`)
+			.then((res) => {
+				if (res.status === 200)
+					return res.text();
+				else
+					return Promise.reject(503);
+			})
+			.then((page) => {
+				let dataAboutEverything = page
+											.split(/air-module="module.subsiteHeader"/)[1]
+											.replace(/<textarea ([^>]+)>/, "")
+											.split(/<\/textarea>/)[0]
+											.replace(/<|>/g, "")
+											.trim()
+											.replace(/&quot;/g, `"`)
+											.replace(/&lt;/g, "<")
+											.replace(/&gt;/g, ">");
+
+
+				let decodedDataAboutEverything = JSON.parse(dataAboutEverything);
+
+				let {header} = decodedDataAboutEverything;
+				if (!header) return;
+
+				let {subsiteData} = header;
+				if (!subsiteData) return;
+
+
+
+				let karma = subsiteData["karma"],
+					subs = subsiteData["subscribers"] && subsiteData["subscribers"]["count"] || 0;
+
+				if (karma >= 10000) karma = `${Math.floor(karma / 1000)}&nbsp;${(karma % 1000).toString().padStart(3, "0")}`;
+				if (subsiteData["karma"] > 0)
+					karma = "+" + karma;
+				else if (subsiteData["karma"] < 0)
+					karma = "-" + karma;
+
+
 				if (document.getElementById("main_menu__auth__stats")) {
 					document.getElementById("main_menu__auth__stats").innerHTML =
-						`<span>${karma[2]}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${parseInt(subs[2].trim())}`;
+						`<span>${karma}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${subs}`;
 				} else {
-					let statsDash = document.getElementById("main_menu__auth__stats") || document.createElement("div");
+					let statsDash = document.getElementById("main_menu__auth__stats") || document.createElement("a");
 						statsDash.id = "main_menu__auth__stats";
-						statsDash.innerHTML = `<span>${karma[2]}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${parseInt(subs[2].trim())}`;
+						statsDash.innerHTML = `<span>${karma}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${subs}`;
+						statsDash.href = "/u/me";
+						statsDash.target = "_self";
 
 					customDataContainer.prepend(statsDash);
 				};
 
-				SetCookie("s42_lastkarmaandsub", `${karma[2]}|${parseInt(subs[2].trim())}`, { infinite: true, path: "/", domain: window.location.hostname });
+
+
+				additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: ${(document.getElementById("main_menu__auth__stats").scrollWidth).toFixed(2)}px; }`;
+
+				SetCookie("s42_lastkarmaandsub", `${karma}|${subs}`, DEFAULT_COOKIES_OPTIONS);
+			})
+			.catch(console.warn);
+		};
+
+
+		let lastKarmaAndSubs = GetCookie("s42_lastkarmaandsub");
+
+		if (lastKarmaAndSubs) {
+			let statsDash = document.createElement("a");
+				statsDash.id = "main_menu__auth__stats";
+				statsDash.innerHTML = `<span>${lastKarmaAndSubs.split("|")[0]}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${lastKarmaAndSubs.split("|")[1]}`;
+				statsDash.href = "/u/me";
+				statsDash.target = "_self";
+
+			customDataContainer.prepend(statsDash);
+
+			if (windowLoaded) {
+				setTimeout(() => LocalFetch(), 2e3);
+			} else {
+				window.addEventListener("load", () => {
+					setTimeout(() => LocalFetch(), 2e3);
+				});
 			};
-		})
-		.catch(L);
-	};
-
-
-	let lastKarmaAndSubs = GetCookie("s42_lastkarmaandsub");
-
-	if (lastKarmaAndSubs) {
-		let statsDash = document.createElement("div");
-			statsDash.id = "main_menu__auth__stats";
-			statsDash.innerHTML = `<span>${lastKarmaAndSubs.split("|")[0]}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${lastKarmaAndSubs.split("|")[1]}`;
-
-		customDataContainer.prepend(statsDash);
-
-		LocalFetch();
-	} else
-		LocalFetch();
+		} else {
+			if (windowLoaded) {
+				setTimeout(() => LocalFetch(), 2e3);
+			} else {
+				window.addEventListener("load", () => {
+					setTimeout(() => LocalFetch(), 2e3);
+				});
+			};
+		};
+	});
 };
 
-window.addEventListener("load", () => {
-	SetStatsDash();
-	GlobalCacheProcedure();
-	GlobalInstagramProcedure();
 
+GlobalWaitForElement("document.body").then(() => SetStatsDash());
+GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalBadgeProcedure());
+
+
+window.addEventListener("load", () => {
+	windowLoaded = true;
 	GlobalRemove(document.getElementById("custom_subsite_css"));
 
+	GlobalWaitForElement("#writing-typograph").then(() => {
+		document.getElementById("writing-typograph").childNodes[0].setAttribute("fill", SITES_COLORS[window.location.hostname]);
+	});
 
-	document.getElementById("writing-typograph").childNodes[0].setAttribute("fill", SITES_COLOR[window.location.hostname]);
+	GlobalWaitForElement("#andropov_play_default").then(() => {
+		if (window.S42_DARK_THEME_ENABLED) {
+			const svgSymbol = document.getElementById("andropov_play_default");
+				  svgSymbol.childNodes[0].setAttribute("fill", "rgba(50,50,50,0.7)");
+				  svgSymbol.childNodes[1].setAttribute("fill", SITES_COLORS[window.location.hostname]);
+		};
+	});
 
-
-	if (GetCookie("s42_vbscroller") === "1") {
-		document.querySelectorAll("style").forEach((styleNode) => {
-			let css = styleNode.innerHTML;
-
-			if (css.indexOf(".sidebar .vb-content") > -1)
-				styleNode.innerHTML = css.replace(/\.sidebar\s+\.vb-content(\[([\w\d\-]+)\])?\s+\{(\n|\s|[^\}])+\}(\n|\s)*/i, "");
-		});
-	};
-
-	if (GetCookie("s42_filter") !== "0") {
-		GlobalFilterProcedure();
-	};
+	if (GetCookie("s42_filter") !== "0") GlobalFilterProcedure();
 });
-
 
 
 GlobalWaitForElement("document.body").then(() =>

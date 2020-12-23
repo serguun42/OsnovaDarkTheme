@@ -1,0 +1,11 @@
+/**
+ * Hide Support
+ * @serguun42
+ * Sep 2020
+ */
+
+.sidebar__tree-list__item[href="/navigator/203124"] {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}
