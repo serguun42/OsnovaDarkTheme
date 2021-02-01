@@ -43,6 +43,12 @@ body, .main.layout, .sidebar, .live {
 	background-color: var(--tc1) !important;
 }
 
+body:not(.s42-default-scrollers),
+body:not(.s42-default-scrollers) * {
+	scrollbar-color: var(--primary-color) var(--tc1);
+	scrollbar-width: thin;
+}
+
 body:not(.s42-default-scrollers)::-webkit-scrollbar-track,
 body:not(.s42-default-scrollers) *::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0) !important;
@@ -385,15 +391,18 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	background-color: var(--tc5) !important;
 }
 
-body:not(.s42-default-scrollers) .bubble .dropdown_list::-webkit-scrollbar,
-body:not(.s42-default-scrollers) .bubble .dropdown_list::-webkit-scrollbar-track {
-	background-color: var(--tc2) !important;
-}
-
 .updown:after {
     background-color: var(--tc17) !important;
 }
 
+body:not(.s42-default-scrollers) .bubble .dropdown_list,
+body:not(.s42-default-scrollers) .bubble .bubble__container .list {
+	scrollbar-color: var(--primary-color) var(--tc2);
+	scrollbar-width: thin;
+}
+
+body:not(.s42-default-scrollers) .bubble .dropdown_list::-webkit-scrollbar,
+body:not(.s42-default-scrollers) .bubble .dropdown_list::-webkit-scrollbar-track,
 body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrollbar,
 body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrollbar-track {
 	background-color: var(--tc2) !important;
@@ -447,11 +456,11 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 }
 
 .search-dropdown {
-	background-color: var(--tc5) !important;
+	background-color: var(--tc5) ;
 }
 
 .search-dropdown-item--focused, .search-dropdown-item--submit:hover {
-	background-color: var(--tc6) !important;
+	background-color: var(--tc6);
 }
 
 
@@ -494,6 +503,11 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 
 .u-notification--border {
 	border-bottom: 1px solid var(--tc6);
+}
+
+body:not(.s42-default-scrollers) .head-notifies__items-wrapper {
+	scrollbar-color: var(--primary-color) var(--tc4);
+	scrollbar-width: thin;
 }
 
 body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollbar,
@@ -1109,7 +1123,8 @@ html body .ce-redactor a.andropov_link {
 
 
 
-.tjnames__list, .tjnames__list.active {
+.tjnames__list, .tjnames__list.active,
+.site-names__list, .site-names__list.active {
 	background-color: var(--tc4) !important;
 }
 
@@ -1405,6 +1420,7 @@ html body .ce-redactor a.andropov_link {
 
 .v-header-avatar {
 	box-shadow: 0 0 0 var(--border-width) var(--tc5);
+	background-color: var(--tc5);
 }
 
 
@@ -1532,4 +1548,29 @@ html body .ce-redactor a.andropov_link {
 
 .v-island__header::after {
 	background-color: var(--tc2) !important;
+}
+
+
+
+
+
+
+
+.cdx-helper {
+	background: var(--tc5);
+}
+
+.cdx-helper:before {
+	border-color: transparent transparent var(--tc5);
+}
+
+
+
+
+
+:root {
+	--s42-spfb-button-text-color: var(--tc5);
+	--s42-spfb-backround-color: var(--tc5);
+	--s42-spfb-box-shadow: 0 1px 4px 1px var(--tc13);
+	--s42-spfb-border-color: var(--tc6);
 }

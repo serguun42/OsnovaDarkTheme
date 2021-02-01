@@ -125,6 +125,11 @@
 	overflow-y: hidden;
 }
 
+body:not(.s42-default-scrollers) #switcher-layout--scroller {
+	scrollbar-color: inherit var(--switcher-layout-background);
+	scrollbar-width: thin;
+}
+
 body:not(.s42-default-scrollers) #switcher-layout--scroller::-webkit-scrollbar-track {
 	background-color: var(--switcher-layout-background) !important;
 }

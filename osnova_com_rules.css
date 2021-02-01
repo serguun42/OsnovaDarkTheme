@@ -36,7 +36,10 @@
 .s-asus,
 #special-asus,
 .special-appgallery,
-.special-appgallery-teaser
+.special-appgallery-teaser,
+.vk-express,
+.inline_video_banner,
+.hp-laser-head
 {
 	display: none !important;
 	visibility: hidden !important;
@@ -58,7 +61,7 @@
 	content: none !important;
 }
 
-body > .propaganda.propaganda--shown,
+.propaganda.propaganda--shown,
 .kinopoisk-branding-head,
 .kinopoisk-branding-head__container,
 .kinopoisk-branding__container,

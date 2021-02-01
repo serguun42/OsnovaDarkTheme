@@ -1,8 +1,7 @@
 /*
 
-	Line ~100 - ~3500 was originally written by Focs
-	Everything else (including script, light theme and other themes) is made by @serguun42
-
+	Line ~100 - ~3500 – Оригинально сделано Focs (f0cs)
+	Всё остальное в этом модуле и все остальные модули (css, js, фильтры и т.д.) сделаны @serguun42
 */
 
 :root {
@@ -39,6 +38,12 @@
 
 .mdl-radio.is-checked .mdl-radio__outer-circle {
 	border: 2px solid var(--primary-color) !important;
+}
+
+body:not(.s42-default-scrollers),
+body:not(.s42-default-scrollers) * {
+	scrollbar-color: var(--primary-color) #232323;
+	scrollbar-width: thin;
 }
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar-track,
@@ -151,14 +156,6 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 [air-module="module.notify"] .notify__item--error i .icon--notify_error {
 	fill: #fe4d4a;
 	display: block;
-}
-
-.promo__toggle {
-	background-color: var(--primary-color) !important;
-}
-
-.popup__control span {
-	background-color: var(--primary-color) !important;
 }
 
 .pswp__button {
@@ -824,6 +821,11 @@ svg.icon.icon--ui_email, svg.icon.icon--bell {
 .dropdown_list__item--selected, .dropdown_list__item:hover {
 	background: #444 !important;
 	color: #E1E1E1 !important;
+}
+
+body:not(.s42-default-scrollers) .bubble .bubble__container .list {
+	scrollbar-color: var(--primary-color) #1C1C1C;
+	scrollbar-width: thin;
 }
 
 body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrollbar,
@@ -1551,6 +1553,10 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 	border-top: 1px solid var(--primary-color);
 }
 
+body:not(.s42-default-scrollers) .dropdown__found__list {
+	scrollbar-width: thin !important;
+}
+
 body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 	width: 6px !important;
 }
@@ -2118,71 +2124,6 @@ background-color: var(--lighter-color)!important;
 	background-color: #ecf5fd;
 }
 
-.col_entry .vacancy_footer__create {
-	border-color: #c7ddf0;
-}
-
-.col_entry .vacancy_footer__create:hover {
-	border-color: #a4c8e7;
-}
-
-.write_suggestion {
-	background-color: #1C1C1C;
-}
-
-.write_suggestion .main_menu__write {
-	color: #000;
-}
-
-.distribution__title {
-	color: #888888;
-}
-
-.distribution__form {
-	border: 1px solid #121212;
-}
-
-.distribution__form-field {
-	border: 1px solid #121212;
-}
-
-.distribution__picture {
-	background: rgba(129, 129, 129, .1);
-}
-
-.distribution__picture .ui--bg_loading::before {
-	border: 2px solid #FFF;
-	border-top-color: #000;
-}
-
-.distribution__inline-button {
-	color: var(--lighter-color);
-}
-
-.distribution__inline-button:hover {
-	color: #2c8ed3;
-}
-
-.distribution__custom-style-area {
-	border: 1px solid #dedede;
-}
-
-.distribution__custom-style-helper {
-	color: #888888;
-}
-
-.distribution__custom-style-helper span {
-	background: #f3f3f3;
-}
-
-.distribution__upload-cover {
-	color: var(--lighter-color);
-}
-
-.distribution__upload-cover:hover {
-	color: #2c8ed3;
-}
-
 .editor__header {
 	background: #1C1C1C;
 }
@@ -2551,6 +2492,10 @@ background-color: var(--lighter-color)!important;
 
 .favorite_marker--zero .favorite_marker__count {
 	display: none;
+}
+
+.comments__item__self--special-behavior-at-mobile .comments__item__reply .icon {
+	stroke: #888888;
 }
 
 .main_footer {
@@ -3518,6 +3463,11 @@ textarea[name="misprint_comment"] {
 	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .1);
 }
 
+body:not(.s42-default-scrollers) .inline-dropdown {
+	scrollbar-width: thin !important;
+}
+
+
 body:not(.s42-default-scrollers) .inline-dropdown::-webkit-scrollbar {
 	width: 6px !important;
 }
@@ -3999,7 +3949,11 @@ body:not(.s42-default-scrollers) .inline-dropdown::-webkit-scrollbar {
 }
 
 .cdx-helper {
-	background: #121212;
+	background: #242533;
+}
+
+.cdx-helper:before {
+	border-color: transparent transparent #242533;
 }
 
 .subsite_card_simple_short__title .lock {
@@ -5090,24 +5044,29 @@ html body .ce-redactor a.andropov_link {
 }
 
 .icon.icon--search {
-	color: #E1E1E1 !important;
+	color: #E1E1E1;
 }
 
 .search .search__field .icon.icon--search {
-	color: #818181 !important;
+	color: #818181;
 }
 
 .search-dropdown {
-	background-color: #1C1C1C !important;
-	color: #E1E1E1 !important;
+	background-color: #1C1C1C;
+	color: #E1E1E1;
 }
 
 .search-dropdown-item--string {
-	color: #E1E1E1 !important;
+	color: #E1E1E1;
 }
 
 .search-dropdown-item:hover {
-	color: var(--primary-color) !important;
+	color: var(--primary-color);
+	border-radius: 0 0 4px 4px;
+}
+
+.search-dropdown-item--focused, .search-dropdown-item--submit:hover {
+	background-color: #444;
 }
 
 .subsite_head__qr:hover {
@@ -5302,6 +5261,10 @@ html body .ce-redactor a.andropov_link {
 	border-bottom: 1px solid #555 !important;
 }
 
+body:not(.s42-default-scrollers) .messenger-panel__down-list {
+	scrollbar-color: var(--primary-color) transparent !important;
+}
+
 body:not(.s42-default-scrollers) .messenger-panel__down-list::-webkit-scrollbar,
 body:not(.s42-default-scrollers) .messenger-panel__down-list::-webkit-scrollbar-track {
 	background-color: transparent !important;
@@ -5349,6 +5312,10 @@ body:not(.s42-default-scrollers) .messenger-panel__down-list::-webkit-scrollbar-
 
 .messenger {
 	background-color: #333 !important;
+}
+
+body:not(.s42-default-scrollers) .aside__list {
+	scrollbar-color: var(--primary-color) transparent !important;
 }
 
 body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar,
@@ -5711,7 +5678,8 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 
 
 
-.tjnames__list, .tjnames__list.active {
+.tjnames__list, .tjnames__list.active,
+.site-names__list, .site-names__list.active {
 	background-color: #333 !important;
 	border: 1px solid var(--primary-color--faded50);
 	box-shadow: 0 1px 6px 0 var(--material-theme-shadow-color);
@@ -6632,6 +6600,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .v-header-avatar {
 	box-shadow: 0 0 0 var(--border-width) #777;
+	background-color: #777;
 }
 
 .v-header-description__more {
@@ -7152,4 +7121,31 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .kojur-progressbar:before {
 	opacity: 0.5 !important;
+}
+
+
+
+
+
+
+.comments__item__self--ignored .comments__item__text,
+.comments__item__self--removed .comments__item__text {
+	color: #888;
+}
+
+
+
+
+:root {
+	--s42-spfb-text-color: #E1E1E1;
+	--s42-spfb-off-text-color: #777;
+	--s42-spfb-link-hover-color: #FFF;
+	--s42-spfb-accent-color: var(--primary-color);
+	--s42-spfb-faded-color: var(--primary-color--faded);
+	--s42-spfb-button-text-color: #333;
+	--s42-spfb-button-box-shadow: 0 1px 2px 0 var(--primary-color);
+	--s42-spfb-backround-color: #333;
+	--s42-spfb-box-shadow: 0 3px 8px 2px rgba(0, 0, 0, 0.2);
+	--s42-spfb-border-color: #666;
+	--s42-spfb-logo-url: url("https://serguun42.ru/tampermonkey/stonks-tagger/stonks_logo_dark.svg");
 }

@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
-// @website      https://serguun42.ru/
-// @version      8.6.6-R-OBLIVION (2020-12-21)
+// @website      https://tjournal.ru/tag/darktheme
+// @version      8.6.11-R (2021-01-30)
 // @author       serguun42
-// @icon         https://tjournal.ru/static/build/tjournal.ru/favicons/favicon.ico
+// @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
+// @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
 // @match        https://tjournal.ru/*
 // @match        https://dtf.ru/*
 // @match        https://vc.ru/*
@@ -12,6 +13,8 @@
 // @run-at       document-start
 // @grant        none
 // @description  The best users' dark theme for TJ, vc.ru, DTF. Custom subthemes and more!
+// @homepage     https://tjournal.ru/tag/darktheme
+// @supportURL   https://tjournal.ru/m/99944
 // ==/UserScript==
 
 
@@ -21,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "8.6.6",
+	VERSION = "8.6.11",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -56,6 +59,11 @@ const
 		{
 			name: "material",
 			default: true,
+			priority: 5
+		},
+		{
+			name: "snow_by_neko",
+			default: false,
 			priority: 5
 		},
 		{
@@ -802,6 +810,7 @@ window.UNLOAD_COOKIES = () => {
 		"s42_karma",
 		"s42_lastkarmaandsub",
 		"s42_material",
+		"s42_snow_by_neko",
 		"s42_messageslinkdisabled",
 		"s42_defaultscrollers",
 		"s42_monochrome",
@@ -964,6 +973,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 				<div class="switcher-layout__list__separator"></div>
 				<div class="switcher-layout__list__subheader">Другие дополнительные модули</div>
 				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="snow_by_neko" data-serguun42-labels>
+						<input type="checkbox" id="snow_by_neko" class="mdl-checkbox__input" ${GetCookie("s42_snow_by_neko") === "1" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Добавить снег фоном</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="material" data-serguun42-labels>
 						<input type="checkbox" id="material" class="mdl-checkbox__input" ${GetCookie("s42_material") === "0" ? "" : "checked"} data-serguun42-switchers>
 						<span class="mdl-checkbox__label">Добавить оформление «Material»</span>
@@ -1091,6 +1106,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						SetCookie("s42_material", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
 						ManageModule("material", e.currentTarget.checked);
+					};
+
+					if (e.currentTarget.id === "snow_by_neko") {
+						SetCookie("s42_snow_by_neko", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
+
+						ManageModule("snow_by_neko", e.currentTarget.checked);
 					};
 
 					if (e.currentTarget.id === "columns_narrow") {
@@ -1634,6 +1655,10 @@ window.addEventListener("load", () => {
 			const svgSymbol = document.getElementById("andropov_play_default");
 				  svgSymbol.childNodes[0].setAttribute("fill", "rgba(50,50,50,0.7)");
 				  svgSymbol.childNodes[1].setAttribute("fill", SITES_COLORS[window.location.hostname]);
+
+			const svgBriefcaseSymbol = document.getElementById("ui_briefcase");
+				  svgBriefcaseSymbol.childNodes[0].setAttribute("stroke", SITES_COLORS[window.location.hostname]);
+				  svgBriefcaseSymbol.childNodes[1].setAttribute("stroke", SITES_COLORS[window.location.hostname]);
 		};
 	});
 

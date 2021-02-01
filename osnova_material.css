@@ -218,7 +218,6 @@
 	[air-module="module.subsites_rating"] {
 		box-shadow: 0 3px 5px 0 var(--material-theme-shadow-color);
 		border-radius: var(--br);
-		overflow: hidden;
 		transition: box-shadow .2s ease-in-out 0s;
 	}
 

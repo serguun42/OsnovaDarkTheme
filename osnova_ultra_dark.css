@@ -67,6 +67,11 @@ body, .main.layout, .sidebar, .live {
 	background-color: #333;
 }
 
+body:not(.s42-default-scrollers) .head-notifies__items-wrapper {
+	scrollbar-color: var(--primary-color) #252525 !important;
+	scrollbar-width: thin;
+} 
+
 body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollbar,
 body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollbar-track {
 	background-color: #252525 !important;
@@ -256,7 +261,8 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 
 
-.tjnames__list, .tjnames__list.active {
+.tjnames__list, .tjnames__list.active,
+.site-names__list, .site-names__list.active {
 	background-color: #121212 !important;
 }
 
@@ -377,4 +383,14 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 .donate-attachment {
 	background-color: #333;
+}
+
+
+
+
+:root {
+	--s42-spfb-button-text-color: #121212;
+	--s42-spfb-backround-color: #121212;
+	--s42-spfb-box-shadow: 0 3px 8px 2px rgba(0, 0, 0, 0.3);
+	--s42-spfb-border-color: #444;
 }

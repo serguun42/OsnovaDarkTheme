@@ -45,6 +45,12 @@
 	color: unset;
 }
 
+body:not(.s42-default-scrollers),
+body:not(.s42-default-scrollers) * {
+	scrollbar-color: var(--scroll-color) transparent;
+	scrollbar-width: thin;
+}
+
 body:not(.s42-default-scrollers)::-webkit-scrollbar-track,
 body:not(.s42-default-scrollers) *::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px transparent;
