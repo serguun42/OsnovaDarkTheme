@@ -39,7 +39,11 @@
 .special-appgallery-teaser,
 .vk-express,
 .inline_video_banner,
-.hp-laser-head
+.hp-laser-head,
+.spotify-branding,
+.spotify-branding--dtf,
+.spotify-branding--cover,
+.spotify-sidebar-button
 {
 	display: none !important;
 	visibility: hidden !important;
