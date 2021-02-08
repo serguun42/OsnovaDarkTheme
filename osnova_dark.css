@@ -7149,3 +7149,22 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	--s42-spfb-border-color: #666;
 	--s42-spfb-logo-url: url("https://serguun42.ru/tampermonkey/stonks-tagger/stonks_logo_dark.svg");
 }
+
+
+
+
+
+.ce-popover {
+	background-color: #333;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ce-popover .anchor-tool__input {
+	background-color: transparent;
+	color: #E1E1E1;
+}
+
+.ce-block-settings__item:not(.no-hover):hover,
+.remove-tool--confirm {
+	background-color: #666 !important;
+}

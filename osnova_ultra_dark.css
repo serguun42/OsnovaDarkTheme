@@ -394,3 +394,17 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	--s42-spfb-box-shadow: 0 3px 8px 2px rgba(0, 0, 0, 0.3);
 	--s42-spfb-border-color: #444;
 }
+
+
+
+
+
+.ce-popover {
+	background-color: #242424;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ce-block-settings__item:not(.no-hover):hover,
+.remove-tool--confirm {
+	background-color: #444 !important;
+}

@@ -1574,3 +1574,17 @@ html body .ce-redactor a.andropov_link {
 	--s42-spfb-box-shadow: 0 1px 4px 1px var(--tc13);
 	--s42-spfb-border-color: var(--tc6);
 }
+
+
+
+
+
+.ce-popover {
+	background-color: var(--tc4);
+	box-shadow: 0 4px 8px var(--tc13);
+}
+
+.ce-block-settings__item:not(.no-hover):hover,
+.remove-tool--confirm {
+	background-color: var(--tc6) !important;
+}
