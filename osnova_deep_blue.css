@@ -133,12 +133,12 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 
 
-.thesis__upload_file, .thesis__attach_video, .thesis__attach_something.attacher__button, .thesis__spy_button.thesis__attach_something {
+.thesis__upload_file, .thesis__attach_video, .thesis__attach_something, .thesis__attach_something {
 	color: var(--primary-color) !important;
 	background-color: var(--tc2) !important;
 }
 
-.thesis__attach_video:hover, .thesis__upload_file:hover, .thesis__attach_something.attacher__button:hover, .thesis__spy_button.thesis__attach_something:hover {
+.thesis__attach_video:hover, .thesis__upload_file:hover, .thesis__attach_something:hover {
 	background-color: var(--primary-color) !important;
 	color: var(--tc4) !important;
 }
@@ -662,6 +662,7 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	border-top: 1px solid var(--tc6) !important;
 }
 
+.chat.messenger__chat,
 .messenger {
 	background-color: var(--tc2) !important;
 }

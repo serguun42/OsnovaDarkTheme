@@ -53,7 +53,7 @@ body, .main.layout, .sidebar, .live {
 	background-color: #333 !important;
 }
 
-.thesis__upload_file, .thesis__attach_video, .thesis__attach_something.attacher__button, .thesis__spy_button.thesis__attach_something {
+.thesis__upload_file, .thesis__attach_video, .thesis__attach_something {
 	color: var(--primary-color);
 	background-color: #333;
 }
@@ -106,6 +106,7 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 
 
+.chat.messenger__chat,
 .messenger {
 	background-color: #121212 !important;
 }

@@ -53,6 +53,10 @@
 	background: var(--primary-color);
 }
 
+.s42-switcher-header-btn {
+	color: var(--primary-color);
+}
+
 .subsite_head__karma--positive,
 .subsite_head__karma--negative,
 .authorCard__karma,
@@ -561,6 +565,7 @@ body:not(.s42-is-dark) .message--selected {
 
 body:not(.s42-is-dark) .thesis__attach_something {
 	color: #595959;
+	filter: grayscale(1);
 }
 
 body:not(.s42-is-dark) .thesis__attach_something:hover {

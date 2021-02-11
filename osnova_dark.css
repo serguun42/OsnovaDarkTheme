@@ -2494,8 +2494,13 @@ background-color: var(--lighter-color)!important;
 	display: none;
 }
 
-.comments__item__self--special-behavior-at-mobile .comments__item__reply .icon {
+.comments__item__self--special-behavior-at-mobile .comments__item__reply .icon,
+.comments__item__reply .icon {
 	stroke: #888888;
+}
+
+.comments__item__reply:hover .icon {
+	stroke: var(--primary-color);
 }
 
 .main_footer {
@@ -4969,12 +4974,12 @@ html body .ce-redactor a.andropov_link {
 	background-color: #5C5C5C;
 }
 
-.thesis__upload_file, .thesis__attach_video, .thesis__attach_something.attacher__button, .thesis__spy_button.thesis__attach_something {
+.thesis__upload_file, .thesis__attach_video, .thesis__attach_something {
 	color: var(--primary-color) !important;
 	background-color: #1C1C1C !important;
 }
 
-.thesis__attach_video:hover, .thesis__upload_file:hover, .thesis__attach_something.attacher__button:hover, .thesis__spy_button.thesis__attach_something:hover {
+.thesis__attach_video:hover, .thesis__upload_file:hover, .thesis__attach_something:hover {
 	background-color: var(--primary-color) !important;
 	color: #333 !important;
 }
@@ -5310,6 +5315,7 @@ body:not(.s42-default-scrollers) .messenger-panel__down-list::-webkit-scrollbar-
 	-ms-user-select: none;
 }
 
+.chat.messenger__chat,
 .messenger {
 	background-color: #333 !important;
 }
@@ -6550,7 +6556,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 }
 
 .sidebar-tree-list-item__favourite {
-	color: #AAA !important;
+	color: #CCC !important;
 }
 
 
@@ -7167,4 +7173,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .ce-block-settings__item:not(.no-hover):hover,
 .remove-tool--confirm {
 	background-color: #666 !important;
+}
+
+.content-header-promoted {
+	color: #818181;
 }
