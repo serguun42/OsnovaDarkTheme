@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      8.6.11-R (2021-01-30)
+// @version      8.7.0-R (2021-02-12)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
 // @match        https://tjournal.ru/*
 // @match        https://dtf.ru/*
 // @match        https://vc.ru/*
-// @updateURL    https://serguun42.ru/tampermonkey/osnova_dark_theme.js
-// @downloadURL  https://serguun42.ru/tampermonkey/osnova_dark_theme.js
+// @updateURL    https://serguun42.ru/tampermonkey/osnova_dark_theme_2.js
+// @downloadURL  https://serguun42.ru/tampermonkey/osnova_dark_theme_2.js
 // @run-at       document-start
 // @grant        none
 // @description  The best users' dark theme for TJ, vc.ru, DTF. Custom subthemes and more!
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "8.6.11",
+	VERSION = "8.7.0",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -150,6 +150,17 @@ const
 	};
 
 
+
+
+/** @param {String} query @returns {HTMLElement} */ const QS = query => document.querySelector(query);
+/** @param {String} query @returns {HTMLElement[]} */ const QSA = query => Array.from(document.querySelectorAll(query));
+/** @param {String} query @returns {HTMLElement} */ const GEBI = query => document.getElementById(query);
+/** @param {HTMLElement} elem @returns {void} */ const GR = elem => {
+	if (elem instanceof HTMLElement)
+		(elem.parentElement || elem.parentNode).removeChild(elem);
+};
+
+
 /**
  * @param {String} iKey
  * @returns {Promise.<HTMLElement>}
@@ -167,13 +178,13 @@ const GlobalWaitForElement = iKey => {
 			}, 50);
 		});
 	} else {
-		if (document.querySelector(iKey)) return Promise.resolve(document.querySelector(iKey));
+		if (QS(iKey)) return Promise.resolve(QS(iKey));
 
 		return new Promise((resolve) => {
 			let interval = setInterval(() => {
-				if (document.querySelector(iKey)) {
+				if (QS(iKey)) {
 					clearInterval(interval);
-					resolve(document.querySelector(iKey));
+					resolve(QS(iKey));
 				};
 			}, 50);
 		});
@@ -220,15 +231,6 @@ const GlobalAnimation = (iDuration, iStyleSettingFunc, iCurveStyle = "ease-in-ou
 
 	requestAnimationFrame(LocalAnimation);
 });
-
-/**
- * @param {HTMLElement} iElem
- * @returns {void}
- */
-const GlobalRemove = iElem => {
-	if (iElem instanceof HTMLElement)
-		(iElem.parentElement || iElem.parentNode).removeChild(iElem);
-};
 
 /**
  * @param {Boolean} iReturning - If true, returns `Boolean` instead of `Promise<Boolean>`
@@ -314,7 +316,7 @@ const SetMode = iNightMode => {
 		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}_dark.css`, 3, "site");
 
 		GlobalWaitForElement(`meta[name="theme-color"]`).then(() =>
-			document.querySelector(`meta[name="theme-color"]`).setAttribute("content", "#232323")
+			QS(`meta[name="theme-color"]`).setAttribute("content", "#232323")
 		);
 	};
 
@@ -358,7 +360,7 @@ const ManageModule = (iModuleName, iStatus, iWithoutPrefix = false) => {
 	const moduleURL = `https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${(iWithoutPrefix ? "" : "osnova_") + iModuleName}.css`;
 
 	if (CUSTOM_ELEMENTS[moduleURL] && !iStatus) {
-		GlobalRemove(CUSTOM_ELEMENTS[moduleURL]);
+		GR(CUSTOM_ELEMENTS[moduleURL]);
 		delete CUSTOM_ELEMENTS[moduleURL];
 	} else if (!CUSTOM_ELEMENTS[moduleURL] && iStatus) {
 		const moduleSpecWithPriority = ALL_MODULES.find((moduleSpec) => moduleSpec.name === iModuleName);
@@ -567,7 +569,7 @@ const GlobalFilterProcedure = () => {
 			resolve();
 		}).catch((e) => reject(e));
 	}).then(() => {
-		document.querySelectorAll(`.content-feed[air-module="module.entry"]:not(.content-feed--s42-seen)`).forEach((feedEntry) => {
+		QSA(`.content-feed[air-module="module.entry"]:not(.content-feed--s42-seen)`).forEach((feedEntry) => {
 			let removeFlag = false,
 				removeCount = 0;
 
@@ -641,7 +643,7 @@ const GlobalFilterProcedure = () => {
 		});
 
 
-		document.querySelectorAll(`.comments__item__space:not(.comments__item__space--s42-seen)`).forEach((commentSpace) => {
+		QSA(`.comments__item__space:not(.comments__item__space--s42-seen)`).forEach((commentSpace) => {
 			let removeFlag = false,
 				removeCount = 0;
 
@@ -689,7 +691,7 @@ const GlobalFilterProcedure = () => {
 					hiddenMessageShow.className = "comments__item__space__s42-message--show-button";
 					hiddenMessageShow.addEventListener("click", (e) => {
 						commentSpace.classList.remove("comments__item__space--s42-filtered");
-						GlobalRemove(e.currentTarget.parentElement || e.currentTarget.parentNode);
+						GR(e.currentTarget.parentElement || e.currentTarget.parentNode);
 					});
 
 				hiddenMessage.append(hiddenMessageShow);
@@ -710,7 +712,7 @@ const GlobalFilterProcedure = () => {
 
 const GlobalPlaceEditorialButton = () => {
 	GlobalWaitForElement(`.sidebar-tree-list-item[href="/m"]`).then(() => {
-		const messengerButton = document.querySelector(`.sidebar-tree-list-item[href="/m"]`);
+		const messengerButton = QS(`.sidebar-tree-list-item[href="/m"]`);
 		if (!messengerButton) return console.warn("No messenger button!");
 
 
@@ -728,7 +730,7 @@ const GlobalPlaceEditorialButton = () => {
 															.replace(/sidebar-tree-list-item--active/gi, "");
 
 
-		const sidebarButtons = document.querySelectorAll(".sidebar-tree-list-item");
+		const sidebarButtons = QSA(".sidebar-tree-list-item");
 		sidebarButtons.forEach((sidebarButton) => {
 			sidebarButton.addEventListener("click", () => {
 				sidebarButtons.forEach((sidebarButtonToChangeClass) => {
@@ -748,14 +750,14 @@ const GlobalPlaceEditorialButton = () => {
 				sidebarButtonToChangeClass.classList.remove("sidebar-tree-list-item--active");
 			});
 
-			document.getElementById("s42-editorial-link-btn").classList.add("sidebar-tree-list-item--active");
+			GEBI("s42-editorial-link-btn").classList.add("sidebar-tree-list-item--active");
 		};
 	});
 };
 
 
 
-GlobalRemove(document.getElementById("custom_subsite_css"));
+GR(GEBI("custom_subsite_css"));
 
 
 GlobalWaitForElement("document.body").then(() => {
@@ -768,7 +770,7 @@ GlobalWaitForElement("document.body").then(() => {
 
 
 	for (let i = 0; i <= maxPriority; i++) {
-		if (!document.getElementById("container-for-custom-elements-" + i)) {
+		if (!GEBI("container-for-custom-elements-" + i)) {
 			const container = document.createElement("div");
 				  container.id = "container-for-custom-elements-" + i;
 				  container.dataset.author = "serguun42";
@@ -831,19 +833,19 @@ window.UNLOAD_COOKIES = () => {
 
 
 
-let customDataContainer = document.createElement("div");
-	customDataContainer.id = "custom-data-container";
-	customDataContainer.className = "custom-data-container--for-big-header";
+const customDataContainer = document.createElement("div");
+	  customDataContainer.id = "custom-data-container";
+	  customDataContainer.className = "custom-data-container--for-big-header";
 
 GlobalWaitForElement(".site-header-user").then(() => {
-	document.querySelector(".site-header-user").after(customDataContainer);
+	QS(".site-header-user").after(customDataContainer);
 
 
-	let switchersBtn = document.createElement("div");
-		switchersBtn.innerHTML = `<i class="material-icons material-icons-round">settings</i>`;
-		switchersBtn.id = "switchers-btn";
-		switchersBtn.className = "mdl-js-button mdl-js-ripple-effect";
-		switchersBtn.addEventListener("click", (e) => {
+	const switchersBtn = document.createElement("div");
+		  switchersBtn.innerHTML = `<i class="material-icons material-icons-round">settings</i>`;
+		  switchersBtn.id = "switchers-btn";
+		  switchersBtn.className = "mdl-js-button mdl-js-ripple-effect";
+		  switchersBtn.addEventListener("click", (e) => {
 			let smallScreenFlag = false;
 			if ((window.innerWidth - e.clientX) * 2 + 500 > window.innerWidth) smallScreenFlag = true;
 			if (window.innerHeight <= 660) smallScreenFlag = true;
@@ -971,6 +973,35 @@ GlobalWaitForElement(".site-header-user").then(() => {
 					</label>
 				</li>
 				<div class="switcher-layout__list__separator"></div>
+				<div class="switcher-layout__list__subheader">Карма и подписчики</div>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma" data-serguun42-labels>
+						<input type="checkbox" id="karma" class="mdl-checkbox__input" ${GetCookie("s42_karma") !== "off" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Блок с кармой, подписчиками и подписками в шапке включён</span>
+					</label>
+				</li>
+				<div id="switcher-layout__list__item--karma-cover" class="${GetCookie("s42_karma") === "off" ? "is-faded" : ""}">
+					<li class="switcher-layout__list__item">
+						<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma_rating" data-serguun42-labels>
+							<input type="checkbox" id="karma_rating" class="mdl-checkbox__input" ${GetCookie("s42_karma_rating") !== "off" ? "checked" : ""} data-serguun42-switchers>
+							<span class="mdl-checkbox__label">Количество кармы</span>
+						</label>
+					</li>
+					<li class="switcher-layout__list__item">
+						<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma_subscribers" data-serguun42-labels>
+							<input type="checkbox" id="karma_subscribers" class="mdl-checkbox__input" ${GetCookie("s42_karma_subscribers") !== "off" ? "checked" : ""} data-serguun42-switchers>
+							<span class="mdl-checkbox__label">Подписчики</span>
+						</label>
+					</li>
+					<li class="switcher-layout__list__item">
+						<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma_subscriptions" data-serguun42-labels>
+							<input type="checkbox" id="karma_subscriptions" class="mdl-checkbox__input" ${GetCookie("s42_karma_subscriptions") !== "off" ? "checked" : ""} data-serguun42-switchers>
+							<span class="mdl-checkbox__label">Подписки</span>
+						</label>
+					</li>
+					<div id="switcher-layout__list__item--karma-cover__obfuscator"></div>
+				</div>
+				<div class="switcher-layout__list__separator"></div>
 				<div class="switcher-layout__list__subheader">Другие дополнительные модули</div>
 				<li class="switcher-layout__list__item">
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="snow_by_neko" data-serguun42-labels>
@@ -994,12 +1025,6 @@ GlobalWaitForElement(".site-header-user").then(() => {
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="columns_narrow" data-serguun42-labels>
 						<input type="checkbox" id="columns_narrow" class="mdl-checkbox__input" ${GetCookie("s42_columns_narrow") === "1" ? "checked" : ""} data-serguun42-switchers>
 						<span class="mdl-checkbox__label">Прижать боковые колонки к центру экрана (убрать пространство между колонками и контентом в центре)</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma" data-serguun42-labels>
-						<input type="checkbox" id="karma" class="mdl-checkbox__input" ${GetCookie("s42_karma") !== "off" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Карма включена</span>
 					</label>
 				</li>
 				<li class="switcher-layout__list__item" title="Gorgeous, astonishing, yummy(?)">
@@ -1069,7 +1094,7 @@ GlobalWaitForElement(".site-header-user").then(() => {
 
 			if ("componentHandler" in window) {
 				componentHandler.upgradeElement(switchersBtn);
-				componentHandler.upgradeElements(Array.prototype.slice.call(document.querySelectorAll("[data-serguun42-labels]")));
+				componentHandler.upgradeElements(QSA("[data-serguun42-labels]"));
 			};
 
 
@@ -1081,8 +1106,8 @@ GlobalWaitForElement(".site-header-user").then(() => {
 				GlobalAnimation(4e2, (iProgress) => {
 					switchersContainer.style.opacity = 1 - iProgress;
 				}).then(() => {
-					GlobalRemove(switchersContainer);
-					GlobalRemove(switchersObfuscator);
+					GR(switchersContainer);
+					GR(switchersObfuscator);
 				});
 			};
 
@@ -1094,13 +1119,13 @@ GlobalWaitForElement(".site-header-user").then(() => {
 			});
 
 			if (smallScreenFlag) {
-				if (document.getElementById("switcher-layout__close-button"))
-					document.getElementById("switcher-layout__close-button").addEventListener("click", () => LocalCloseSwitchers());
+				if (GEBI("switcher-layout__close-button"))
+					GEBI("switcher-layout__close-button").addEventListener("click", () => LocalCloseSwitchers());
 			};
 
 
 
-			document.querySelectorAll("[data-serguun42-switchers]").forEach((switcher) => {
+			QSA("[data-serguun42-switchers]").forEach((switcher) => {
 				switcher.addEventListener("change", (e) => {
 					if (e.currentTarget.id === "material") {
 						SetCookie("s42_material", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
@@ -1135,7 +1160,31 @@ GlobalWaitForElement(".site-header-user").then(() => {
 					if (e.currentTarget.id === "karma") {
 						SetCookie("s42_karma", e.currentTarget.checked ? "on" : "off", DEFAULT_COOKIES_OPTIONS);
 
-						alert("Чтобы отключить/включить отображение кармы, перезагрузите страницу");
+						if (e.currentTarget.checked) {
+							GEBI("switcher-layout__list__item--karma-cover").classList.remove("is-faded");
+							SetStatsDash(true);
+						} else {
+							GEBI("switcher-layout__list__item--karma-cover").classList.add("is-faded");
+							GR(GEBI("main_menu__auth__stats"));
+						};
+					};
+
+					if (e.currentTarget.id === "karma_rating") {
+						SetCookie("s42_karma_rating", e.currentTarget.checked ? "on" : "off", DEFAULT_COOKIES_OPTIONS);
+
+						SetStatsDash(true);
+					};
+
+					if (e.currentTarget.id === "karma_subscribers") {
+						SetCookie("s42_karma_subscribers", e.currentTarget.checked ? "on" : "off", DEFAULT_COOKIES_OPTIONS);
+
+						SetStatsDash(true);
+					};
+
+					if (e.currentTarget.id === "karma_subscriptions") {
+						SetCookie("s42_karma_subscriptions", e.currentTarget.checked ? "on" : "off", DEFAULT_COOKIES_OPTIONS);
+
+						SetStatsDash(true);
 					};
 
 					if (e.currentTarget.id === "hidesubscriptions") {
@@ -1188,7 +1237,7 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						if (e.currentTarget.checked) {
 							GlobalPlaceEditorialButton();
 						} else {
-							GlobalRemove(document.getElementById("s42-editorial-link-btn"));
+							GR(GEBI("s42-editorial-link-btn"));
 						};
 					};
 
@@ -1208,12 +1257,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 								GetCookie("s42_turn_off") && parseInt(GetCookie("s42_turn_off")) ||
 								(!GetMode(true) && GetCookie("s42_always") !== "1" && GetCookie("s42_turn_off") !== "1")
 							) {
-								document.querySelector(`[for="always"]`).classList.add("is-checked");
-								document.querySelector(`[value="always"]`).checked = true;
-								document.querySelector(`[for="turn_off"]`).classList.remove("is-checked");
-								document.querySelector(`[value="turn_off"]`).checked = false;
-								document.querySelector(`[for="usual"]`).classList.remove("is-checked");
-								document.querySelector(`[value="usual"]`).checked = false;
+								QS(`[for="always"]`).classList.add("is-checked");
+								QS(`[value="always"]`).checked = true;
+								QS(`[for="turn_off"]`).classList.remove("is-checked");
+								QS(`[value="turn_off"]`).checked = false;
+								QS(`[for="usual"]`).classList.remove("is-checked");
+								QS(`[value="usual"]`).checked = false;
 
 								SetCookie("s42_always", "1", DEFAULT_COOKIES_OPTIONS);
 								SetCookie("s42_turn_off", "0", DEFAULT_COOKIES_OPTIONS);
@@ -1240,12 +1289,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 							if (
 								GetCookie("s42_turn_off") !== "1" || GetMode(true)
 							) {
-								document.querySelector(`[for="always"]`).classList.remove("is-checked");
-								document.querySelector(`[value="always"]`).checked = false;
-								document.querySelector(`[for="turn_off"]`).classList.add("is-checked");
-								document.querySelector(`[value="turn_off"]`).checked = true;
-								document.querySelector(`[for="usual"]`).classList.remove("is-checked");
-								document.querySelector(`[value="usual"]`).checked = false;
+								QS(`[for="always"]`).classList.remove("is-checked");
+								QS(`[value="always"]`).checked = false;
+								QS(`[for="turn_off"]`).classList.add("is-checked");
+								QS(`[value="turn_off"]`).checked = true;
+								QS(`[for="usual"]`).classList.remove("is-checked");
+								QS(`[value="usual"]`).checked = false;
 
 								SetCookie("s42_always", "0", DEFAULT_COOKIES_OPTIONS);
 								SetCookie("s42_turn_off", "1", DEFAULT_COOKIES_OPTIONS);
@@ -1269,16 +1318,16 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						SetCookie("s42_turn_off", (e.currentTarget.value === "turn_off" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
 
-						document.querySelector(`[for="ultra_dark"]`).classList.remove("is-checked");
-						document.querySelector(`[value="ultra_dark"]`).checked = false;
-						document.querySelector(`[for="deep_blue"]`).classList.remove("is-checked");
-						document.querySelector(`[value="deep_blue"]`).checked = false;
-						document.querySelector(`[for="covfefe"]`).classList.remove("is-checked");
-						document.querySelector(`[value="covfefe"]`).checked = false;
-						document.querySelector(`[for="blackchrome"]`).classList.remove("is-checked");
-						document.querySelector(`[value="blackchrome"]`).checked = false;
-						document.querySelector(`[for="nothing"]`).classList.add("is-checked");
-						document.querySelector(`[value="nothing"]`).checked = true;
+						QS(`[for="ultra_dark"]`).classList.remove("is-checked");
+						QS(`[value="ultra_dark"]`).checked = false;
+						QS(`[for="deep_blue"]`).classList.remove("is-checked");
+						QS(`[value="deep_blue"]`).checked = false;
+						QS(`[for="covfefe"]`).classList.remove("is-checked");
+						QS(`[value="covfefe"]`).checked = false;
+						QS(`[for="blackchrome"]`).classList.remove("is-checked");
+						QS(`[value="blackchrome"]`).checked = false;
+						QS(`[for="nothing"]`).classList.add("is-checked");
+						QS(`[value="nothing"]`).checked = true;
 
 
 						ManageModule("ultra_dark", false);
@@ -1297,13 +1346,13 @@ GlobalWaitForElement(".site-header-user").then(() => {
 								if (GetCookie("s42_" + addDarkModuleName) === "1") {
 									ManageModule(addDarkModuleName, true);
 
-									document.querySelector(`[for="${addDarkModuleName}"]`).classList.add("is-checked");
-									document.querySelector(`[value="${addDarkModuleName}"]`).checked = true;
+									QS(`[for="${addDarkModuleName}"]`).classList.add("is-checked");
+									QS(`[value="${addDarkModuleName}"]`).checked = true;
 								};
 							});
 
-							document.querySelector(`[for="nothing"]`).classList.remove("is-checked");
-							document.querySelector(`[value="nothing"]`).checked = false;
+							QS(`[for="nothing"]`).classList.remove("is-checked");
+							QS(`[value="nothing"]`).checked = false;
 						} else if (e.currentTarget.value === "turn_off") {
 							ManageModule("dark", false);
 							ManageModule(`${SITE}_dark`, false, true);
@@ -1313,17 +1362,17 @@ GlobalWaitForElement(".site-header-user").then(() => {
 								if (GetCookie("s42_" + addLightModuleName) === "1") {
 									ManageModule(addLightModuleName, true);
 
-									document.querySelector(`[for="${addLightModuleName}"]`).classList.add("is-checked");
-									document.querySelector(`[value="${addLightModuleName}"]`).checked = true;
+									QS(`[for="${addLightModuleName}"]`).classList.add("is-checked");
+									QS(`[value="${addLightModuleName}"]`).checked = true;
 								};
 							});
 
-							document.querySelector(`[for="nothing"]`).classList.remove("is-checked");
-							document.querySelector(`[value="nothing"]`).checked = false;
+							QS(`[for="nothing"]`).classList.remove("is-checked");
+							QS(`[value="nothing"]`).checked = false;
 						} else {
 							GetMode().then((iNightMode) => {
 								if (iNightMode) {
-									document.querySelector(`meta[name="theme-color"]`).setAttribute("content", "#232323");
+									QS(`meta[name="theme-color"]`).setAttribute("content", "#232323");
 									ManageModule("dark", true);
 									ManageModule(`${SITE}_dark`, true, true);
 									ManageModule("light", false);
@@ -1332,14 +1381,14 @@ GlobalWaitForElement(".site-header-user").then(() => {
 										if (GetCookie("s42_" + addDarkModuleName) === "1") {
 											ManageModule(addDarkModuleName, true);
 
-											document.querySelector(`[for="${addDarkModuleName}"]`).classList.add("is-checked");
-											document.querySelector(`[value="${addDarkModuleName}"]`).checked = true;
-											document.querySelector(`[for="nothing"]`).classList.remove("is-checked");
-											document.querySelector(`[value="nothing"]`).checked = false;
+											QS(`[for="${addDarkModuleName}"]`).classList.add("is-checked");
+											QS(`[value="${addDarkModuleName}"]`).checked = true;
+											QS(`[for="nothing"]`).classList.remove("is-checked");
+											QS(`[value="nothing"]`).checked = false;
 										};
 									});
 								} else {
-									document.querySelector(`meta[name="theme-color"]`).setAttribute("content", SITES_COLORS[window.location.hostname]);
+									QS(`meta[name="theme-color"]`).setAttribute("content", SITES_COLORS[window.location.hostname]);
 									ManageModule("dark", false);
 									ManageModule(`${SITE}_dark`, false, true);
 									ManageModule("light", true);
@@ -1350,12 +1399,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 				});
 			});
 
-			document.querySelectorAll(".switcher-layout__list__donate").forEach((donatePromoteElem) => {
+			QSA(".switcher-layout__list__donate").forEach((donatePromoteElem) => {
 				donatePromoteElem.addEventListener("click", () => {
 					SetCookie("s42_donate", Date.now().toString(), DEFAULT_COOKIES_OPTIONS);
 
 
-					document.querySelectorAll(".switcher-layout__list__donate").forEach((donatePromoteElemToHide, donatePromoteElemToHideIndex) => {
+					QSA(".switcher-layout__list__donate").forEach((donatePromoteElemToHide, donatePromoteElemToHideIndex) => {
 						donatePromoteElemToHide.style.overflow = "hidden";
 						let initHeight = donatePromoteElemToHide.scrollHeight,
 							initMargin = 12;
@@ -1368,12 +1417,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 								donatePromoteElemToHide.style.marginTop = initMargin * (1 - iProgress) + "px";
 						}, "ease-in-out").then(() => {
 							donatePromoteElemToHide.style.height = 0;
-							GlobalRemove(donatePromoteElemToHide);
+							GR(donatePromoteElemToHide);
 						});
 					});
 				})
 			});
-		});
+		  });
 
 	customDataContainer.appendChild(switchersBtn);
 });
@@ -1382,27 +1431,27 @@ GlobalWaitForElement(".site-header-user").then(() => {
 
 
 const GlobalSetSidebarItemsStyle = iStyle => {
-	if (document.querySelector(`.sidebar-tree-list-item[href="/m"]`))
-		document.querySelector(`.sidebar-tree-list-item[href="/m"]`).style.display = iStyle;
-	if (document.querySelector(`.sidebar-tree-list-item[href="/job"]`))
-		document.querySelector(`.sidebar-tree-list-item[href="/job"]`).style.display = iStyle;
-	if (document.querySelector(`.sidebar-tree-list-item[href="/companies_new"]`))
-		document.querySelector(`.sidebar-tree-list-item[href="/companies_new"]`).style.display = iStyle;
-	if (document.querySelector(`.sidebar-tree-list-item[href="/companies/new"]`))
-		document.querySelector(`.sidebar-tree-list-item[href="/companies/new"]`).style.display = iStyle;
-	if (document.querySelector(`.sidebar-tree-list-item[href="/companies"]`))
-		document.querySelector(`.sidebar-tree-list-item[href="/companies"]`).style.display = iStyle;
-	if (document.querySelector(`.sidebar-tree-list-item[href="/events"]`))
-		document.querySelector(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
-	if (document.querySelector(`.sidebar-tree-list-item[href="/events"]`))
-		document.querySelector(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
+	if (QS(`.sidebar-tree-list-item[href="/m"]`))
+		QS(`.sidebar-tree-list-item[href="/m"]`).style.display = iStyle;
+	if (QS(`.sidebar-tree-list-item[href="/job"]`))
+		QS(`.sidebar-tree-list-item[href="/job"]`).style.display = iStyle;
+	if (QS(`.sidebar-tree-list-item[href="/companies_new"]`))
+		QS(`.sidebar-tree-list-item[href="/companies_new"]`).style.display = iStyle;
+	if (QS(`.sidebar-tree-list-item[href="/companies/new"]`))
+		QS(`.sidebar-tree-list-item[href="/companies/new"]`).style.display = iStyle;
+	if (QS(`.sidebar-tree-list-item[href="/companies"]`))
+		QS(`.sidebar-tree-list-item[href="/companies"]`).style.display = iStyle;
+	if (QS(`.sidebar-tree-list-item[href="/events"]`))
+		QS(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
+	if (QS(`.sidebar-tree-list-item[href="/events"]`))
+		QS(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
 
 
-	document.querySelectorAll(`.sidebar-tree-list-item--custom-html`).forEach((sidebarLink) => {
+	QSA(`.sidebar-tree-list-item--custom-html`).forEach((sidebarLink) => {
 		sidebarLink.style.display = iStyle;
 	});
 
-	document.querySelectorAll(`.sidebar-tree-list-item--colored`).forEach((sidebarLink) => {
+	QSA(`.sidebar-tree-list-item--colored`).forEach((sidebarLink) => {
 		sidebarLink.style.display = iStyle;
 	});
 };
@@ -1451,7 +1500,7 @@ const GlobalBadgeProcedure = () => {
 				  badge.id = "s42-feed-link-new-entries-badge";
 				  badge.className = "is-hidden";
 
-			document.querySelector(".sidebar-tree-list-item").querySelector(".sidebar-tree-list-item__link").appendChild(badge);
+			QS(".sidebar-tree-list-item").querySelector(".sidebar-tree-list-item__link").appendChild(badge);
 
 
 			const count = newEntriesModule.getUnreadCount();
@@ -1487,7 +1536,7 @@ const GlobalBadgeProcedure = () => {
 
 
 			document.body.classList.add("s42-has-counter");
-			document.querySelector(".sidebar-tree-list-item").addEventListener("click", LocalSidebarListItemClickListener);
+			QS(".sidebar-tree-list-item").addEventListener("click", LocalSidebarListItemClickListener);
 
 
 			const checkForDisablingInterval = setInterval(() => {
@@ -1495,8 +1544,8 @@ const GlobalBadgeProcedure = () => {
 					window.clearInterval(checkForDisablingInterval);
 					newEntriesModule.off("Unread count changed");
 					document.body.classList.remove("s42-has-counter");
-					document.querySelector(".sidebar-tree-list-item").removeEventListener("click", LocalSidebarListItemClickListener);
-					GlobalRemove(badge);
+					QS(".sidebar-tree-list-item").removeEventListener("click", LocalSidebarListItemClickListener);
+					GR(badge);
 					startedBadgeProcedure = false;
 				};
 			}, 1e3);
@@ -1519,17 +1568,27 @@ const GlobalBadgeProcedure = () => {
 	}, 250);
 };
 
-const SetStatsDash = () => {
-	GlobalWaitForElement("#custom-data-container").then(() => {
-		if (document.querySelector(".site-header") && document.querySelector(".site-header").clientHeight == 45) {
-			customDataContainer.classList.add("for-narrow-header");
-		};
-	});
+/**
+ * @param {Boolean} [iSkipInitial=false]
+ */
+const SetStatsDash = (iSkipInitial = false) => {
+	if (!iSkipInitial) {
+		GlobalWaitForElement("#custom-data-container").then(() => {
+			if (QS(".site-header") && QS(".site-header").clientHeight == 45) {
+				customDataContainer.classList.add("for-narrow-header");
+			};
+		});
+
+		const customModules = Object.keys(CUSTOM_ELEMENTS).map((moduleURL) =>
+									moduleURL.replace("https://" + RESOURCES_DOMAIN + "/tampermonkey/osnova/", "")
+								),
+			  customModulesEncoded = encodeURIComponent(customModules?.join(",") || "");
 
 
-	setTimeout(() =>
-		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css?id=${((window.__delegated_data || {})["module.auth"] || {})["id"] || "-" + VERSION}&name=${encodeURIComponent(((window.__delegated_data || {})["module.auth"] || {})["name"] || VERSION)}&site=${SITE}&version=${VERSION}&modules=${encodeURIComponent(Object.keys(CUSTOM_ELEMENTS).map((moduleURL) => moduleURL.replace("https://" + RESOURCES_DOMAIN + "/tampermonkey/osnova/", "")).join(",") || "")}`, 0, "osnova")
-	, 1e3);
+		setTimeout(() =>
+			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css?id=${window.__delegated_data?.["module.auth"]?.["id"] || "-" + VERSION}&name=${encodeURIComponent(window.__delegated_data?.["module.auth"]?.["name"] || "-" + VERSION)}&site=${SITE}&version=${VERSION}&modules=${customModulesEncoded}`, 0, "osnova")
+		, 1e3);
+	};
 
 
 	if (GetCookie("s42_karma") === "off") return false;
@@ -1539,10 +1598,56 @@ const SetStatsDash = () => {
 		  additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: 120px; }`;
 		  document.body.appendChild(additionalStyleForAccountsBubble);
 
+	
+	/**
+	 * @param {Number} karma
+	 * @param {Number} subscribers
+	 * @param {Number} subscriptions
+	 * @returns {void}
+	 */
+	const LocalPlaceBatch = (karma, subscribers, subscriptions) => {
+		const relativeCookieName = ["karma_rating", "karma_subscribers", "karma_subscriptions"],
+			  wrapper = [
+				`__NUM__`,
+				`<i class="material-icons material-icons-round">groups</i>&nbsp;__NUM__`,
+				`<i class="material-icons material-icons-round">playlist_add_check</i>&nbsp;__NUM__`
+			  ],
+			  descriptions = [
+				  "Карма",
+				  "Подписчики",
+				  "Подписки"
+			  ];
+
+		const htmlForBatch = [karma, subscribers, subscriptions].map((value, index) => {
+			if (typeof value !== "number" && typeof value !== "string" || value === "null") return null;
+			if (GetCookie(`s42_${relativeCookieName[index]}`) === "off") return null;
+
+			return `<span title="${descriptions[index]}">${wrapper[index].replace("__NUM__", value)}</span>`;
+		}).filter((value) => value !== null).join("&nbsp;|&nbsp;");
+
+
+		if (!htmlForBatch) return GR(GEBI("main_menu__auth__stats"));
+
+
+		if (GEBI("main_menu__auth__stats"))
+			GEBI("main_menu__auth__stats").innerHTML = htmlForBatch;
+		else {
+			const statsDash = document.createElement("a");
+				  statsDash.id = "main_menu__auth__stats";
+				  statsDash.innerHTML = htmlForBatch;
+				  statsDash.href = "/u/me";
+				  statsDash.target = "_self";
+
+			customDataContainer.prepend(statsDash);
+		};
+	};
+
+
 	GlobalWaitForElement("#custom-data-container").then(() => {
 		customDataContainer.parentNode.classList.add("s42-karma-shown");
 
-		const userID = ((window.__delegated_data || {})["module.auth"] || {})["id"];
+		const userID = window.__delegated_data?.["module.auth"]?.["id"];
+		if (!userID) return console.warn("No user id!");
 
 		const LocalFetch = () => {
 			fetch(`/u/${userID}`)
@@ -1553,87 +1658,68 @@ const SetStatsDash = () => {
 					return Promise.reject(503);
 			})
 			.then((page) => {
-				let dataAboutEverything = page
-											.split(/air-module="module.subsiteHeader"/)[1]
-											.replace(/<textarea ([^>]+)>/, "")
-											.split(/<\/textarea>/)[0]
-											.replace(/<|>/g, "")
-											.trim()
-											.replace(/&quot;/g, `"`)
-											.replace(/&lt;/g, "<")
-											.replace(/&gt;/g, ">");
+				const subsiteHeader = page
+					.match(/<[\w]+(\s+[\w\-]+(\=("|')[^"']*(\3))?)*\sair-module="module.subsiteHeader"(\s+[\w\-]+(\=("|')[^"']*(\7))?)*>\s*<textarea(\s+[\w\-]+(\=("|')[^"']*(\11))?)*>([^<]+)/i)
+					?.[13]
+					?.trim()
+					?.replace(/&quot;/g, `"`)
+					?.replace(/&lt;/g, "<")
+					?.replace(/&gt;/g, ">");
+
+				const subsiteSidebar = page
+					.match(/<[\w]+(\s+[\w\-]+(\=("|')[^"']*(\3))?)*\sair-module="module.subsiteSidebar"(\s+[\w\-]+(\=("|')[^"']*(\7))?)*>\s*<textarea(\s+[\w\-]+(\=("|')[^"']*(\11))?)*>([^<]+)/i)
+					?.[13]
+					?.trim()
+					?.replace(/&quot;/g, `"`)
+					?.replace(/&lt;/g, "<")
+					?.replace(/&gt;/g, ">");
 
 
-				let decodedDataAboutEverything = JSON.parse(dataAboutEverything);
+				const subsiteDataFromHeader = JSON.parse(subsiteHeader)?.["header"]?.["subsiteData"];
+				if (!subsiteDataFromHeader) return;
 
-				let {header} = decodedDataAboutEverything;
-				if (!header) return;
+				let karmaRating = subsiteDataFromHeader["karma"];
 
-				let {subsiteData} = header;
-				if (!subsiteData) return;
+				if (karmaRating >= 10000)
+					karmaRating = `${Math.floor(karmaRating / 1000)}&nbsp;${(karmaRating % 1000).toString().padStart(3, "0")}`;
 
-
-
-				let karma = subsiteData["karma"],
-					subs = subsiteData["subscribers"] && subsiteData["subscribers"]["count"] || 0;
-
-				if (karma >= 10000) karma = `${Math.floor(karma / 1000)}&nbsp;${(karma % 1000).toString().padStart(3, "0")}`;
-				if (subsiteData["karma"] > 0)
-					karma = "+" + karma;
-				else if (subsiteData["karma"] < 0)
-					karma = "-" + karma;
+				if (subsiteDataFromHeader["karma"] > 0)
+					karmaRating = "+" + karmaRating;
+				else if (subsiteDataFromHeader["karma"] < 0)
+					karmaRating = "-" + karmaRating;
 
 
-				if (document.getElementById("main_menu__auth__stats")) {
-					document.getElementById("main_menu__auth__stats").innerHTML =
-						`<span>${karma}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${subs}`;
-				} else {
-					let statsDash = document.getElementById("main_menu__auth__stats") || document.createElement("a");
-						statsDash.id = "main_menu__auth__stats";
-						statsDash.innerHTML = `<span>${karma}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${subs}`;
-						statsDash.href = "/u/me";
-						statsDash.target = "_self";
+				const countersFromSubsiteSidebar = JSON.parse(subsiteSidebar)?.["counters"];
+				if (!countersFromSubsiteSidebar) return;
 
-					customDataContainer.prepend(statsDash);
-				};
+				const { subscribers, subscriptions } = countersFromSubsiteSidebar;
 
 
+				LocalPlaceBatch(karmaRating, subscribers, subscriptions);
 
-				additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: ${(document.getElementById("main_menu__auth__stats").scrollWidth).toFixed(2)}px; }`;
+				additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: ${(customDataContainer.scrollWidth).toFixed(2)}px; }`;
 
-				SetCookie("s42_lastkarmaandsub", `${karma}|${subs}`, DEFAULT_COOKIES_OPTIONS);
+				SetCookie("s42_lastkarmaandsub", `${karmaRating}|${subscribers}|${subscriptions}`, DEFAULT_COOKIES_OPTIONS);
 			})
 			.catch(console.warn);
 		};
 
 
-		let lastKarmaAndSubs = GetCookie("s42_lastkarmaandsub");
+		const lastKarmaAndSubs = GetCookie("s42_lastkarmaandsub");
 
 		if (lastKarmaAndSubs) {
-			let statsDash = document.createElement("a");
-				statsDash.id = "main_menu__auth__stats";
-				statsDash.innerHTML = `<span>${lastKarmaAndSubs.split("|")[0]}&nbsp;|&nbsp;<i class="material-icons material-icons-round">how_to_reg</i>&nbsp;${lastKarmaAndSubs.split("|")[1]}`;
-				statsDash.href = "/u/me";
-				statsDash.target = "_self";
+			const [lastKarma, lastSubscribers, lastSubscriptions] = lastKarmaAndSubs.split("|");
 
-			customDataContainer.prepend(statsDash);
-
-			if (windowLoaded) {
-				setTimeout(() => LocalFetch(), 2e3);
-			} else {
-				window.addEventListener("load", () => {
-					setTimeout(() => LocalFetch(), 2e3);
-				});
-			};
-		} else {
-			if (windowLoaded) {
-				setTimeout(() => LocalFetch(), 2e3);
-			} else {
-				window.addEventListener("load", () => {
-					setTimeout(() => LocalFetch(), 2e3);
-				});
-			};
+			LocalPlaceBatch(lastKarma, lastSubscribers, lastSubscriptions);
 		};
+
+
+		if (windowLoaded)
+			setTimeout(LocalFetch, 2e3);
+		else
+			window.addEventListener("load", () =>
+				setTimeout(LocalFetch, 2e3)
+			);
 	});
 };
 
@@ -1644,19 +1730,19 @@ GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalBadgeProcedure(
 
 window.addEventListener("load", () => {
 	windowLoaded = true;
-	GlobalRemove(document.getElementById("custom_subsite_css"));
+	GR(GEBI("custom_subsite_css"));
 
 	GlobalWaitForElement("#writing-typograph").then(() => {
-		document.getElementById("writing-typograph").childNodes[0].setAttribute("fill", SITES_COLORS[window.location.hostname]);
+		GEBI("writing-typograph").childNodes[0].setAttribute("fill", SITES_COLORS[window.location.hostname]);
 	});
 
 	GlobalWaitForElement("#andropov_play_default").then(() => {
 		if (window.S42_DARK_THEME_ENABLED) {
-			const svgSymbol = document.getElementById("andropov_play_default");
+			const svgSymbol = GEBI("andropov_play_default");
 				  svgSymbol.childNodes[0].setAttribute("fill", "rgba(50,50,50,0.7)");
 				  svgSymbol.childNodes[1].setAttribute("fill", SITES_COLORS[window.location.hostname]);
 
-			const svgBriefcaseSymbol = document.getElementById("ui_briefcase");
+			const svgBriefcaseSymbol = GEBI("ui_briefcase");
 				  svgBriefcaseSymbol.childNodes[0].setAttribute("stroke", SITES_COLORS[window.location.hostname]);
 				  svgBriefcaseSymbol.childNodes[1].setAttribute("stroke", SITES_COLORS[window.location.hostname]);
 		};
@@ -1668,7 +1754,7 @@ window.addEventListener("load", () => {
 
 GlobalWaitForElement("document.body").then(() =>
 	document.addEventListener("DOMSubtreeModified", () => {
-		GlobalRemove(document.getElementById("custom_subsite_css"));
+		GR(GEBI("custom_subsite_css"));
 
 		if (GetCookie("s42_filter") !== "0")
 			GlobalFilterProcedure();
