@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      8.7.0-R (2021-02-12)
+// @version      8.7.1-A (2021-02-23)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "8.7.0",
+	VERSION = "8.7.1",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -512,249 +512,6 @@ const BOTS_RULES = {
 	}
 };
 
-const GlobalFilterProcedure = () => {
-	new Promise((resolve, reject) => {
-		if (BOTS_RULES.rulesDone) {
-			return resolve();
-		};
-
-		if (BOTS_RULES.processingRules) {
-			let gettingReadyIterval = setInterval(() => {
-				if (BOTS_RULES.rulesDone) {
-					window.clearInterval(gettingReadyIterval);
-					return resolve();
-				};
-			}, 100);
-
-			return;
-		};
-
-
-
-		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_style.css`, 0, "osnova");
-
-		BOTS_RULES.processingRules = true;
-		fetch(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_rules.json`, {
-			method: "GET",
-			mode: "cors",
-			credentials: "omit"
-		})
-		.then((response) => response.json())
-		.then((jsonRules) => {
-			jsonRules.RAW_TEXT_RULES.forEach((rawRule) => {
-				let newRule = new String();
-
-				rawRule.split("").forEach((letter) => {
-					if (letter === " ") {
-						newRule += "\\s";
-					} else if (letter in BOTS_RULES.REPLACEMENTS.RU_EN) {
-						newRule += `[${letter}${BOTS_RULES.REPLACEMENTS.RU_EN[letter]}]{1}`;
-					} else if (letter in BOTS_RULES.REPLACEMENTS.EN_RU) {
-						newRule += `[${letter}${BOTS_RULES.REPLACEMENTS.EN_RU[letter]}]{1}`;
-					} else {
-						newRule += letter;
-					};
-				});
-
-				BOTS_RULES.REGEXP_RULES.push(new RegExp(newRule, "gmi"));
-			});
-
-
-			jsonRules.RAW_LINKS_RULES.forEach((rawLinkRule) =>
-				BOTS_RULES.LINKS.push(new RegExp(rawLinkRule, "gi"))
-			);
-
-			BOTS_RULES.rulesDone = true;
-
-			resolve();
-		}).catch((e) => reject(e));
-	}).then(() => {
-		QSA(`.content-feed[air-module="module.entry"]:not(.content-feed--s42-seen)`).forEach((feedEntry) => {
-			let removeFlag = false,
-				removeCount = 0;
-
-			feedEntry.classList.add("content-feed--s42-seen");
-
-
-			let header = feedEntry.querySelector(".content-header");
-
-			if (!header)
-				header = feedEntry.querySelector(".content-header--short");
-
-			if (header) {
-				if (header.innerText)
-					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
-						if (rule.test(header.innerText)) {
-							removeCount++;
-							removeFlag = `HEADER:/${rule.source}/${rule.flags}`;
-						};
-					});
-			};
-
-
-			let paragraphs = Array.from(feedEntry.querySelectorAll(".content p"));
-
-			paragraphs.forEach((paragraph) => {
-				if (paragraph.innerText)
-					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
-						if (rule.test(paragraph.innerText)) {
-							removeCount++;
-							removeFlag = `PARAGRAPH:/${rule.source}/${rule.flags}`;
-						};
-					});
-			});
-
-
-			let links = Array.from(feedEntry.querySelectorAll(".content a"));
-
-
-			links.forEach((link) => {
-				let href = link.getAttribute("href");
-
-				if (href)
-					BOTS_RULES.LINKS.forEach((linkRule) => {
-						if (linkRule.test(href)) {
-							removeCount += 2;
-							removeFlag = `LINK:/${linkRule.source}/${linkRule.flags}`;
-						};
-					});
-			});
-
-
-
-			if (removeFlag && removeCount > 1) {
-				let hiddenMessage = document.createElement("p");
-					hiddenMessage.className = "content-feed__s42-message";
-					hiddenMessage.innerHTML = `<span><a href="${feedEntry.querySelector(".content-feed__link").getAttribute("href")}">Пост</a> скрыт фильтрами тем.</span>`;
-
-				feedEntry.classList.add("content-feed--s42-filtered");
-				feedEntry.querySelector(".content").appendChild(hiddenMessage);
-
-
-				let complaintUserID	= parseInt(feedEntry.querySelector(".content-header-author").getAttribute("href").replace(`https://${window.location.hostname}/u/`, "")),
-					complaintPostID = parseInt(feedEntry.querySelector(".content-feed__link").getAttribute("href").replace(new RegExp(`https\\:\\/\\/${SITE}\\.ru\\/([\\w-\\d]+\\/){0,2}`, ""), ""));
-
-				if (isNaN(complaintUserID)) {
-					complaintUserID	= parseInt(feedEntry.querySelector(".content-header-author--user").getAttribute("href").replace(`https://${window.location.hostname}/u/`, ""));
-				};
-
-				if (isNaN(complaintPostID) | isNaN(complaintUserID)) return;
-			};
-		});
-
-
-		QSA(`.comments__item__space:not(.comments__item__space--s42-seen)`).forEach((commentSpace) => {
-			let removeFlag = false,
-				removeCount = 0;
-
-			commentSpace.classList.add("comments__item__space--s42-seen");
-
-
-			let text = commentSpace.querySelector(".comments__item__text");
-
-			if (text) {
-				if (text.innerText) {
-					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
-						if (rule.test(text.innerText)) {
-							removeCount++;
-							removeFlag = `COMMENT_TEXT:/${rule.source}/${rule.flags}`;
-						};
-					});
-				};
-			};
-
-
-			let links = Array.from(commentSpace.querySelectorAll("a"));
-
-
-			links.forEach((link) => {
-				let href = link.getAttribute("href");
-
-				if (href)
-					BOTS_RULES.LINKS.forEach((linkRule) => {
-						if (linkRule.test(href)) {
-							removeCount += 2;
-							removeFlag = `COMMENT_LINK:/${linkRule.source}/${linkRule.flags}`;
-						};
-					});
-			});
-
-
-
-			if (removeFlag && removeCount > 1) {
-				let hiddenMessage = document.createElement("p");
-					hiddenMessage.className = "comments__item__space__s42-message";
-
-
-				let hiddenMessageShow = document.createElement("span");
-					hiddenMessageShow.innerText = "Комментарий";
-					hiddenMessageShow.className = "comments__item__space__s42-message--show-button";
-					hiddenMessageShow.addEventListener("click", (e) => {
-						commentSpace.classList.remove("comments__item__space--s42-filtered");
-						GR(e.currentTarget.parentElement || e.currentTarget.parentNode);
-					});
-
-				hiddenMessage.append(hiddenMessageShow);
-
-
-				let hiddenMessageSpan = document.createElement("span");
-					hiddenMessageSpan.innerText = " скрыт фильтрами тем.";
-
-				hiddenMessage.append(hiddenMessageSpan);
-
-
-				commentSpace.classList.add("comments__item__space--s42-filtered");
-				commentSpace.appendChild(hiddenMessage);
-			};
-		});
-	}).catch(console.warn);
-};
-
-const GlobalPlaceEditorialButton = () => {
-	GlobalWaitForElement(`.sidebar-tree-list-item[href="/m"]`).then(() => {
-		const messengerButton = QS(`.sidebar-tree-list-item[href="/m"]`);
-		if (!messengerButton) return console.warn("No messenger button!");
-
-
-		const editorialButton = document.createElement("div");
-		messengerButton.after(editorialButton);
-
-
-		editorialButton.outerHTML = messengerButton.outerHTML
-															.replace(/sidebar-tree-list-item"/gi, `sidebar-tree-list-item" id="s42-editorial-link-btn"`)
-															.replace(/href="\/m"/gi, `href="/editorial"`)
-															.replace(/style="[^"]+"/gi, "")
-															.replace(/Сообщения/gi, "От редакции")
-															.replace(/icon icon--ui_sidebar_messenger/gi, "icon icon--ui_check")
-															.replace(/xlink:href="#ui_sidebar_messenger"/gi, `xlink:href="#ui_check"`)
-															.replace(/sidebar-tree-list-item--active/gi, "");
-
-
-		const sidebarButtons = QSA(".sidebar-tree-list-item");
-		sidebarButtons.forEach((sidebarButton) => {
-			sidebarButton.addEventListener("click", () => {
-				sidebarButtons.forEach((sidebarButtonToChangeClass) => {
-					if (sidebarButton !== sidebarButtonToChangeClass)
-						sidebarButtonToChangeClass.classList.remove("sidebar-tree-list-item--active");
-				});
-
-				if (sidebarButton.id === "s42-editorial-link-btn") {
-					sidebarButton.classList.add("sidebar-tree-list-item--active");
-				};
-			});
-		});
-
-
-		if (window.location.pathname.search(/^\/editorial/) > -1) {
-			sidebarButtons.forEach((sidebarButtonToChangeClass) => {
-				sidebarButtonToChangeClass.classList.remove("sidebar-tree-list-item--active");
-			});
-
-			GEBI("s42-editorial-link-btn").classList.add("sidebar-tree-list-item--active");
-		};
-	});
-};
-
 
 
 GR(GEBI("custom_subsite_css"));
@@ -825,6 +582,7 @@ window.UNLOAD_COOKIES = () => {
 		"s42_hidesubscriptions",
 		"s42_beautifulfeedposts",
 		"s42_favouritesicon",
+		"s42_favouritemarker",
 		"s42_hideviewsanddate",
 		"s42_newentriesbadge",
 		"s42_donate"
@@ -970,6 +728,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="favouritesicon" data-serguun42-labels>
 						<input type="checkbox" id="favouritesicon" class="mdl-checkbox__input" ${GetCookie("s42_favouritesicon") !== "0" ? "checked" : ""} data-serguun42-switchers>
 						<span class="mdl-checkbox__label">Красная иконка закладок</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="favouritemarker" data-serguun42-labels>
+						<input type="checkbox" id="favouritemarker" class="mdl-checkbox__input" ${GetCookie("s42_favouritemarker") !== "0" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Количество закладок в постах</span>
 					</label>
 				</li>
 				<div class="switcher-layout__list__separator"></div>
@@ -1205,6 +969,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						ManageModule("favouritesicon", e.currentTarget.checked);
 					};
 
+					if (e.currentTarget.id === "favouritemarker") {
+						SetCookie("s42_favouritemarker", e.currentTarget.checked ? "1" : "0", DEFAULT_COOKIES_OPTIONS);
+
+						addFavouriteMarkerFlag = !!e.currentTarget.checked;
+					};
+
 					if (e.currentTarget.id === "messageslinkdisabled") {
 						SetCookie("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
@@ -1430,6 +1200,8 @@ GlobalWaitForElement(".site-header-user").then(() => {
 
 
 
+let windowLoaded = false;
+
 const GlobalSetSidebarItemsStyle = iStyle => {
 	if (QS(`.sidebar-tree-list-item[href="/m"]`))
 		QS(`.sidebar-tree-list-item[href="/m"]`).style.display = iStyle;
@@ -1476,13 +1248,257 @@ if (GetCookie("s42_defaultscrollers") === "1") {
 	GlobalSetScrollers("default");
 };
 
+const GlobalPlaceEditorialButton = () => {
+	GlobalWaitForElement(`.sidebar-tree-list-item[href="/m"]`).then(() => {
+		const messengerButton = QS(`.sidebar-tree-list-item[href="/m"]`);
+		if (!messengerButton) return console.warn("No messenger button!");
+
+
+		const editorialButton = document.createElement("div");
+		messengerButton.after(editorialButton);
+
+
+		editorialButton.outerHTML = messengerButton.outerHTML
+															.replace(/sidebar-tree-list-item"/gi, `sidebar-tree-list-item" id="s42-editorial-link-btn"`)
+															.replace(/href="\/m"/gi, `href="/editorial"`)
+															.replace(/style="[^"]+"/gi, "")
+															.replace(/Сообщения/gi, "От редакции")
+															.replace(/icon icon--ui_sidebar_messenger/gi, "icon icon--ui_check")
+															.replace(/xlink:href="#ui_sidebar_messenger"/gi, `xlink:href="#ui_check"`)
+															.replace(/sidebar-tree-list-item--active/gi, "");
+
+
+		const sidebarButtons = QSA(".sidebar-tree-list-item");
+		sidebarButtons.forEach((sidebarButton) => {
+			sidebarButton.addEventListener("click", () => {
+				sidebarButtons.forEach((sidebarButtonToChangeClass) => {
+					if (sidebarButton !== sidebarButtonToChangeClass)
+						sidebarButtonToChangeClass.classList.remove("sidebar-tree-list-item--active");
+				});
+
+				if (sidebarButton.id === "s42-editorial-link-btn") {
+					sidebarButton.classList.add("sidebar-tree-list-item--active");
+				};
+			});
+		});
+
+
+		if (window.location.pathname.search(/^\/editorial/) > -1) {
+			sidebarButtons.forEach((sidebarButtonToChangeClass) => {
+				sidebarButtonToChangeClass.classList.remove("sidebar-tree-list-item--active");
+			});
+
+			GEBI("s42-editorial-link-btn").classList.add("sidebar-tree-list-item--active");
+		};
+	});
+};
+
 if (GetCookie("s42_editorial") === "1") {
 	GlobalPlaceEditorialButton();
 };
 
+const GlobalFilterProcedure = () => {
+	new Promise((resolve, reject) => {
+		if (BOTS_RULES.rulesDone) {
+			return resolve();
+		};
+
+		if (BOTS_RULES.processingRules) {
+			let gettingReadyIterval = setInterval(() => {
+				if (BOTS_RULES.rulesDone) {
+					window.clearInterval(gettingReadyIterval);
+					return resolve();
+				};
+			}, 100);
+
+			return;
+		};
 
 
-let windowLoaded = false;
+
+		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_style.css`, 0, "osnova");
+
+		BOTS_RULES.processingRules = true;
+		fetch(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_rules.json`, {
+			method: "GET",
+			mode: "cors",
+			credentials: "omit"
+		})
+		.then((response) => response.json())
+		.then((jsonRules) => {
+			jsonRules.RAW_TEXT_RULES.forEach((rawRule) => {
+				let newRule = new String();
+
+				rawRule.split("").forEach((letter) => {
+					if (letter === " ") {
+						newRule += "\\s";
+					} else if (letter in BOTS_RULES.REPLACEMENTS.RU_EN) {
+						newRule += `[${letter}${BOTS_RULES.REPLACEMENTS.RU_EN[letter]}]{1}`;
+					} else if (letter in BOTS_RULES.REPLACEMENTS.EN_RU) {
+						newRule += `[${letter}${BOTS_RULES.REPLACEMENTS.EN_RU[letter]}]{1}`;
+					} else {
+						newRule += letter;
+					};
+				});
+
+				BOTS_RULES.REGEXP_RULES.push(new RegExp(newRule, "gmi"));
+			});
+
+
+			jsonRules.RAW_LINKS_RULES.forEach((rawLinkRule) =>
+				BOTS_RULES.LINKS.push(new RegExp(rawLinkRule, "gi"))
+			);
+
+			BOTS_RULES.rulesDone = true;
+
+			resolve();
+		}).catch((e) => reject(e));
+	}).then(() => {
+		QSA(`.content-feed[air-module="module.entry"]:not(.content-feed--s42-seen)`).forEach((feedEntry) => {
+			let removeFlag = false,
+				removeCount = 0;
+
+			feedEntry.classList.add("content-feed--s42-seen");
+
+
+			let header = feedEntry.querySelector(".content-header");
+
+			if (!header)
+				header = feedEntry.querySelector(".content-header--short");
+
+			if (header) {
+				if (header.innerText)
+					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
+						if (rule.test(header.innerText)) {
+							removeCount++;
+							removeFlag = `HEADER:/${rule.source}/${rule.flags}`;
+						};
+					});
+			};
+
+
+			let paragraphs = Array.from(feedEntry.querySelectorAll(".content p"));
+
+			paragraphs.forEach((paragraph) => {
+				if (paragraph.innerText)
+					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
+						if (rule.test(paragraph.innerText)) {
+							removeCount++;
+							removeFlag = `PARAGRAPH:/${rule.source}/${rule.flags}`;
+						};
+					});
+			});
+
+
+			let links = Array.from(feedEntry.querySelectorAll(".content a"));
+
+
+			links.forEach((link) => {
+				let href = link.getAttribute("href");
+
+				if (href)
+					BOTS_RULES.LINKS.forEach((linkRule) => {
+						if (linkRule.test(href)) {
+							removeCount += 2;
+							removeFlag = `LINK:/${linkRule.source}/${linkRule.flags}`;
+						};
+					});
+			});
+
+
+
+			if (removeFlag && removeCount > 1) {
+				let hiddenMessage = document.createElement("p");
+					hiddenMessage.className = "content-feed__s42-message";
+					hiddenMessage.innerHTML = `<span><a href="${feedEntry.querySelector(".content-feed__link").getAttribute("href")}">Пост</a> скрыт фильтрами тем.</span>`;
+
+				feedEntry.classList.add("content-feed--s42-filtered");
+				feedEntry.querySelector(".content").appendChild(hiddenMessage);
+
+
+				let complaintUserID	= parseInt(feedEntry.querySelector(".content-header-author").getAttribute("href").replace(`https://${window.location.hostname}/u/`, "")),
+					complaintPostID = parseInt(feedEntry.querySelector(".content-feed__link").getAttribute("href").replace(new RegExp(`https\\:\\/\\/${SITE}\\.ru\\/([\\w-\\d]+\\/){0,2}`, ""), ""));
+
+				if (isNaN(complaintUserID)) {
+					complaintUserID	= parseInt(feedEntry.querySelector(".content-header-author--user").getAttribute("href").replace(`https://${window.location.hostname}/u/`, ""));
+				};
+
+				if (isNaN(complaintPostID) | isNaN(complaintUserID)) return;
+			};
+		});
+
+
+		QSA(`.comments__item__space:not(.comments__item__space--s42-seen)`).forEach((commentSpace) => {
+			let removeFlag = false,
+				removeCount = 0;
+
+			commentSpace.classList.add("comments__item__space--s42-seen");
+
+
+			let text = commentSpace.querySelector(".comments__item__text");
+
+			if (text) {
+				if (text.innerText) {
+					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
+						if (rule.test(text.innerText)) {
+							removeCount++;
+							removeFlag = `COMMENT_TEXT:/${rule.source}/${rule.flags}`;
+						};
+					});
+				};
+			};
+
+
+			let links = Array.from(commentSpace.querySelectorAll("a"));
+
+
+			links.forEach((link) => {
+				let href = link.getAttribute("href");
+
+				if (href)
+					BOTS_RULES.LINKS.forEach((linkRule) => {
+						if (linkRule.test(href)) {
+							removeCount += 2;
+							removeFlag = `COMMENT_LINK:/${linkRule.source}/${linkRule.flags}`;
+						};
+					});
+			});
+
+
+
+			if (removeFlag && removeCount > 1) {
+				let hiddenMessage = document.createElement("p");
+					hiddenMessage.className = "comments__item__space__s42-message";
+
+
+				let hiddenMessageShow = document.createElement("span");
+					hiddenMessageShow.innerText = "Комментарий";
+					hiddenMessageShow.className = "comments__item__space__s42-message--show-button";
+					hiddenMessageShow.addEventListener("click", (e) => {
+						commentSpace.classList.remove("comments__item__space--s42-filtered");
+						GR(e.currentTarget.parentElement || e.currentTarget.parentNode);
+					});
+
+				hiddenMessage.append(hiddenMessageShow);
+
+
+				let hiddenMessageSpan = document.createElement("span");
+					hiddenMessageSpan.innerText = " скрыт фильтрами тем.";
+
+				hiddenMessage.append(hiddenMessageSpan);
+
+
+				commentSpace.classList.add("comments__item__space--s42-filtered");
+				commentSpace.appendChild(hiddenMessage);
+			};
+		});
+	}).catch(console.warn);
+};
+
+if (GetCookie("s42_filter") !== "0") {
+	GlobalFilterProcedure();
+};
+
 let addBadgeFlag = (GetCookie("s42_newentriesbadge") !== "0");
 
 const GlobalBadgeProcedure = () => {
@@ -1554,7 +1570,6 @@ const GlobalBadgeProcedure = () => {
 		};
 	};
 
-
 	setInterval(() => {
 		if (addBadgeFlag) {
 			if (windowLoaded) {
@@ -1562,6 +1577,109 @@ const GlobalBadgeProcedure = () => {
 			} else {
 				window.addEventListener("load", () => {
 					setTimeout(() => LocalStartBadgeProcedure(), 2e3);
+				});
+			};
+		};
+	}, 250);
+};
+
+let addFavouriteMarkerFlag = (GetCookie("s42_favouritemarker") !== "0");
+
+const GlobalFavouriteMarketProcedure = () => {
+	let startedFavouriteMarketProcedure = false;
+
+	const LocalFavouriteMarketProcedure = () => {
+		if (startedFavouriteMarketProcedure) return;
+		startedFavouriteMarketProcedure = true;
+
+
+		let lastURL = "";
+
+		const urlChangeInterval = setInterval(() => {
+			if (!addFavouriteMarkerFlag) {
+				startedFavouriteMarketProcedure = false;
+				window.clearInterval(urlChangeInterval);
+				return;
+			};
+
+			if (lastURL === window.location.pathname) return;
+			if (document.querySelector(".main_progressbar--in_process")) return;
+
+			lastURL = window.location.pathname;
+
+
+			/* Actual Cache Procedure */
+			let cURL = lastURL,
+				id = -2;
+
+			if (cURL.slice(0, 3) === "/u/") {
+				cURL = cURL.slice(1).split("/");
+				if (cURL.length < 3) return;
+
+				id = parseInt(cURL[2]);
+				if (isNaN(id)) return;
+			} else {
+				if (cURL.slice(0, 3) === "/m/") return;
+
+				if (cURL.slice(0, 3) === "/s/")
+					cURL = cURL.slice(3);
+				else
+					cURL = cURL.slice(1);
+
+				if (!cURL) return;
+
+				cURL = cURL.split("/");
+				if (cURL.length >= 2) {
+					id = parseInt(cURL[1]);
+					if (isNaN(id)) return;
+				} else if (cURL.length) {
+					id = parseInt(cURL[0]);
+					if (isNaN(id)) return;
+				};
+			};
+
+
+
+			GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`).then((postElement) => {
+				if (!postElement) return;
+
+				try {
+					const hiddenEntryData = JSON.parse(document.querySelector(".l-hidden.entry_data")?.innerText || "{}"),
+						  favouritesCount = hiddenEntryData["favorites"];
+
+					QSA(".l-entry .favorite_marker").forEach((favouriteMarkerElem) => {
+						favouriteMarkerElem.classList.remove("favorite_marker--zero");
+
+						const favouriteMarkerCountElem = favouriteMarkerElem.querySelector(".favorite_marker__count") || document.createElement("div");
+							  favouriteMarkerCountElem.className = "favorite_marker__count";
+							  favouriteMarkerCountElem.innerText = favouritesCount || "";
+
+						favouriteMarkerElem.appendChild(favouriteMarkerCountElem);
+
+						favouriteMarkerElem.addEventListener("click", (e) => {
+							const active = (e.currentTarget || e.target).classList.contains("favorite_marker--active"),
+								  currentCount = parseInt(favouriteMarkerCountElem.innerText) || 0;
+
+							if (active)
+								favouriteMarkerCountElem.innerText = (currentCount + 1);
+							else
+								favouriteMarkerCountElem.innerText = (currentCount - 1);
+						});
+					});
+				} catch (e) {
+					console.warn("Cannot place favourites counter", e);
+				};
+			});
+		}, 200);
+	};
+
+	setInterval(() => {
+		if (addFavouriteMarkerFlag) {
+			if (windowLoaded) {
+				LocalFavouriteMarketProcedure();
+			} else {
+				window.addEventListener("load", () => {
+					setTimeout(() => LocalFavouriteMarketProcedure(), 2e3);
 				});
 			};
 		};
@@ -1596,7 +1714,8 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 	const additionalStyleForAccountsBubble = document.createElement("style");
 		  additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: 120px; }`;
-		  document.body.appendChild(additionalStyleForAccountsBubble);
+
+	document.body.appendChild(additionalStyleForAccountsBubble);
 
 	
 	/**
@@ -1606,6 +1725,9 @@ const SetStatsDash = (iSkipInitial = false) => {
 	 * @returns {void}
 	 */
 	const LocalPlaceBatch = (karma, subscribers, subscriptions) => {
+		additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: ${(customDataContainer.scrollWidth).toFixed(2)}px; }`;
+
+
 		const relativeCookieName = ["karma_rating", "karma_subscribers", "karma_subscriptions"],
 			  wrapper = [
 				`__NUM__`,
@@ -1697,8 +1819,6 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 				LocalPlaceBatch(karmaRating, subscribers, subscriptions);
 
-				additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: ${(customDataContainer.scrollWidth).toFixed(2)}px; }`;
-
 				SetCookie("s42_lastkarmaandsub", `${karmaRating}|${subscribers}|${subscriptions}`, DEFAULT_COOKIES_OPTIONS);
 			})
 			.catch(console.warn);
@@ -1726,6 +1846,8 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 GlobalWaitForElement("document.body").then(() => SetStatsDash());
 GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalBadgeProcedure());
+GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
+.then(() => GlobalFavouriteMarketProcedure());
 
 
 window.addEventListener("load", () => {
@@ -1747,8 +1869,6 @@ window.addEventListener("load", () => {
 				  svgBriefcaseSymbol.childNodes[1].setAttribute("stroke", SITES_COLORS[window.location.hostname]);
 		};
 	});
-
-	if (GetCookie("s42_filter") !== "0") GlobalFilterProcedure();
 });
 
 
