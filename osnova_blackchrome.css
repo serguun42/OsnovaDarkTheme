@@ -148,6 +148,7 @@ body .content mark {
 
 .favorite_marker--active .icon {
 	fill: #888;
+	stroke: #888;
 }
 
 .content-editorial-tick {

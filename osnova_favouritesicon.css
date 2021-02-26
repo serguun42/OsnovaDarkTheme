@@ -10,6 +10,7 @@
 
 .favorite_marker--active .icon {
 	fill: #e84755;
+	stroke: #e84755;
 }
 
 .favorite_marker--active .favorite_marker__title {
@@ -22,4 +23,5 @@
 
 .favorite_marker:hover:not(.favorite_marker--just_clicked) .icon {
 	fill: #e84755;
+	stroke: #e84755;
 }

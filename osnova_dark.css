@@ -2484,6 +2484,7 @@ background-color: var(--lighter-color)!important;
 
 .favorite_marker:not(.favorite_marker--active) .icon {
 	fill: #888888;
+	stroke: #888888;
 }
 
 .favorite_marker__count, .favorite_marker__title {
