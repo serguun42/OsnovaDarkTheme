@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      8.7.1-A (2021-02-23)
+// @version      9.0.1-A (2021-02-28)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
 // @match        https://tjournal.ru/*
 // @match        https://dtf.ru/*
 // @match        https://vc.ru/*
-// @updateURL    https://serguun42.ru/tampermonkey/osnova_dark_theme_2.js
-// @downloadURL  https://serguun42.ru/tampermonkey/osnova_dark_theme_2.js
+// @updateURL    https://serguun42.ru/tampermonkey/osnova_dark_theme.js
+// @downloadURL  https://serguun42.ru/tampermonkey/osnova_dark_theme.js
 // @run-at       document-start
 // @grant        none
 // @description  The best users' dark theme for TJ, vc.ru, DTF. Custom subthemes and more!
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "8.7.1",
+	VERSION = "9.0.1",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -90,6 +90,11 @@ const
 			name: "gay",
 			default: false,
 			priority: 6
+		},
+		{
+			name: "no_themes",
+			default: false,
+			priority: 1
 		}
 	],
 	ALL_MODULES = [
@@ -304,20 +309,25 @@ const SetMode = iNightMode => {
 
 	GlobalWaitForElement("document.body").then(() => {
 		if (iNightMode)
-			document.body.classList.add("s42-is-dark")
+			document.body.classList.add("s42-is-dark");
 		else
-			document.body.classList.remove("s42-is-dark")
+			document.body.classList.remove("s42-is-dark");
 	});
 
 	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}.css`, 1, "site");
-	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${iNightMode ? "dark" : "light"}.css`, 2, "osnova");
 
-	if (iNightMode) {
-		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}_dark.css`, 3, "site");
 
-		GlobalWaitForElement(`meta[name="theme-color"]`).then(() =>
-			QS(`meta[name="theme-color"]`).setAttribute("content", "#232323")
-		);
+	if (GetCookie("s42_no_themes") !== "1") {
+		if (iNightMode) {
+			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_dark.css`, 2, "osnova");
+			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}_dark.css`, 3, "site");
+
+			GlobalWaitForElement(`meta[name="theme-color"]`).then(() =>
+				QS(`meta[name="theme-color"]`).setAttribute("content", "#232323")
+			);
+		} else {
+			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_light.css`, 2, "osnova");
+		};
 	};
 
 
@@ -331,6 +341,8 @@ const SetMode = iNightMode => {
 
 		if (addon.dark === true && !iNightMode) return false;
 		if (addon.light === true && iNightMode) return false;
+
+		if ((addon.dark || addon.light) && GetCookie("s42_no_themes") === "1") return false;
 
 		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${addon.name}.css`, addon.priority, "additional");
 	});
@@ -555,38 +567,45 @@ else
 
 
 const DEFAULT_COOKIES_OPTIONS = { infinite: true, Path: "/", Domain: window.location.hostname };
-window.GetCookie = GetCookie;
-window.SetCookie = SetCookie;
+const ALL_COOKIES = [
+	"s42_always",
+	"s42_columns_narrow",
+	"s42_covfefe",
+	"s42_blackchrome",
+	"s42_deep_blue",
+	"s42_filter",
+	"s42_gay",
+	"s42_karma",
+	"s42_lastkarmaandsub",
+	"s42_material",
+	"s42_snow_by_neko",
+	"s42_messageslinkdisabled",
+	"s42_defaultscrollers",
+	"s42_monochrome",
+	"s42_qrcode",
+	"s42_turn_off",
+	"s42_ultra_dark",
+	"s42_vbscroller",
+	"s42_editorial",
+	"s42_columns_narrow",
+	"s42_hidesubscriptions",
+	"s42_beautifulfeedposts",
+	"s42_favouritesicon",
+	"s42_favouritemarker",
+	"s42_hideviewsanddate",
+	"s42_newentriesbadge",
+	"s42_donate",
+	"s42_no_themes"
+];
+
+if (RESOURCES_DOMAIN === "localhost") {
+	window.GetCookie = GetCookie;
+	window.SetCookie = SetCookie;
+	window.ManageModule = ManageModule;
+	window.SHOW_COOKIES = () => console.log(ALL_COOKIES.map((cookieName) => `${cookieName}: ${GetCookie(cookieName)}`).join("\n"));
+};
 window.UNLOAD_COOKIES = () => {
-	[
-		"s42_always",
-		"s42_columns_narrow",
-		"s42_covfefe",
-		"s42_blackchrome",
-		"s42_deep_blue",
-		"s42_filter",
-		"s42_gay",
-		"s42_karma",
-		"s42_lastkarmaandsub",
-		"s42_material",
-		"s42_snow_by_neko",
-		"s42_messageslinkdisabled",
-		"s42_defaultscrollers",
-		"s42_monochrome",
-		"s42_qrcode",
-		"s42_turn_off",
-		"s42_ultra_dark",
-		"s42_vbscroller",
-		"s42_editorial",
-		"s42_columns_narrow",
-		"s42_hidesubscriptions",
-		"s42_beautifulfeedposts",
-		"s42_favouritesicon",
-		"s42_favouritemarker",
-		"s42_hideviewsanddate",
-		"s42_newentriesbadge",
-		"s42_donate"
-	].forEach((cookieName) => SetCookie(cookieName, "1", { erase: true, Path: "/", Domain: window.location.hostname }));
+	ALL_COOKIES.forEach((cookieName) => SetCookie(cookieName, "1", { erase: true, Path: "/", Domain: window.location.hostname }));
 };
 
 
@@ -610,25 +629,39 @@ GlobalWaitForElement(".site-header-user").then(() => {
 
 
 			const SWITCHERS_LAYOUT =
-			`<div id="switcher-layout__header">Выбор тем и модулей</div>
+			`<div class="switcher-layout__header">
+				<span>Выбор тем</span>
+				<span class="switcher-layout__header__supporting-text" id="switcher-layout__scroll-to-modules-part">
+					Выбор модулей теперь находится чуть ниже.
+				</span>
+			</div>
 			<ul id="switcher-layout__list">
 				<div class="switcher-layout__list__subheader">Когда включать</div>
 				<li class="switcher-layout__list__item">
 					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="always" data-serguun42-labels data-serguun42-time>
 						<input type="radio" id="always" class="mdl-radio__button" name="time" value="always" data-serguun42-switchers ${GetCookie("s42_always") === "1" ? "checked" : ""}>
-						<span class="mdl-radio__label">Тёмная тема всегда включена</span>
+						<span class="mdl-radio__label">Тёмная тема с дополнениями всегда <b>включена</b></span>
 					</label>
 				</li>
 				<li class="switcher-layout__list__item">
 					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="turn_off" data-serguun42-labels data-serguun42-time>
 						<input type="radio" id="turn_off" class="mdl-radio__button" name="time" value="turn_off" data-serguun42-switchers ${GetCookie("s42_turn_off") === "1" ? "checked" : ""}>
-						<span class="mdl-radio__label">Тёмная тема всегда отключена</span>
+						<span class="mdl-radio__label">Тёмная тема и её дополнения всегда <b>отключены</b></span>
+						<span class="mdl-radio__sub-label">Вместо этого применяется <i>слегка<i> модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.</span>
 					</label>
 				</li>
 				<li class="switcher-layout__list__item">
 					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="usual" data-serguun42-labels data-serguun42-time>
 						<input type="radio" id="usual" class="mdl-radio__button" name="time" value="usual" data-serguun42-switchers ${(GetCookie("s42_always") !== "1" && GetCookie("s42_turn_off") !== "1") ? "checked" : ""}>
-						<span class="mdl-radio__label">По расписанию (после заката)</span>
+						<span class="mdl-radio__label">По расписанию</span>
+						<span class="mdl-radio__sub-label">Выбранная тёмная тема применяется после заката и до восхода, время определяется динамически (солнцестояние – равноденствие – солнцестояние и т.д.)</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="no_themes" data-serguun42-labels data-serguun42-time>
+						<input type="radio" id="no_themes" class="mdl-radio__button" name="time" value="no_themes" data-serguun42-switchers ${(GetCookie("s42_always") !== "1" && GetCookie("s42_turn_off") !== "1" && GetCookie("s42_no_themes") === "1") ? "checked" : ""}>
+						<span class="mdl-radio__label">Не применять никакие темы никогда</span>
+						<span class="mdl-radio__sub-label">Всё так же можно подключить дополнительные модули: красные закладки, Material, прижать боковые колонки и прочее. См. «Выбор модулей»</span>
 					</label>
 				</li>
 				${(Date.now() - parseInt(GetCookie("s42_donate")) || 0) > 86400 * 5 * 1e3 ? `<div class="switcher-layout__list__separator switcher-layout__list__donate"></div>
@@ -684,7 +717,8 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						<span class="mdl-radio__label">Без дополнений к светлой теме</span>
 					</label>
 				</li>
-				<div class="switcher-layout__list__separator"></div>
+				<div class="switcher-layout__list__separator" id="switcher-layout__choosing-modules-part"></div>
+				<div class="switcher-layout__header">Выбор модулей</div>
 				<div class="switcher-layout__list__subheader">Кнопки в левом меню</div>
 				<li class="switcher-layout__list__item">
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="newentriesbadge" data-serguun42-labels>
@@ -1086,6 +1120,7 @@ GlobalWaitForElement(".site-header-user").then(() => {
 					if (e.currentTarget.getAttribute("name") === "time") {
 						SetCookie("s42_always", (e.currentTarget.value === "always" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 						SetCookie("s42_turn_off", (e.currentTarget.value === "turn_off" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
+						SetCookie("s42_no_themes", (e.currentTarget.value === "no_themes" ? 1 : 0).toString(), DEFAULT_COOKIES_OPTIONS);
 
 
 						QS(`[for="ultra_dark"]`).classList.remove("is-checked");
@@ -1105,6 +1140,7 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						ManageModule("covfefe", false);
 						ManageModule("blackchrome", false);
 						ManageModule("monochrome", false);
+						ManageModule("no_themes", false);
 
 
 						if (e.currentTarget.value === "always") {
@@ -1136,6 +1172,14 @@ GlobalWaitForElement(".site-header-user").then(() => {
 									QS(`[value="${addLightModuleName}"]`).checked = true;
 								};
 							});
+
+							QS(`[for="nothing"]`).classList.remove("is-checked");
+							QS(`[value="nothing"]`).checked = false;
+						} else if (e.currentTarget.value === "no_themes") {
+							ManageModule("dark", false);
+							ManageModule(`${SITE}_dark`, false, true);
+							ManageModule("light", false);
+							ManageModule("no_themes", true);
 
 							QS(`[for="nothing"]`).classList.remove("is-checked");
 							QS(`[value="nothing"]`).checked = false;
@@ -1191,6 +1235,10 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						});
 					});
 				})
+			});
+
+			GEBI("switcher-layout__scroll-to-modules-part").addEventListener("click", () => {
+				GEBI("switcher-layout__choosing-modules-part").scrollIntoView({ behavior: "smooth" });
 			});
 		  });
 
@@ -1853,6 +1901,8 @@ GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry
 window.addEventListener("load", () => {
 	windowLoaded = true;
 	GR(GEBI("custom_subsite_css"));
+
+	if (GetCookie("s42_no_themes") === "1") return;
 
 	GlobalWaitForElement("#writing-typograph").then(() => {
 		GEBI("writing-typograph").childNodes[0].setAttribute("fill", SITES_COLORS[window.location.hostname]);

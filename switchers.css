@@ -150,7 +150,7 @@ body:not(.s42-default-scrollers) #switcher-layout--scroller::-webkit-scrollbar-t
 	z-index: 99998;
 }
 
-#switcher-layout__header {
+.switcher-layout__header {
 	display: block;
 	width: 100%;
 	margin: 0 0 24px;
@@ -158,6 +158,24 @@ body:not(.s42-default-scrollers) #switcher-layout--scroller::-webkit-scrollbar-t
 	font-size: 18px;
 	text-transform: uppercase;
 	text-align: center;
+}
+
+.switcher-layout__header__supporting-text {
+	display: block;
+	position: relative;
+
+	margin-top: 8px;
+
+	font-size: 12px;
+	line-height: 1.2em;
+	opacity: 0.5;
+
+	border: none;
+	outline: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+
+	text-transform: none;
 }
 
 #switcher-layout__list {

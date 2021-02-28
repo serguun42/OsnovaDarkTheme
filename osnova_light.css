@@ -1,9 +1,3 @@
-/*
-
-	Everything within this skin for KMTT's/Osnova projects (excluding lines 10-4500 @ osnova.css a.k.a dark-theme.css) is made by @serguun42
-
-*/
-
 :root {
 	--material-theme-gradient-color: #FFF;
 	--current-theme-gradient-color-huge-tabs: #FFF;
@@ -27,14 +21,6 @@
 	top: 8px;
 	left: 0;
 	position: relative;
-}
-
-.main_menu__auth {
-	flex-direction: row;
-}
-
-.main_menu__auth__logged_in img {
-	border-radius: 50%;
 }
 
 .floating_screen_film__title {

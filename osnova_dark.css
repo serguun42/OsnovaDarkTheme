@@ -7179,3 +7179,22 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .content-header-promoted {
 	color: #818181;
 }
+
+
+
+
+.icon.icon--ui_pencil_2 {
+	background-image: url("data:image/svg+xml,%3Csvg version='1.0' xmlns='http://www.w3.org/2000/svg' width='12px' height='12px' viewBox='0 0 1080 1080'%3E%3Cg transform='translate(0,1080) scale(0.1,-0.1)' fill='%23888888'%3E%3Cpath d='M8127 10185 c-155 -29 -303 -94 -426 -185 -69 -51 -1180 -1155 -1190 -1182 -4 -12 2198 -2218 2214 -2218 6 0 269 260 586 578 591 593 624 629 694 777 159 336 132 728 -71 1038 -60 91 -870 910 -989 999 -120 91 -244 149 -390 184 -97 23 -327 28 -428 9z' /%3E%3Cpath d='M3349 5673 c-1334 -1335 -2153 -2162 -2182 -2203 -54 -78 -109 -183 -136 -264 -12 -32 -48 -203 -80 -380 -129 -691 -253 -1374 -264 -1445 -43 -296 164 -566 461 -603 89 -12 89 -12 513 65 1308 238 1313 239 1439 279 89 28 222 98 303 159 37 28 1025 1007 2195 2174 l2127 2124 -1115 1115 c-613 614 -1117 1116 -1120 1116 -3 0 -967 -962 -2141 -2137z' /%3E%3C/g%3E%3C/svg%3E");
+	background-size: contain;
+	background-position: center center;
+	
+	vertical-align: -1px;
+}
+
+.icon.icon--ui_pencil_2 use {
+	opacity: 0;
+}
+
+.site-names__toggle {
+	background-image: url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 8L13 1H1Z' fill='%23888' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}

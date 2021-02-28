@@ -1,0 +1,88 @@
+:root {
+	--switcher-layout-background: #FFF;
+	--switcher-layout-text: #222;
+	--gay-theme-flag: url('https://serguun42.ru/tampermonkey/osnova/svgs/flag.svg');
+	--current-gay-theme-entry-background: rgba(255, 255, 255, 0.9);
+	--gay-theme-icon-mouth: url('https://serguun42.ru/tampermonkey/osnova/svgs/mouth--color.svg');
+}
+
+.main_menu__logo {
+	background-size: 100%;
+	width: 34px;
+	height: 34px;
+	top: 8px;
+	left: 0;
+	position: relative;
+}
+
+.feed__item:hover,
+.content-feed:hover .content-footer  {
+	z-index: 3;
+}
+
+.feed__item:hover .quiz,
+.feed__item .quiz:hover {
+	z-index: 4;
+}
+
+.vote--comment .vote__users,
+.vote--content .vote__users {
+	z-index: 6;
+}
+
+.vote--comment .vote__users__item:before {
+	width: calc(66% + 10px);
+}
+
+.widget_wrapper .etc_control {
+	display: none;
+}
+
+.blogs_entries .etc_control {
+	display: none;
+}
+
+#s42-feed-link-new-entries-badge {
+	display: inline;
+	position: relative;
+
+	margin: 0 0 0 auto;
+	padding: 2px 8px;
+
+	font-family: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 1em;
+	white-space: nowrap;
+
+	border-radius: 8px;
+	background-color: var(--primary-color--for-badge);
+	color: #FFF;
+}
+
+#s42-feed-link-new-entries-badge.is-hidden {
+	display: none;
+}
+
+#s42-feed-link-new-entries-badge.is-hidden-by-user {
+	display: none;
+}
+
+#s42-editorial-link-btn .icon.icon--ui_check,
+.sidebar-tree-list-item__link[href="/editorial"] .icon.icon--ui_check {
+	width: 14px !important;
+	padding: 0 5px !important;
+}
+
+.sidebar-tree-list-item__child-item--with-badge::after {
+	background-color: var(--primary-color--for-badge) !important;
+}
+
+.s42-has-counter .sidebar-tree-list-item__child-item--with-badge::after {
+	content: none !important;
+	background-color: transparent !important;
+}
+
+.sidebar-tree-list-item__name {
+	line-height: 1.4em;
+}
