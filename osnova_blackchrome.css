@@ -158,3 +158,13 @@ body .content mark {
 .entry_flash {
 	border-color: #888;
 }
+
+
+
+
+
+
+.comments__item__children {
+	border-left: 1px dashed #3e3e3e;
+}
+

@@ -409,3 +409,12 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 .remove-tool--confirm {
 	background-color: #444 !important;
 }
+
+
+
+
+
+
+.comments__item__children {
+	border-left: 1px dashed #3e3e3e;
+}

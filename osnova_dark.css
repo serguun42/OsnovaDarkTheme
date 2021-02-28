@@ -1640,7 +1640,7 @@ background-color: var(--lighter-color)!important;
 }
 
 .comments__item__children {
-	border-left: 1px dashed #3e3e3e;
+	border-left: 1px dashed #555;
 }
 
 .comments__item__expand, .comments__item__more--inner {
