@@ -616,3 +616,17 @@
 [module="module.comments_admin"] + .feed .profile_comment_self:hover {
 	box-shadow: 0 2px 6px 1px var(--material-theme-shadow-color);
 }
+
+.content-stats {
+	margin-bottom: 24px;
+
+	border-radius: 0 0 var(--br) var(--br);
+	border-left: 1px solid rgba(200, 200, 126, 0.167);
+	border-right: 1px solid rgba(200, 200, 126, 0.167);
+	border-bottom: 1px solid rgba(200, 200, 126, 0.167);
+}
+
+.content-stats ~ .l-entry.l-island-round {
+	border-top-left-radius: var(--br) !important;
+	border-top-right-radius: var(--br) !important;
+}

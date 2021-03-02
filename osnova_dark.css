@@ -6828,7 +6828,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .content-stats {
 	background-color: #333;
-	border-bottom-color: #555;
+	border-color: #555 !important;
 	color: #E1E1E1;
 }
 

@@ -1443,7 +1443,7 @@ html body .ce-redactor a.andropov_link {
 
 .content-stats {
 	background-color: var(--tc4);
-	border-bottom-color: var(--tc5);
+	border-color: var(--tc5) !important;
 }
 
 .gallery-image--with-background .gallery-image__media {

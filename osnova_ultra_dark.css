@@ -370,7 +370,7 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 .content-stats {
 	background-color: #242424;
-	border-bottom-color: #666;
+	border-color: #666 !important;
 }
 
 .gallery-image--with-background .gallery-image__media {
