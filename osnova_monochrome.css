@@ -593,6 +593,29 @@ svg[aria-labelledby="verified"],
 .authorCard__header .andropov_image,
 .comments__item__users .andropov_image.comments__item__user__image,
 .widget_comment__author__avatar,
-.table__content .subsite__avatar img {
+.table__content .subsite__avatar img,
+.v-header-avatar,
+.v-header-cover, .v-header__cover,
+.miniEditor__avatar,
+.content-header-author__name,
+.content-title,
+.content p,
+.comments__item__text p,
+.v-number-change,
+.live__item__text,
+.andropov_image img,
+.andropov_video video,
+.andropov_video .andropov_video__dummy,
+.sidebar-tree-list-item__name,
+.gall__item,
+.gl__image img,
+.live__item__media img,
+.content ol li, .content ul li,
+.content .content-image-caption__title,
+.content .content-image-caption__author {
 	filter: grayscale(1);
+}
+
+.comments_updates .comments_updates__counter {
+	background-color: var(--primary-color);
 }

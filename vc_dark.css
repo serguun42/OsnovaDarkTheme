@@ -1,19 +1,8 @@
 :root {
 	--lighter-color: #F36682;
-	--logo-img-data: url(https://serguun42.ru/tampermonkey/osnova/vc_colored.png);
 }
 
-.site-header-logo {
-	height: 40px;
-	margin: 10px;
-
-	background-image: var(--logo-img-data);
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center;
-	position: relative;
+.site-header .icon.icon--site_logo {
+	color: var(--lighter-color);
 }
 
-#site_logo {
-	visibility: hidden;
-}
