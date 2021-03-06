@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.1.0-A (2021-03-06)
+// @version      9.1.1-A (2021-03-06)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.1.0",
+	VERSION = "9.1.1",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -65,6 +65,11 @@ const
 		{
 			name: "material",
 			default: true,
+			priority: 5
+		},
+		{
+			name: "gray_signs",
+			default: false,
 			priority: 5
 		},
 		{
@@ -522,6 +527,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_karma",
 	"s42_lastkarmaandsub",
 	"s42_material",
+	"s42_gray_signs",
 	"s42_snow_by_neko",
 	"s42_messageslinkdisabled",
 	"s42_defaultscrollers",
@@ -929,6 +935,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 				<div class="switcher-layout__list__separator"></div>
 				<div class="switcher-layout__list__subheader">Другие дополнительные модули</div>
 				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="gray_signs" data-serguun42-labels>
+						<input type="checkbox" id="gray_signs" class="mdl-checkbox__input" ${GetRecord("s42_gray_signs") === "1" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Серые оценки у постов и комментариев</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="snow_by_neko" data-serguun42-labels>
 						<input type="checkbox" id="snow_by_neko" class="mdl-checkbox__input" ${GetRecord("s42_snow_by_neko") === "1" ? "checked" : ""} data-serguun42-switchers>
 						<span class="mdl-checkbox__label">Добавить снег фоном</span>
@@ -1056,6 +1068,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						SetRecord("s42_material", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
 
 						ManageModule("material", e.currentTarget.checked);
+					};
+
+					if (e.currentTarget.id === "gray_signs") {
+						SetRecord("s42_gray_signs", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+
+						ManageModule("gray_signs", e.currentTarget.checked);
 					};
 
 					if (e.currentTarget.id === "snow_by_neko") {

@@ -3,7 +3,6 @@
 :root {
 	--primary-color: #E92832;
 	--primary-color--faded: #E92832AA;
-	--primary-color--faded10: #E928321A;
 	--primary-color--faded26: #E9283242;
 	--primary-color--faded50: #E9283280;
 	--lighter-color: #DA5158;
@@ -38,44 +37,6 @@
 
 .site-header-progressbar__runner {
 	background-color: var(--primary-color) !important;
-}
-
-.vote--content.vote--voted-positive .vote__button--plus,
-.vote--content.vote--voted-negative .vote__button--minus,
-.vote--sum-positive .vote__value,
-.vote--voted-positive .vote__button--plus,
-.vote--voted-positive .vote__button--minus,
-.vote--sum-negative .vote__value,
-.vote--voted-negative .vote__button--plus,
-.vote--voted-negative .vote__button--minus,
-.vote--comment.vote--sum-positive .vote__value .vote__value__v {
-	color: var(--primary-color) !important;
-}
-
-.vote--voted-negative .vote__button--minus .icon,
-.vote--voted-positive .vote__button--plus .icon {
-	fill: var(--primary-color) !important;
-}
-
-.vote .vote__button--minus:hover,
-.vote .vote__button--plus:hover,
-.vote--voted-positive .vote__button--plus,
-.vote--voted-positive .vote__button--minus,
-.vote--voted-negative .vote__button--plus,
-.vote--voted-negative .vote__button--minus,
-.vote .vote__button--plus:hover .icon,
-.vote .vote__button--minus:hover .icon,
-.vote--sum-negative .vote__value {
-	color: var(--lighter-color) !important;
-	fill: var(--lighter-color) !important;
-}
-
-.vote--comment.vote--sum-positive .vote__value,
-.vote--comment.vote--sum-negative .vote__value,
-.profile_comment_favorite .vote--sum-positive .vote__value,
-.profile_comment_favorite .vote--sum-negative .vote__value {
-	color: var(--primary-color);
-	background: var(--primary-color--faded10) !important;
 }
 
 .sidebar-tree-list-item__child-item--active {

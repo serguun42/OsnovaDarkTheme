@@ -3935,11 +3935,10 @@ body:not(.s42-default-scrollers) .inline-dropdown::-webkit-scrollbar {
 
 .andropov_image {
 	opacity: 0.85;
-	background: rgba(255, 255, 255, 0.1);
 }
 
-.pswp__img {
-	background: rgba(255, 255, 255, 0.5);
+.pswp__img:not(.pswp__img--placeholder) {
+	background: rgba(255, 255, 255, 0.42);
 }
 
 .andropov_image--bordered {

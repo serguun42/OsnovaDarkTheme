@@ -1,0 +1,49 @@
+:root .s42-is-dark {
+	--gray-signs-primary-color: #AAAAAA;
+	--gray-signs-primary-background-color: #99999933;
+	--gray-signs-accent-color: #CCCCCC;
+}
+
+:root body:not(.s42-is-dark) {
+	--gray-signs-primary-color: #666666;
+	--gray-signs-primary-background-color: #66666633;
+	--gray-signs-accent-color: #444444;
+}
+
+.vote--content.vote--voted-positive .vote__button--plus,
+.vote--content.vote--voted-negative .vote__button--minus,
+.vote--sum-positive .vote__value,
+.vote--voted-positive .vote__button--plus,
+.vote--voted-positive .vote__button--minus,
+.vote--sum-negative .vote__value,
+.vote--voted-negative .vote__button--plus,
+.vote--voted-negative .vote__button--minus,
+.vote--comment.vote--sum-positive .vote__value .vote__value__v {
+	color: var(--gray-signs-primary-color) !important;
+}
+
+.vote--voted-negative .vote__button--minus .icon,
+.vote--voted-positive .vote__button--plus .icon {
+	fill: var(--gray-signs-primary-color) !important;
+}
+
+.vote .vote__button--minus:hover,
+.vote .vote__button--plus:hover,
+.vote--voted-positive .vote__button--plus,
+.vote--voted-positive .vote__button--minus,
+.vote--voted-negative .vote__button--plus,
+.vote--voted-negative .vote__button--minus,
+.vote .vote__button--plus:hover .icon,
+.vote .vote__button--minus:hover .icon,
+.vote--sum-negative .vote__value {
+	color: var(--gray-signs-accent-color) !important;
+	fill: var(--gray-signs-accent-color) !important;
+}
+
+.vote--comment.vote--sum-positive .vote__value,
+.vote--comment.vote--sum-negative .vote__value,
+.profile_comment_favorite .vote--sum-positive .vote__value,
+.profile_comment_favorite .vote--sum-negative .vote__value {
+	color: var(--gray-signs-primary-color);
+	background: var(--gray-signs-primary-background-color);
+}
