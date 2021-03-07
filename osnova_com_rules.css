@@ -43,7 +43,9 @@
 .spotify-branding,
 .spotify-branding--dtf,
 .spotify-branding--cover,
-.spotify-sidebar-button
+.spotify-sidebar-button,
+.kp-br-top,
+.kp-br-bt
 {
 	display: none !important;
 	visibility: hidden !important;

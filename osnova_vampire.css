@@ -89,3 +89,7 @@
 .quiz__item__voted__count {
 	color: var(--primary-color);
 }
+
+.ui-tab:hover {
+	color: var(--lighter-color);
+}
