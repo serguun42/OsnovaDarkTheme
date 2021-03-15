@@ -93,3 +93,11 @@
 .ui-tab:hover {
 	color: var(--lighter-color);
 }
+
+.quiz__item__check {
+	border-color: var(--primary-color);
+}
+
+.quiz__panel__button__label {
+	border-bottom-color: var(--primary-color--faded26);
+}
