@@ -45,7 +45,8 @@
 .spotify-branding--cover,
 .spotify-sidebar-button,
 .kp-br-top,
-.kp-br-bt
+.kp-br-bt,
+.adviser__toggler
 {
 	display: none !important;
 	visibility: hidden !important;

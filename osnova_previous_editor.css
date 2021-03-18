@@ -1,0 +1,45 @@
+.page--editor .wrapper {
+	padding-top: 0 !important;
+}
+
+.page--editor .wrapper .header {
+	box-shadow: none;
+	order: 0 !important;
+}
+
+.page--editor .wrapper .l-editor {
+	margin-top: 10px !important;
+}
+
+.page--editor .wrapper .header__content,
+.page--editor .wrapper .header__left {
+	flex-direction: row-reverse;
+}
+
+.page--editor .wrapper .header__left {
+	margin-right: unset !important;
+	margin-left: auto !important;
+}
+
+.page--editor .wrapper .header__right {
+	margin-right: auto !important;
+	margin-left: unset !important;
+}
+
+.page--editor .wrapper .header__content .header__left .v-button:not(:last-child) {
+	margin-right: unset;
+	margin-left: 12px;
+}
+
+.page--editor .wrapper .header__content .header__left .v-button.v-button--blue:first-of-type {
+	margin-left: 36px;
+}
+
+.page--editor .wrapper .header__content .header__right .tab:last-child {
+	margin: 0 !important;
+}
+
+.page--editor .wrapper .header__content .header__right .tab__content {
+	top: unset !important;
+	bottom: unset !important;
+}

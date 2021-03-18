@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.1.1-A (2021-03-06)
+// @version      9.1.4-A (2021-03-18)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.1.1",
+	VERSION = "9.1.4",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -95,6 +95,11 @@ const
 		{
 			name: "favouritesicon",
 			default: true,
+			priority: 5
+		},
+		{
+			name: "previous_editor",
+			default: false,
 			priority: 5
 		},
 		{
@@ -177,34 +182,186 @@ const
 };
 
 
+
+
+/** @type {ObserverQueueType[]} */
+const observerQueue = [];
+
+const mainObserber = new MutationObserver((mutations) => {
+	mutations.forEach((mutation) => {
+		const { addedNodes, removedNodes, target, nextSibling, previousSibling } = mutation;
+		const mutatedNodes = [...addedNodes, ...removedNodes, target, nextSibling, previousSibling];
+
+
+		/**
+		 * @param {ObserverQueueType} waitingElemSelector
+		 * @param {HTMLElement} addedNode
+		 * @returns {Boolean}
+		 */
+		const LocalCheckNode = (waitingElemSelector, addedNode, iParent) => {
+			if (!(addedNode instanceof HTMLElement)) return false;
+
+			let atLeastOneMatch = false;
+
+			if (waitingElemSelector.tag) {
+				if (waitingElemSelector.tag === addedNode.tagName.toLowerCase())
+					atLeastOneMatch = true;
+				else
+					return false;
+			}
+
+			if (waitingElemSelector.id) {
+				if (waitingElemSelector.id === addedNode.id)
+					atLeastOneMatch = true;
+				else
+					return false;
+			}
+
+			if (waitingElemSelector.className && waitingElemSelector.className) {
+				if (addedNode.classList.contains(waitingElemSelector.className))
+					atLeastOneMatch = true;
+				else
+					return false;
+			}
+
+			if (waitingElemSelector.attribute && waitingElemSelector.attribute.name) {
+				const gotAttribute = addedNode.getAttribute(waitingElemSelector.attribute.name);
+
+				if (gotAttribute === waitingElemSelector.attribute.value)
+					atLeastOneMatch = true;
+				else
+					return false;
+			}
+
+			if (!atLeastOneMatch) return false;
+
+			if (waitingElemSelector.parent) {
+				const parentCheck = LocalCheckNode(waitingElemSelector.parent, addedNode.parentElement || addedNode.parentNode, 1);
+				return parentCheck;
+			} else
+				return true;
+		};
+
+
+		observerQueue.forEach((waitingElemSelector, waitingElemIndex, waitingElemsArr) => {
+			const foundNode = Array.from(mutatedNodes).find((addedNode) => LocalCheckNode(waitingElemSelector, addedNode));
+
+			if (foundNode && waitingElemSelector.resolver) {
+				waitingElemSelector.resolver(foundNode);
+				waitingElemsArr.splice(waitingElemIndex, 1);
+			};
+		});
+	});
+});
+
+mainObserber.observe(document, {
+	childList: true,
+	subtree: true,
+	attributes: false,
+	characterData: false
+});
+
+let createdIntervals = 0,
+	deletedIntervals = 0;
+
 /**
- * @param {String} iKey
- * @returns {Promise.<HTMLElement>}
+ * @param {() => void} iCallback
+ * @param {Number} iDelay
+ * @returns {Number}
+ */
+const GlobalSetInterval = (iCallback, iDelay) => {
+	if (!iCallback || !iDelay) return -1;
+
+	++createdIntervals;
+	return setInterval(iCallback, iDelay);
+}
+
+/**
+ * @param {Number} iIntervalID
+ */
+const GlobalClearInterval = iIntervalID => {
+	if (iIntervalID < 0) return;
+
+	try {
+		clearInterval(iIntervalID);
+		++deletedIntervals;
+	} catch (e) {
+		console.warn(e);
+	}
+}
+
+/**
+ * @param {String | ObserverQueueType} iKey
+ * @returns {Promise<HTMLElement>}
  */
 const GlobalWaitForElement = iKey => {
-	if (iKey === "document.body") {
-		if (document.body) return Promise.resolve(document.body);
-
-		return new Promise((resolve) => {
-			let interval = setInterval(() => {
-				if (document.body) {
-					clearInterval(interval);
-					resolve(document.body);
-				};
-			}, 50);
+	if (typeof iKey == "object" && iKey.parent)
+		return new Promise(() => {
+			observerQueue.push({
+				...iKey,
+				resolver: resolve
+			});
 		});
-	} else {
-		if (QS(iKey)) return Promise.resolve(QS(iKey));
+
+
+	if (typeof iKey !== "string") return Promise.resolve(null);
+
+	const existing = QS(iKey);
+	if (existing) return Promise.resolve(existing);
+
+
+	/**
+	 * @param {String} iQuery
+	 * @returns {Promise<HTMLElement>}
+	 */
+	const LocalWaitUntilSignleElem = (iQuery) => {
+		const tagName = iQuery.split(/#|\.|\[/)[0],
+			  id = iQuery.match(/#([\w\-]+)/i)?.[1],
+			  className = iQuery.match(/\.([\w\-]+(\.[\w\-]+)*)/)?.[1],
+			  attributeMatch = iQuery.match(/\[([\w\-]+)\=\"([^\"]+)\"\]/i) || [];
+
+		/** @type {ObserverQueueType} */
+		const selectorForQueue = {};
+		if (tagName) selectorForQueue.tag = tagName;
+		if (id) selectorForQueue.id = id;
+		if (className) selectorForQueue.className = className;
+		if (attributeMatch[1] && attributeMatch[2]) selectorForQueue.attribute = { name: attributeMatch[1], value: 	attributeMatch[2] };
+
 
 		return new Promise((resolve) => {
-			let interval = setInterval(() => {
-				if (QS(iKey)) {
-					clearInterval(interval);
-					resolve(QS(iKey));
+			observerQueue.push({
+				...selectorForQueue,
+				resolver: resolve
+			});
+
+
+			setTimeout(() => {
+				const foundQueueItemIndex = observerQueue.findIndex(({resolver}) => resolver === resolve);
+
+				if (foundQueueItemIndex > -1) {
+					observerQueue.splice(foundQueueItemIndex, 1);
+
+					let intervalCounter = 0;					
+					const backupInterval = GlobalSetInterval(() => {
+						const found = QS(iQuery);
+
+						if (found) {
+							GlobalClearInterval(backupInterval);
+							return resolve(found);
+						};
+
+						if (++intervalCounter > 50) {
+							GlobalClearInterval(backupInterval);
+							return resolve(null);
+						}
+					}, 300);
 				};
-			}, 50);
+			}, 1e3);
 		});
 	};
+
+
+	return Promise.race(iKey.split(", ").map(LocalWaitUntilSignleElem));
 };
 
 /**
@@ -381,11 +538,13 @@ const GetMode = iReturning => {
 const SetMode = iNightMode => {
 	if (window.top === window) window.top.S42_DARK_THEME_ENABLED = iNightMode;
 
-	GlobalWaitForElement("document.body").then(() => {
+	GlobalWaitForElement("body").then((body) => {
+		if (!body) return;
+		
 		if (iNightMode)
-			document.body.classList.add("s42-is-dark");
+			body.classList.add("s42-is-dark");
 		else
-			document.body.classList.remove("s42-is-dark");
+			body.classList.remove("s42-is-dark");
 	});
 
 	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}.css`, 1, "site");
@@ -396,15 +555,15 @@ const SetMode = iNightMode => {
 			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_dark.css`, 2, "osnova");
 			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}_dark.css`, 3, "site");
 
-			GlobalWaitForElement(`meta[name="theme-color"]`).then(() =>
-				QS(`meta[name="theme-color"]`).setAttribute("content", "#232323")
-			);
+			GlobalWaitForElement(`meta[name="theme-color"]`).then((meta) => {
+				if (meta) meta.setAttribute("content", "#232323");
+			});
 		} else {
 			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_light.css`, 2, "osnova");
 
-			GlobalWaitForElement(`meta[name="theme-color"]`).then(() =>
-				QS(`meta[name="theme-color"]`).setAttribute("content", SITES_COLORS[window.location.hostname])
-			);
+			GlobalWaitForElement(`meta[name="theme-color"]`).then((meta) => {
+				if (meta) meta.setAttribute("content", SITES_COLORS[window.location.hostname]);
+			});
 		};
 	};
 
@@ -437,14 +596,14 @@ window.CUSTOM_ELEMENTS = CUSTOM_ELEMENTS;
  */
 const ManageModule = (iModuleName, iStatus, iWithoutPrefix = false) => {
 	if (iModuleName === "dark" && iStatus)
-		GlobalWaitForElement("document.body").then(() =>
-			document.body.classList.add("s42-is-dark")
-		);
+		GlobalWaitForElement("body").then((body) => {
+			if (body) body.classList.add("s42-is-dark");
+		});
 
 	if (iModuleName === "light" && iStatus)
-		GlobalWaitForElement("document.body").then(() =>
-			document.body.classList.remove("s42-is-dark")
-		);
+		GlobalWaitForElement("body").then((body) => {
+			if (body) body.classList.remove("s42-is-dark");
+		});
 
 
 	const moduleURL = `https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${(iWithoutPrefix ? "" : "osnova_") + iModuleName}.css`;
@@ -480,6 +639,8 @@ const GlobalAddStyle = (iLink, iPriority, iDataFor = false) => {
 
 	GlobalWaitForElement(`#container-for-custom-elements-${iPriority}`).then(
 		/** @param {HTMLElement} containerToPlace */ (containerToPlace) => {
+			if (!containerToPlace) return;
+
 			containerToPlace.appendChild(stylesNode);
 			CUSTOM_ELEMENTS[iLink] = stylesNode;
 		}
@@ -506,6 +667,8 @@ const GlobalAddScript = (iLink, iPriority, iDataFor = false) => {
 
 	GlobalWaitForElement(`#container-for-custom-elements-${iPriority}`).then(
 		/** @param {HTMLElement} containerToPlace */ (containerToPlace) => {
+			if (!containerToPlace) return;
+
 			containerToPlace.appendChild(scriptNode);
 			CUSTOM_ELEMENTS[iLink] = scriptNode;
 		}
@@ -542,6 +705,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_beautifulfeedposts",
 	"s42_favouritesicon",
 	"s42_favouritemarker",
+	"s42_previous_editor",
 	"s42_hideviewsanddate",
 	"s42_newentriesbadge",
 	"s42_donate",
@@ -627,7 +791,10 @@ if (RESOURCES_DOMAIN === "localhost") {
 	window.SetCookie = SetCookie;
 	window.GetRecord = GetRecord;
 	window.SetRecord = SetRecord;
+	window.observerQueue = observerQueue;
+	window.GlobalWaitForElement = GlobalWaitForElement;
 	window.ManageModule = ManageModule;
+	window.GetIntervals = () => ({createdIntervals, deletedIntervals});
 	window.SHOW_COOKIES = () => console.log(ALL_RECORDS_NAMES.map((recordName) => `${recordName}: ${GetCookie(recordName)}`).join("\n"));
 	window.SHOW_STORAGE = () => console.log(ALL_RECORDS_NAMES.map((recordName) => `${recordName}: ${localStorage.getItem(recordName)}`).join("\n"));
 };
@@ -640,67 +807,12 @@ window.UNLOAD_STORAGE = () => {
 
 
 
+GR(QS(".l-page__header > style"));
 
 
-const BOTS_RULES = {
-	processingRules: false,
-	rulesDone: false,
-	/** @type {Array.<RegExp>} */
-	REGEXP_RULES: new Array(),
-	/** @type {Array.<RegExp>} */
-	LINKS: new Array(),
-	REPLACEMENTS: {
-		RU_EN: {
-			"о": "o",
-			"О": "O",
-			"Т": "T",
-			"Н": "H",
-			"Р": "P",
-			"р": "p",
-			"М": "M",
-			"а": "a",
-			"А": "A",
-			"В": "B",
-			"х": "x",
-			"Х": "X",
-			"К": "K",
-			"у": "y",
-			"е": "e",
-			"Е": "E",
-			"с": "c",
-			"С": "C",
-			"З": "3",
-		},
-		EN_RU: {
-			"o": "о",
-			"O": "О",
-			"T": "Т",
-			"H": "Н",
-			"P": "Р",
-			"p": "р",
-			"M": "М",
-			"a": "а",
-			"A": "А",
-			"B": "В",
-			"x": "х",
-			"X": "Х",
-			"K": "К",
-			"y": "у",
-			"e": "е",
-			"E": "Е",
-			"c": "с",
-			"C": "С",
-			"З": "3",
-		}
-	}
-};
+GlobalWaitForElement("body").then((body) => {
+	if (!body) return;
 
-
-
-GR(GEBI("custom_subsite_css"));
-
-
-GlobalWaitForElement("document.body").then(() => {
 	const maxPriority = ALL_MODULES.reduce((accumulator, moduleSpec) => {
 		if (moduleSpec.priority > accumulator)
 			return moduleSpec.priority;
@@ -708,14 +820,13 @@ GlobalWaitForElement("document.body").then(() => {
 			return accumulator;
 	}, 0);
 
-
 	for (let i = 0; i <= maxPriority; i++) {
 		if (!GEBI("container-for-custom-elements-" + i)) {
 			const container = document.createElement("div");
 				  container.id = "container-for-custom-elements-" + i;
 				  container.dataset.author = "serguun42";
 
-			document.body.appendChild(container);
+			body.appendChild(container);
 		};
 	};
 });
@@ -741,8 +852,8 @@ const customDataContainer = document.createElement("div");
 	  customDataContainer.id = "custom-data-container";
 	  customDataContainer.className = "custom-data-container--for-big-header";
 
-GlobalWaitForElement(".site-header-user").then(() => {
-	QS(".site-header-user").after(customDataContainer);
+GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
+	siteHeaderUser.after(customDataContainer);
 
 
 	const switchersBtn = document.createElement("div");
@@ -878,13 +989,7 @@ GlobalWaitForElement(".site-header-user").then(() => {
 					</label>
 				</li>
 				<div class="switcher-layout__list__separator"></div>
-				<div class="switcher-layout__list__subheader">Настройки ленты</div>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="filter" data-serguun42-labels title="Такие как «Прошу о помощи», стихи и прочее">
-						<input type="checkbox" id="filter" class="mdl-checkbox__input" ${GetRecord("s42_filter") !== "0" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Скрывать в ленте посты от ботов</span>
-					</label>
-				</li>
+				<div class="switcher-layout__list__subheader">Настройки ленты и постов</div>
 				<li class="switcher-layout__list__item">
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="beautifulfeedposts" data-serguun42-labels>
 						<input type="checkbox" id="beautifulfeedposts" class="mdl-checkbox__input" ${GetRecord("s42_beautifulfeedposts") !== "0" ? "checked" : ""} data-serguun42-switchers>
@@ -901,6 +1006,12 @@ GlobalWaitForElement(".site-header-user").then(() => {
 					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="favouritemarker" data-serguun42-labels>
 						<input type="checkbox" id="favouritemarker" class="mdl-checkbox__input" ${GetRecord("s42_favouritemarker") !== "0" ? "checked" : ""} data-serguun42-switchers>
 						<span class="mdl-checkbox__label">Количество закладок в постах</span>
+					</label>
+				</li>
+				<li class="switcher-layout__list__item">
+					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="previous_editor" data-serguun42-labels>
+						<input type="checkbox" id="previous_editor" class="mdl-checkbox__input" ${GetRecord("s42_previous_editor") === "1" ? "checked" : ""} data-serguun42-switchers>
+						<span class="mdl-checkbox__label">Старое оформление редактора постов</span>
 					</label>
 				</li>
 				<div class="switcher-layout__list__separator"></div>
@@ -1088,12 +1199,6 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						ManageModule("columns_narrow", e.currentTarget.checked);
 					};
 
-					if (e.currentTarget.id === "filter") {
-						SetRecord("s42_filter", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						if (e.currentTarget.checked) GlobalFilterProcedure();
-					};
-
 					if (e.currentTarget.id === "gay") {
 						SetRecord("s42_gay", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 
@@ -1152,6 +1257,17 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						SetRecord("s42_favouritemarker", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 
 						addFavouriteMarkerFlag = !!e.currentTarget.checked;
+
+						if (addFavouriteMarkerFlag)
+							GlobalStartFavouriteMarkerProcedure();
+						else
+							GlobalStopFavouriteMarkerProcedure();
+					};
+
+					if (e.currentTarget.id === "previous_editor") {
+						SetRecord("s42_previous_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+
+						ManageModule("previous_editor", e.currentTarget.checked);
 					};
 
 					if (e.currentTarget.id === "messageslinkdisabled") {
@@ -1178,6 +1294,11 @@ GlobalWaitForElement(".site-header-user").then(() => {
 						SetRecord("s42_newentriesbadge", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 
 						addBadgeFlag = !!e.currentTarget.checked;
+
+						if (addBadgeFlag)
+							GlobalStartBadgeProcedure();
+						else
+							GlobalStopBadgeProcedure();
 					};
 
 					if (e.currentTarget.id === "editorial") {
@@ -1406,29 +1527,25 @@ const GlobalSetSidebarItemsStyle = iStyle => {
 	});
 };
 
+if (GetRecord("s42_messageslinkdisabled") !== "0")
+	GlobalWaitForElement(".sidebar").then(() => GlobalSetSidebarItemsStyle("none"));
+
 const GlobalSetScrollers = iScrollersMode => {
 	if (iScrollersMode === "default") {
-		GlobalWaitForElement("document.body").then(() =>
-			document.body.classList.add("s42-default-scrollers")
-		);
+		GlobalWaitForElement("body").then((body) => {
+			if (body) body.classList.add("s42-default-scrollers");
+		});
 	} else {
-		GlobalWaitForElement("document.body").then(() =>
-			document.body.classList.remove("s42-default-scrollers")
-		);
+		GlobalWaitForElement("body").then((body) => {
+			if (body) body.classList.remove("s42-default-scrollers");
+		});
 	};
 };
 
-if (GetRecord("s42_messageslinkdisabled") !== "0") {
-	GlobalWaitForElement(".sidebar").then(() => GlobalSetSidebarItemsStyle("none"));
-};
-
-if (GetRecord("s42_defaultscrollers") === "1") {
-	GlobalSetScrollers("default");
-};
+if (GetRecord("s42_defaultscrollers") === "1") GlobalSetScrollers("default");
 
 const GlobalPlaceEditorialButton = () => {
-	GlobalWaitForElement(`.sidebar-tree-list-item[href="/m"]`).then(() => {
-		const messengerButton = QS(`.sidebar-tree-list-item[href="/m"]`);
+	GlobalWaitForElement(`.sidebar-tree-list-item[href="/m"]`).then((messengerButton) => {
 		if (!messengerButton) return console.warn("No messenger button!");
 
 
@@ -1471,221 +1588,15 @@ const GlobalPlaceEditorialButton = () => {
 	});
 };
 
-if (GetRecord("s42_editorial") === "1") {
-	GlobalPlaceEditorialButton();
-};
-
-const GlobalFilterProcedure = () => {
-	new Promise((resolve, reject) => {
-		if (BOTS_RULES.rulesDone) {
-			return resolve();
-		};
-
-		if (BOTS_RULES.processingRules) {
-			let gettingReadyIterval = setInterval(() => {
-				if (BOTS_RULES.rulesDone) {
-					window.clearInterval(gettingReadyIterval);
-					return resolve();
-				};
-			}, 100);
-
-			return;
-		};
+if (GetRecord("s42_editorial") === "1") GlobalPlaceEditorialButton();
 
 
+let addBadgeFlag = (GetRecord("s42_newentriesbadge") !== "0"),
+	OnSidebarHomeListener = null;
 
-		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_style.css`, 0, "osnova");
-
-		BOTS_RULES.processingRules = true;
-		fetch(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_filter_rules.json`, {
-			method: "GET",
-			mode: "cors",
-			credentials: "omit"
-		})
-		.then((response) => response.json())
-		.then((jsonRules) => {
-			jsonRules.RAW_TEXT_RULES.forEach((rawRule) => {
-				let newRule = new String();
-
-				rawRule.split("").forEach((letter) => {
-					if (letter === " ") {
-						newRule += "\\s";
-					} else if (letter in BOTS_RULES.REPLACEMENTS.RU_EN) {
-						newRule += `[${letter}${BOTS_RULES.REPLACEMENTS.RU_EN[letter]}]{1}`;
-					} else if (letter in BOTS_RULES.REPLACEMENTS.EN_RU) {
-						newRule += `[${letter}${BOTS_RULES.REPLACEMENTS.EN_RU[letter]}]{1}`;
-					} else {
-						newRule += letter;
-					};
-				});
-
-				BOTS_RULES.REGEXP_RULES.push(new RegExp(newRule, "gmi"));
-			});
-
-
-			jsonRules.RAW_LINKS_RULES.forEach((rawLinkRule) =>
-				BOTS_RULES.LINKS.push(new RegExp(rawLinkRule, "gi"))
-			);
-
-			BOTS_RULES.rulesDone = true;
-
-			resolve();
-		}).catch((e) => reject(e));
-	}).then(() => {
-		QSA(`.content-feed[air-module="module.entry"]:not(.content-feed--s42-seen)`).forEach((feedEntry) => {
-			let removeFlag = false,
-				removeCount = 0;
-
-			feedEntry.classList.add("content-feed--s42-seen");
-
-
-			let header = feedEntry.querySelector(".content-header");
-
-			if (!header)
-				header = feedEntry.querySelector(".content-header--short");
-
-			if (header) {
-				if (header.innerText)
-					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
-						if (rule.test(header.innerText)) {
-							removeCount++;
-							removeFlag = `HEADER:/${rule.source}/${rule.flags}`;
-						};
-					});
-			};
-
-
-			let paragraphs = Array.from(feedEntry.querySelectorAll(".content p"));
-
-			paragraphs.forEach((paragraph) => {
-				if (paragraph.innerText)
-					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
-						if (rule.test(paragraph.innerText)) {
-							removeCount++;
-							removeFlag = `PARAGRAPH:/${rule.source}/${rule.flags}`;
-						};
-					});
-			});
-
-
-			let links = Array.from(feedEntry.querySelectorAll(".content a"));
-
-
-			links.forEach((link) => {
-				let href = link.getAttribute("href");
-
-				if (href)
-					BOTS_RULES.LINKS.forEach((linkRule) => {
-						if (linkRule.test(href)) {
-							removeCount += 2;
-							removeFlag = `LINK:/${linkRule.source}/${linkRule.flags}`;
-						};
-					});
-			});
-
-
-
-			if (removeFlag && removeCount > 1) {
-				let hiddenMessage = document.createElement("p");
-					hiddenMessage.className = "content-feed__s42-message";
-					hiddenMessage.innerHTML = `<span><a href="${feedEntry.querySelector(".content-feed__link").getAttribute("href")}">Пост</a> скрыт фильтрами тем.</span>`;
-
-				feedEntry.classList.add("content-feed--s42-filtered");
-				feedEntry.querySelector(".content").appendChild(hiddenMessage);
-
-
-				let complaintUserID	= parseInt(feedEntry.querySelector(".content-header-author").getAttribute("href").replace(`https://${window.location.hostname}/u/`, "")),
-					complaintPostID = parseInt(feedEntry.querySelector(".content-feed__link").getAttribute("href").replace(new RegExp(`https\\:\\/\\/${SITE}\\.ru\\/([\\w-\\d]+\\/){0,2}`, ""), ""));
-
-				if (isNaN(complaintUserID)) {
-					complaintUserID	= parseInt(feedEntry.querySelector(".content-header-author--user").getAttribute("href").replace(`https://${window.location.hostname}/u/`, ""));
-				};
-
-				if (isNaN(complaintPostID) | isNaN(complaintUserID)) return;
-			};
-		});
-
-
-		QSA(`.comments__item__space:not(.comments__item__space--s42-seen)`).forEach((commentSpace) => {
-			let removeFlag = false,
-				removeCount = 0;
-
-			commentSpace.classList.add("comments__item__space--s42-seen");
-
-
-			let text = commentSpace.querySelector(".comments__item__text");
-
-			if (text) {
-				if (text.innerText) {
-					BOTS_RULES.REGEXP_RULES.forEach((rule) => {
-						if (rule.test(text.innerText)) {
-							removeCount++;
-							removeFlag = `COMMENT_TEXT:/${rule.source}/${rule.flags}`;
-						};
-					});
-				};
-			};
-
-
-			let links = Array.from(commentSpace.querySelectorAll("a"));
-
-
-			links.forEach((link) => {
-				let href = link.getAttribute("href");
-
-				if (href)
-					BOTS_RULES.LINKS.forEach((linkRule) => {
-						if (linkRule.test(href)) {
-							removeCount += 2;
-							removeFlag = `COMMENT_LINK:/${linkRule.source}/${linkRule.flags}`;
-						};
-					});
-			});
-
-
-
-			if (removeFlag && removeCount > 1) {
-				let hiddenMessage = document.createElement("p");
-					hiddenMessage.className = "comments__item__space__s42-message";
-
-
-				let hiddenMessageShow = document.createElement("span");
-					hiddenMessageShow.innerText = "Комментарий";
-					hiddenMessageShow.className = "comments__item__space__s42-message--show-button";
-					hiddenMessageShow.addEventListener("click", (e) => {
-						commentSpace.classList.remove("comments__item__space--s42-filtered");
-						GR(e.currentTarget.parentElement || e.currentTarget.parentNode);
-					});
-
-				hiddenMessage.append(hiddenMessageShow);
-
-
-				let hiddenMessageSpan = document.createElement("span");
-					hiddenMessageSpan.innerText = " скрыт фильтрами тем.";
-
-				hiddenMessage.append(hiddenMessageSpan);
-
-
-				commentSpace.classList.add("comments__item__space--s42-filtered");
-				commentSpace.appendChild(hiddenMessage);
-			};
-		});
-	}).catch(console.warn);
-};
-
-if (GetRecord("s42_filter") !== "0") {
-	GlobalFilterProcedure();
-};
-
-let addBadgeFlag = (GetRecord("s42_newentriesbadge") !== "0");
-
-const GlobalBadgeProcedure = () => {
-	let startedBadgeProcedure = false;
-
+const GlobalStartBadgeProcedure = () => {
 	const LocalStartBadgeProcedure = () => {
-		if (startedBadgeProcedure) return;
-		startedBadgeProcedure = true;
-
+		if (!!OnSidebarHomeListener || !addBadgeFlag) return;
 
 		try {
 			const newEntriesModule = Air.get("module.new_entries");
@@ -1705,7 +1616,7 @@ const GlobalBadgeProcedure = () => {
 
 
 			newEntriesModule.on("Unread count changed", (count) => {
-				if (!startedBadgeProcedure) return;
+				if (!badge) return;
 
 				if (count) {
 					badge.classList.remove("is-hidden");
@@ -1733,50 +1644,49 @@ const GlobalBadgeProcedure = () => {
 			QS(".sidebar-tree-list-item").addEventListener("click", LocalSidebarListItemClickListener);
 
 
-			const checkForDisablingInterval = setInterval(() => {
-				if (!addBadgeFlag) {
-					window.clearInterval(checkForDisablingInterval);
-					newEntriesModule.off("Unread count changed");
-					document.body.classList.remove("s42-has-counter");
-					QS(".sidebar-tree-list-item").removeEventListener("click", LocalSidebarListItemClickListener);
-					GR(badge);
-					startedBadgeProcedure = false;
-				};
-			}, 1e3);
+			OnSidebarHomeListener = () => {
+				newEntriesModule.off("Unread count changed");
+				document.body.classList.remove("s42-has-counter");
+				QS(".sidebar-tree-list-item").removeEventListener("click", LocalSidebarListItemClickListener);
+				GR(badge);
+			};
 		} catch (e) {
 			console.warn(e);
 		};
 	};
 
-	setInterval(() => {
+	setTimeout(() => {
 		if (addBadgeFlag) {
 			if (windowLoaded) {
 				LocalStartBadgeProcedure();
 			} else {
-				window.addEventListener("load", () => {
-					setTimeout(() => LocalStartBadgeProcedure(), 2e3);
-				});
+				window.addEventListener("load", () => LocalStartBadgeProcedure());
 			};
 		};
 	}, 250);
 };
 
-let addFavouriteMarkerFlag = (GetRecord("s42_favouritemarker") !== "0");
+const GlobalStopBadgeProcedure = () => {
+	if (OnSidebarHomeListener && typeof OnSidebarHomeListener === "function") {
+		OnSidebarHomeListener();
+		OnSidebarHomeListener = null;
+	}
+};
 
-const GlobalFavouriteMarketProcedure = () => {
-	let startedFavouriteMarketProcedure = false;
 
-	const LocalFavouriteMarketProcedure = () => {
-		if (startedFavouriteMarketProcedure) return;
-		startedFavouriteMarketProcedure = true;
+let addFavouriteMarkerFlag = (GetRecord("s42_favouritemarker") !== "0"),
+	addingFavouriteMarkerInterval = -1;
+
+const GlobalStartFavouriteMarkerProcedure = () => {
+	const LocalFavouriteMarkerProcedure = () => {
+		if (addingFavouriteMarkerInterval > -1) return;
 
 
 		let lastURL = "";
 
-		const urlChangeInterval = setInterval(() => {
+		addingFavouriteMarkerInterval = GlobalSetInterval(() => {
 			if (!addFavouriteMarkerFlag) {
-				startedFavouriteMarketProcedure = false;
-				window.clearInterval(urlChangeInterval);
+				if (addingFavouriteMarkerInterval > -1) GlobalClearInterval(addingFavouriteMarkerInterval);
 				return;
 			};
 
@@ -1848,21 +1758,29 @@ const GlobalFavouriteMarketProcedure = () => {
 					console.warn("Cannot place favourites counter", e);
 				};
 			});
-		}, 200);
+		}, 300);
 	};
 
-	setInterval(() => {
+	setTimeout(() => {
 		if (addFavouriteMarkerFlag) {
 			if (windowLoaded) {
-				LocalFavouriteMarketProcedure();
+				LocalFavouriteMarkerProcedure();
 			} else {
-				window.addEventListener("load", () => {
-					setTimeout(() => LocalFavouriteMarketProcedure(), 2e3);
-				});
+				window.addEventListener("load", () => LocalFavouriteMarkerProcedure());
 			};
 		};
 	}, 250);
 };
+
+const GlobalStopFavouriteMarkerProcedure = () => {
+	if (addingFavouriteMarkerInterval > -1) {
+		try {
+			GlobalClearInterval(addingFavouriteMarkerInterval);
+		} catch (e) {}
+	};
+
+	addingFavouriteMarkerInterval = -1;
+}
 
 /**
  * @param {Boolean} [iSkipInitial=false]
@@ -1883,7 +1801,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 		setTimeout(() =>
 			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css?id=${window.__delegated_data?.["module.auth"]?.["id"] || "-" + VERSION}&name=${encodeURIComponent(window.__delegated_data?.["module.auth"]?.["name"] || "-" + VERSION)}&site=${SITE}&version=${VERSION}&modules=${customModulesEncoded}`, 0, "osnova")
-		, 1e3);
+		, 2e3);
 	};
 
 
@@ -2015,52 +1933,41 @@ const SetStatsDash = (iSkipInitial = false) => {
 		if (windowLoaded)
 			setTimeout(LocalFetch, 2e3);
 		else
-			window.addEventListener("load", () =>
-				setTimeout(LocalFetch, 2e3)
-			);
+			window.addEventListener("load", () => setTimeout(LocalFetch, 2e3));
 	});
 };
 
 
-GlobalWaitForElement("document.body").then(() => SetStatsDash());
-GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalBadgeProcedure());
+GlobalWaitForElement("body").then(() => SetStatsDash());
+GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalStartBadgeProcedure());
 GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
-.then(() => GlobalFavouriteMarketProcedure());
+.then(() => GlobalStartFavouriteMarkerProcedure());
 
 
 window.addEventListener("load", () => {
 	windowLoaded = true;
-	GR(GEBI("custom_subsite_css"));
+	GR(QS(".l-page__header > style"));
 
 	if (GetRecord("s42_no_themes") === "1") return;
 
 	setTimeout(() => {
 		const primaryColorVariable = getComputedStyle(document.documentElement).getPropertyValue("--primary-color");
 
-		GlobalWaitForElement("#writing-typograph").then(() => {
-			GEBI("writing-typograph").childNodes[0].setAttribute("fill", primaryColorVariable || SITES_COLORS[window.location.hostname]);
+		GlobalWaitForElement("#writing-typograph").then((writingTypograph) => {
+			if (writingTypograph)
+				writingTypograph.childNodes[0].setAttribute("fill", primaryColorVariable || SITES_COLORS[window.location.hostname]);
 		});
 
 		GlobalWaitForElement("#andropov_play_default").then(() => {
 			if (window.S42_DARK_THEME_ENABLED) {
-				const svgSymbol = GEBI("andropov_play_default");
-					svgSymbol.childNodes[0].setAttribute("fill", "rgba(50,50,50,0.7)");
-					svgSymbol.childNodes[1].setAttribute("fill", primaryColorVariable || SITES_COLORS[window.location.hostname]);
+				const andropovPlayDefaultSVG = GEBI("andropov_play_default");
+				if (andropovPlayDefaultSVG) andropovPlayDefaultSVG.childNodes[0].setAttribute("fill", "rgba(50,50,50,0.7)");
+				if (andropovPlayDefaultSVG) andropovPlayDefaultSVG.childNodes[1].setAttribute("fill", primaryColorVariable || SITES_COLORS[window.location.hostname]);
 
-				const svgBriefcaseSymbol = GEBI("ui_briefcase");
-					svgBriefcaseSymbol.childNodes[0].setAttribute("stroke", primaryColorVariable || SITES_COLORS[window.location.hostname]);
-					svgBriefcaseSymbol.childNodes[1].setAttribute("stroke", primaryColorVariable || SITES_COLORS[window.location.hostname]);
+				const briefcaseSVG = GEBI("ui_briefcase");
+				if (briefcaseSVG) briefcaseSVG.childNodes[0].setAttribute("stroke", primaryColorVariable || SITES_COLORS[window.location.hostname]);
+				if (briefcaseSVG) briefcaseSVG.childNodes[1].setAttribute("stroke", primaryColorVariable || SITES_COLORS[window.location.hostname]);
 			};
 		});
 	}, 2e3);
 });
-
-
-GlobalWaitForElement("document.body").then(() =>
-	document.addEventListener("DOMSubtreeModified", () => {
-		GR(GEBI("custom_subsite_css"));
-
-		if (GetRecord("s42_filter") !== "0")
-			GlobalFilterProcedure();
-	})
-);

@@ -457,11 +457,6 @@
 .page.page--editor .header .tab__content {
 	border-radius: var(--br);
 	transition: box-shadow .2s ease-in-out 0s;
-	box-shadow: 0 3px 5px 0 var(--material-theme-shadow-color);
-}
-
-.page.page--editor .header .tab__content:hover {
-	box-shadow: 0 5px 10px 2px var(--material-theme-shadow-color);
 }
 
 .restriction.layout--bg,
