@@ -685,6 +685,14 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	line-height: 1.4em;
 }
 
+.sidebar-tree-list-item__child-item.sidebar-tree-list-item__child-item--active::before {
+	background-color: var(--lighter-color) !important;
+}
+
+.sidebar-tree-list-item:first-of-type .sidebar-tree-list-item__link:not(:only-child):hover {
+	background-color: #EAEAEA !important;
+	border-radius: 8px 0 0 8px;
+}
 
 
 
@@ -706,4 +714,60 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .content-feed[air-module="module.entry"] .content__thanks,
 .content-feed[air-module="module.entry"] .content__updating {
 	margin: 8px 0 12px;
+}
+
+
+
+
+
+.v-split-button__select::before,
+.v-split-button__select:hover {
+	background-color: var(--primary-color--faded26);
+}
+
+.v-split-button__main:hover {
+	background-color: var(--primary-color--faded26);
+	border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.v-split-button__main:only-child:hover {
+	border-radius: var(--border-radius);
+}
+
+.v-split-button--selecting .v-split-button__select {
+	background-color: var(--primary-color--faded50);
+}
+
+.v-split-button-option:hover {
+	background-color: var(--primary-color--faded26);
+}
+
+.site-header-user-profile__toggle:hover {
+	opacity: 1;
+	color: var(--primary-color);
+}
+
+.v-split-button__dropdown:hover {
+	overflow: hidden;
+}
+
+#ui_diamond path {
+	fill: var(--primary-color) !important;
+}
+
+#ui_briefcase path,
+#ui_flag2 path {
+	stroke: var(--primary-color) !important;
+}
+
+
+.v-button.v-button--default:hover {
+	background-color: var(--primary-color--faded26);
+}
+
+.page.page--editor .v-button.v-button--blue:hover,
+.v-header__actions .v-button--blue:hover,
+.v-header-actions--mini .v-button--blue:hover {
+	background-color: var(--primary-color--faded26);
+	color: #000;
 }

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.1.4-A (2021-03-18)
+// @version      9.1.5-A (2021-03-20)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,91 +24,112 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.1.4",
+	VERSION = "9.1.5",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
+			title: "Ultra Dark",
 			default: false,
 			dark: true,
 			priority: 4
 		},
 		{
 			name: "deep_blue",
+			title: "Deep Blue",
 			default: false,
 			dark: true,
 			priority: 4
 		},
 		{
 			name: "covfefe",
+			title: "Covfefe",
 			default: false,
 			dark: true,
 			priority: 4
 		},
 		{
 			name: "blackchrome",
+			title: "Black Monochrome",
 			default: false,
 			dark: true,
 			priority: 4
 		},
 		{
 			name: "vampire",
+			title: "«Кроваво-чёрное ничто»",
 			default: false,
 			dark: true,
 			priority: 4
 		},
+
 		{
 			name: "monochrome",
+			title: "Monochrome",
 			default: false,
 			light: true,
 			priority: 4
 		},
-		{
-			name: "material",
-			default: true,
-			priority: 5
-		},
-		{
-			name: "gray_signs",
-			default: false,
-			priority: 5
-		},
-		{
-			name: "snow_by_neko",
-			default: false,
-			priority: 5
-		},
-		{
-			name: "columns_narrow",
-			default: false,
-			priority: 5
-		},
+
 		{
 			name: "hidesubscriptions",
+			title: "Скрыть кнопку подписок",
 			default: false,
 			priority: 5
 		},
+	
 		{
 			name: "beautifulfeedposts",
+			title: "Кнопки оценки постов без теней",
 			default: true,
 			priority: 5
 		},
 		{
 			name: "favouritesicon",
+			title: "Красная иконка закладок",
 			default: true,
 			priority: 5
 		},
 		{
 			name: "previous_editor",
+			title: "Старое оформление редактора постов",
+			default: false,
+			priority: 5
+		},
+
+		{
+			name: "gray_signs",
+			title: "Серые оценки у постов и комментариев",
+			default: false,
+			priority: 5
+		},
+		{
+			name: "snow_by_neko",
+			title: "Добавить снег фоном",
+			default: false,
+			priority: 5
+		},
+		{
+			name: "material",
+			title: "Добавить оформление «Material»",
+			default: true,
+			priority: 5
+		},
+		{
+			name: "columns_narrow",
+			title: "Прижать боковые колонки к центру экрана",
 			default: false,
 			priority: 5
 		},
 		{
 			name: "gay",
+			title: "Добавить оформление «G.A.Y»",
 			default: false,
 			priority: 6
 		},
+
 		{
 			name: "no_themes",
+			title: "Не применять никакие темы никогда",
 			default: false,
 			priority: 1
 		}
@@ -183,7 +204,15 @@ const
 
 
 
-
+/**
+ * @typedef {Object} ObserverQueueType
+ * @property {String} [tag]
+ * @property {String} [id]
+ * @property {String} [className]
+ * @property {{name: string, value: string}} [attribute]
+ * @property {ObserverQueueType} [parent]
+ * @property {(foundElem: HTMLElement) => void} resolver
+ */
 /** @type {ObserverQueueType[]} */
 const observerQueue = [];
 
@@ -587,7 +616,6 @@ const SetMode = iNightMode => {
 
 /** @type {Object.<string, HTMLElement>} */
 const CUSTOM_ELEMENTS = new Object();
-window.CUSTOM_ELEMENTS = CUSTOM_ELEMENTS;
 
 /**
  * @param {String} iModuleName
@@ -675,7 +703,122 @@ const GlobalAddScript = (iLink, iPriority, iDataFor = false) => {
 	);
 };
 
+/**
+ * @typedef {Event & MouseEvent & TouchEvent & {currentTarget: HTMLElement}} CustomEventType
+ */
+/**
+ * @callback GlobalBuildLayoutListenerCallback
+ * @param {CustomEventType} e
+ */
+/**
+ * @typedef {Object} ElementDescriptorType
+ * @property {String} [tag]
+ * @property {String} [class]
+ * @property {String} [id]
+ * @property {String} [text]
+ * @property {String} [html]
+ * @property {Boolean} [ripple]
+ * @property {Boolean} [mdlUpgrade]
+ * @property {GlobalBuildLayoutListenerCallback} [onclick]
+ * @property {Boolean} [contextSameAsClick] - `contextmenu` listener does the same thing as usual `click`
+ * @property {{[dataPropName: string]: string | number}} [data]
+ * @property {{[attributeName: string]: string | number}} [tags]
+ * @property {{[attributeName: string]: string | number}} [attr]
+ * @property {ElementDescriptorType} [child]
+ * @property {ElementDescriptorType[]} [children]
+ * @property {{[listenerName: string]: GlobalBuildLayoutListenerCallback}} [listener]
+ * @property {{[listenerName: string]: GlobalBuildLayoutListenerCallback}} [listeners]
+ */
+/**
+ * @callback AdditionalHandlingPropertyHandler
+ * @param {String | Number | Function} iAdditionalHandlingPropertyValue
+ * @param {ElementDescriptorType} iElemDesc
+ * @param {HTMLElement} iDocElem
+ * @param {HTMLElement} iParentElem
+ * @returns {void}
+ * 
+ * @typedef {{[propertyName: string]: AdditionalHandlingPropertyHandler}} AdditionalHandlingProperties
+ */
+/**
+ * @param {ElementDescriptorType[] | ElementDescriptorType} elements 
+ * @param {HTMLElement} container
+ * @param {Boolean} [clearContainer=true]
+ * @param {AdditionalHandlingProperties} [additionalHandlingProperties=null]
+ * @returns {void}
+ */
+const GlobalBuildLayout = (elements, container, clearContainer = true, additionalHandlingProperties = null) => {
+	if (clearContainer)
+		container.innerHTML = null;
 
+	/**
+	 * @param {ElementDescriptorType} element 
+	 */
+	const LocalBuildElement = element => {
+		if (!element) return;
+
+		const docElem = document.createElement(element.tag || "div");
+		if (element.class) docElem.className = element.class;
+		if (element.id) docElem.id = element.id;
+		if (element.data)
+			for (const dataPropName in element.data)
+				docElem.dataset[dataPropName] = typeof element.data[dataPropName] == "object" ? JSON.stringify(element.data[dataPropName]) : (element.data[dataPropName] === true ? "" : element.data[dataPropName]);
+		if (element.tags)
+			for (const attributeName in element.tags)
+				docElem.setAttribute(attributeName, element.tags[attributeName]);
+		if (element.attr)
+			for (const attributeName in element.attr)
+				docElem.setAttribute(attributeName, element.attr[attributeName]);
+
+
+		if ("text" in element && element.text !== null)
+			docElem.innerText = element.text;
+		else if ("html" in element && element.html !== null)
+			docElem.innerHTML = element.html;
+		else if (element.children)
+			GlobalBuildLayout(element.children, docElem, false, additionalHandlingProperties);
+		else if (element.child)
+			GlobalBuildLayout(element.child, docElem, false, additionalHandlingProperties);
+
+		if (element.ripple) docElem.classList.add("mdl-js-button", "mdl-js-ripple-effect");
+		if (element.mdlUpgrade || element.ripple) componentHandler.upgradeElement(docElem);
+
+		if (element.onclick) {
+			docElem.addEventListener("click", element.onclick);
+
+			if (element.contextSameAsClick) {
+				docElem.addEventListener("contextmenu", (e) => {
+					e.preventDefault();
+					element.onclick(e);
+					return false;
+				});
+			};
+		};
+
+		if (element.listener)
+			for (const listenerName in element.listener)
+				docElem.addEventListener(listenerName, element.listener[listenerName]);
+
+		if (element.listeners)
+			for (const listenerName in element.listeners)
+				docElem.addEventListener(listenerName, element.listeners[listenerName]);
+
+
+		if (additionalHandlingProperties)
+			Object.keys(additionalHandlingProperties).forEach((AdditionalHandlingProperty) => {
+				if (element[AdditionalHandlingProperty])
+					additionalHandlingProperties[AdditionalHandlingProperty](element[AdditionalHandlingProperty], element, docElem, container);
+			});
+
+
+		container.appendChild(docElem);
+	};
+
+
+	if (elements instanceof Array)
+		elements.forEach((element) => LocalBuildElement(element));
+	else
+		LocalBuildElement(elements);
+};
 
 const DEFAULT_RECORD_OPTIONS = { infinite: true, Path: "/", Domain: window.location.hostname };
 const ALL_RECORDS_NAMES = [
@@ -787,13 +930,14 @@ const GetRecord = iName => {
 };
 
 if (RESOURCES_DOMAIN === "localhost") {
+	window.CUSTOM_ELEMENTS = CUSTOM_ELEMENTS;
 	window.GetCookie = GetCookie;
 	window.SetCookie = SetCookie;
 	window.GetRecord = GetRecord;
 	window.SetRecord = SetRecord;
 	window.observerQueue = observerQueue;
-	window.GlobalWaitForElement = GlobalWaitForElement;
 	window.ManageModule = ManageModule;
+	window.GlobalWaitForElement = GlobalWaitForElement;
 	window.GetIntervals = () => ({createdIntervals, deletedIntervals});
 	window.SHOW_COOKIES = () => console.log(ALL_RECORDS_NAMES.map((recordName) => `${recordName}: ${GetCookie(recordName)}`).join("\n"));
 	window.SHOW_STORAGE = () => console.log(ALL_RECORDS_NAMES.map((recordName) => `${recordName}: ${localStorage.getItem(recordName)}`).join("\n"));
@@ -856,644 +1000,837 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 	siteHeaderUser.after(customDataContainer);
 
 
+
+	/** @type {{what: String, label: String, sublabel?: String, checked: Boolean}[]} */
+	const TIME_SWITCHERS =  [
+		{
+			what: "always",
+			label: `Тёмная тема с выбранными дополнениями всегда <b>включена</b>`,
+			checked: GetRecord("s42_always") === "1"
+		},
+		{
+			what: "turn_off",
+			label: `Тёмная тема и её дополнения всегда <b>отключены</b>`,
+			sublabel: `Вместо этого применяется <i>слегка<i> модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.`,
+			checked: GetRecord("s42_turn_off") === "1"
+		},
+		{
+			what: "usual",
+			label: `По расписанию`,
+			sublabel: `Выбранная тёмная тема применяется после заката и до восхода, время определяется динамически (солнцестояние – равноденствие – солнцестояние и т.д.)`,
+			checked: (GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1")
+		},
+		{
+			what: "no_themes",
+			label: `Не применять никакие темы никогда`,
+			sublabel: `Всё так же можно подключить дополнительные модули: красные закладки, Material, прижать боковые колонки и прочее. См. «Выбор модулей»`,
+			checked: (GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1" && GetRecord("s42_no_themes") === "1")
+		}
+	];
+
+	/**
+	 * @param {CustomEventType} e
+	 */
+	const LocalOnTimeChange = (e) => {
+		SetRecord("s42_always", (e.currentTarget.value === "always" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+		SetRecord("s42_turn_off", (e.currentTarget.value === "turn_off" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+		SetRecord("s42_no_themes", (e.currentTarget.value === "no_themes" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+
+
+		ManageModule("ultra_dark", false);
+		ManageModule("deep_blue", false);
+		ManageModule("covfefe", false);
+		ManageModule("blackchrome", false);
+		ManageModule("vampire", false);
+		ManageModule("monochrome", false);
+		ManageModule("no_themes", false);
+
+
+		if (e.currentTarget.value === "always") {
+			QS(`meta[name="theme-color"]`)?.setAttribute("content", "#232323");
+
+			ManageModule("dark", true);
+			ManageModule(`${SITE}_dark`, true, true);
+			ManageModule("light", false);
+
+			["ultra_dark", "deep_blue", "covfefe", "blackchrome", "vampire"].forEach((addDarkModuleName) => {
+				if (GetRecord("s42_" + addDarkModuleName) === "1") {
+					ManageModule(addDarkModuleName, true);
+				};
+			});
+		} else if (e.currentTarget.value === "turn_off") {
+			QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
+
+			ManageModule("dark", false);
+			ManageModule(`${SITE}_dark`, false, true);
+			ManageModule("light", true);
+
+			["monochrome"].forEach((addLightModuleName) => {
+				if (GetRecord("s42_" + addLightModuleName) === "1") {
+					ManageModule(addLightModuleName, true);
+				};
+			});
+		} else if (e.currentTarget.value === "no_themes") {
+			QS(`meta[name="theme-color"]`)?.removeAttribute("content");
+
+			ManageModule("dark", false);
+			ManageModule(`${SITE}_dark`, false, true);
+			ManageModule("light", false);
+			ManageModule("no_themes", true);
+		} else {
+			GetMode().then((iNightMode) => {
+				if (iNightMode) {
+					QS(`meta[name="theme-color"]`)?.setAttribute("content", "#232323");
+
+					ManageModule("dark", true);
+					ManageModule(`${SITE}_dark`, true, true);
+					ManageModule("light", false);
+
+					["ultra_dark", "deep_blue", "covfefe", "blackchrome", "vampire"].forEach((addDarkModuleName) => {
+						if (GetRecord("s42_" + addDarkModuleName) === "1") {
+							ManageModule(addDarkModuleName, true);
+						};
+					});
+				} else {
+					QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
+
+					ManageModule("dark", false);
+					ManageModule(`${SITE}_dark`, false, true);
+					ManageModule("light", true);
+				};
+			});
+		};
+	};
+
+	/**
+	 * @returns {ElementDescriptorType[]}
+	 */
+	const LocalBuildTimeSwitchers = () => TIME_SWITCHERS.map((timeSwitcher) => ({
+		tag: "li",
+		class: "switcher-layout__list__item",
+		child: {
+			tag: "label",
+			class: "mdl-radio mdl-js-radio mdl-js-ripple-effect",
+			attr: {
+				for: timeSwitcher.what
+			},
+			data: {
+				mdlUpgrade: true
+			},
+			children: [
+				{
+					tag: "input",
+					class: "mdl-radio__button",
+					id: timeSwitcher.what,
+					attr: {
+						type: "radio",
+						name: "time",
+						value: timeSwitcher.what,
+						...(timeSwitcher.checked ? { checked: "checked" } : {})
+					},
+					listeners: {
+						change: LocalOnTimeChange
+					}
+				},
+				{
+					tag: "span",
+					class: "mdl-radio__label",
+					html: timeSwitcher.label
+				},
+				timeSwitcher.sublabel ? {
+					tag: "span",
+					class: "mdl-radio__sub-label",
+					html: timeSwitcher.sublabel
+				} : null
+			].filter((child) => !!child)
+		}
+	}));
+
+	const LocalHideDonate = () => {
+		SetRecord("s42_donate", Date.now().toString(), DEFAULT_RECORD_OPTIONS);
+
+		QSA(".switcher-layout__list__donate").forEach((donatePromoteElemToHide, donatePromoteElemToHideIndex) => {
+			donatePromoteElemToHide.style.overflow = "hidden";
+			let initHeight = donatePromoteElemToHide.scrollHeight,
+				initMargin = 12;
+
+			GlobalAnimation(4e2, (iProgress) => {
+				donatePromoteElemToHide.style.height = initHeight * (1 - iProgress) + "px";
+				donatePromoteElemToHide.style.marginBottom = initMargin * (1 - iProgress) + "px";
+
+				if (!donatePromoteElemToHideIndex) 
+					donatePromoteElemToHide.style.marginTop = initMargin * (1 - iProgress) + "px";
+			}, "ease-in-out").then(() => {
+				donatePromoteElemToHide.style.height = 0;
+				GR(donatePromoteElemToHide);
+			});
+		});
+	};
+
+	/**
+	 * @param {CustomEventType} e
+	 */
+	const LocalOnAdditionalDarkThemesChange = (e) => {
+		SetRecord("s42_ultra_dark", (e.currentTarget.value === "ultra_dark" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+		SetRecord("s42_deep_blue", (e.currentTarget.value === "deep_blue" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+		SetRecord("s42_covfefe", (e.currentTarget.value === "covfefe" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+		SetRecord("s42_blackchrome", (e.currentTarget.value === "blackchrome" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+		SetRecord("s42_vampire", (e.currentTarget.value === "vampire" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+
+		if (GetRecord("s42_no_themes") === "1") return;
+
+		if (
+			e.currentTarget.value === "ultra_dark" ||
+			e.currentTarget.value === "deep_blue" ||
+			e.currentTarget.value === "covfefe" ||
+			e.currentTarget.value === "blackchrome" ||
+			e.currentTarget.value === "vampire"
+		) {
+			if (
+				GetRecord("s42_turn_off") && parseInt(GetRecord("s42_turn_off")) ||
+				(!GetMode(true) && GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1")
+			) {
+				QS(`[for="always"]`).classList.add("is-checked");
+				QS(`[value="always"]`).checked = true;
+				QS(`[for="turn_off"]`).classList.remove("is-checked");
+				QS(`[value="turn_off"]`).checked = false;
+				QS(`[for="usual"]`).classList.remove("is-checked");
+				QS(`[value="usual"]`).checked = false;
+
+				SetRecord("s42_always", "1", DEFAULT_RECORD_OPTIONS);
+				SetRecord("s42_turn_off", "0", DEFAULT_RECORD_OPTIONS);
+
+				ManageModule("monochrome", false);
+				ManageModule("dark", true);
+				ManageModule(`${SITE}_dark`, true, true);
+				ManageModule("light", false);
+			};
+		};
+
+		ManageModule("ultra_dark", e.currentTarget.value === "ultra_dark");
+		ManageModule("deep_blue", e.currentTarget.value === "deep_blue");
+		ManageModule("covfefe", e.currentTarget.value === "covfefe");
+		ManageModule("blackchrome", e.currentTarget.value === "blackchrome");
+		ManageModule("vampire", e.currentTarget.value === "vampire");
+	};
+
+	/**
+	 * @returns {ElementDescriptorType[]}
+	 */
+	const LocalBuildAdditionalDarkThemes = () => ALL_ADDITIONAL_MODULES.filter((addModule) => addModule.dark).concat({ name: "nothing" }).map((addDarkModule) => ({
+		tag: "li",
+		class: "switcher-layout__list__item",
+		child: {
+			tag: "label",
+			class: "mdl-radio mdl-js-radio mdl-js-ripple-effect",
+			attr: {
+				for: addDarkModule.name
+			},
+			data: {
+				mdlUpgrade: true
+			},
+			children: [
+				{
+					tag: "input",
+					class: "mdl-radio__button",
+					id: addDarkModule.name,
+					attr: {
+						type: "radio",
+						name: "add-dark",
+						value: addDarkModule.name,
+						...((
+							addDarkModule.name === "nothing"
+								? ALL_ADDITIONAL_MODULES.filter((addModuleChecking) => addModuleChecking.dark).every(
+										(addModuleChecking) => GetRecord(`s42_${addModuleChecking.name}`) !== "1"
+									)
+								: GetRecord(`s42_${addDarkModule.name}`) === "1"
+						)
+							? { checked: "checked" }
+							: {}),
+					},
+					listeners: {
+						change: LocalOnAdditionalDarkThemesChange
+					}
+				},
+				{
+					tag: "span",
+					class: "mdl-radio__label",
+					text: addDarkModule.title || "Без дополнений к тёмной теме"
+				}
+			]
+		}
+	}));
+
+	/**
+	 * @param {CustomEventType} e
+	 */
+	const LocalOnAdditionalLightThemesChange = (e) => {
+		SetRecord("s42_monochrome", (e.currentTarget.value === "monochrome" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+
+		if (GetRecord("s42_no_themes") === "1") return;
+
+		if (
+			e.currentTarget.value === "monochrome"
+		) {
+			if (
+				GetRecord("s42_turn_off") !== "1" || GetMode(true)
+			) {
+				QS(`[for="always"]`).classList.remove("is-checked");
+				QS(`[value="always"]`).checked = false;
+				QS(`[for="turn_off"]`).classList.add("is-checked");
+				QS(`[value="turn_off"]`).checked = true;
+				QS(`[for="usual"]`).classList.remove("is-checked");
+				QS(`[value="usual"]`).checked = false;
+
+				SetRecord("s42_always", "0", DEFAULT_RECORD_OPTIONS);
+				SetRecord("s42_turn_off", "1", DEFAULT_RECORD_OPTIONS);
+
+
+				ManageModule("ultra_dark", false);
+				ManageModule("deep_blue", false);
+				ManageModule("covfefe", false);
+				ManageModule("blackchrome", false);
+				ManageModule("vampire", false);
+				ManageModule("dark", false);
+				ManageModule(`${SITE}_dark`, false, true);
+				ManageModule("light", true);
+			};
+		};
+
+		ManageModule("monochrome", e.currentTarget.value === "monochrome");
+	};
+
+	/**
+	 * @returns {ElementDescriptorType[]}
+	 */
+	const LocalBuildAdditionalLightThemes = () => ALL_ADDITIONAL_MODULES.filter((addModule) => addModule.light).concat({ name: "nothing-light" }).map((addLightModule) => ({
+		tag: "li",
+		class: "switcher-layout__list__item",
+		child: {
+			tag: "label",
+			class: "mdl-radio mdl-js-radio mdl-js-ripple-effect",
+			attr: {
+				for: addLightModule.name
+			},
+			data: {
+				mdlUpgrade: true
+			},
+			children: [
+				{
+					tag: "input",
+					class: "mdl-radio__button",
+					id: addLightModule.name,
+					data: {
+						mdlEventWating: true
+					},
+					attr: {
+						type: "radio",
+						name: "add-light",
+						value: addLightModule.name,
+						...((
+							addLightModule.name === "nothing-light"
+								? ALL_ADDITIONAL_MODULES.filter((addModuleChecking) => addModuleChecking.light).every(
+										(addModuleChecking) => GetRecord(`s42_${addModuleChecking.name}`) !== "1"
+									)
+								: GetRecord(`s42_${addLightModule.name}`) === "1"
+						)
+							? { checked: "checked" }
+							: {}),
+					},
+					listeners: {
+						change: LocalOnAdditionalLightThemesChange
+					}
+				},
+				{
+					tag: "span",
+					class: "mdl-radio__label",
+					text: addLightModule.title || "Без дополнений к светлой теме"
+				}
+			]
+		}
+	}));
+
+	/**
+	 * @param {{name: String, title: String, checked: Boolean, onchange: (e: CustomEventType) => void}} checkboxRule
+	 * @returns {ElementDescriptorType}
+	 */
+	const LocalBuildCheckboxByCommonRule = (checkboxRule) => ({
+		tag: "li",
+		class: "switcher-layout__list__item",
+		child: {
+			tag: "label",
+			class: "mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect",
+			attr: {
+				for: checkboxRule.name
+			},
+			data: {
+				mdlUpgrade: true
+			},
+			onclick: (e) => {
+				const input = e.currentTarget.children[0];
+				if (input) {
+					e.preventDefault();
+
+					const checked = !!input.checked;
+					
+					if (checked)
+						e.currentTarget.classList.remove("is-checked");
+					else
+						e.currentTarget.classList.add("is-checked");
+
+					input.checked = !checked;
+
+					checkboxRule.onchange({ currentTarget: input });
+
+					return false;
+				}
+			},
+			children: [
+				{
+					tag: "input",
+					class: "mdl-checkbox__input",
+					attr: {
+						type: "checkbox",
+						...(checkboxRule.checked ? { checked: "" } : {})
+					},
+					listeners: {
+						change: checkboxRule.onchange
+					}
+				},
+				{
+					tag: "span",
+					class: "mdl-checkbox__label",
+					text: checkboxRule.title
+				}
+			]
+		}
+	});
+
+
+	const LocalBuildPanel = () => GlobalBuildLayout([
+		{
+			id: "switcher-layout",
+			attr: {
+				style: "display: none; opacity: 0;"
+			},
+			child: {
+				id: "switcher-layout--scroller",
+				children: [
+					{
+						class: "switcher-layout__header",
+						children: [
+							{
+								tag: "span",
+								text: "Выбор тем"
+							},
+							{
+								tag: "span",
+								class: "switcher-layout__header__supporting-text",
+								id: "switcher-layout__scroll-to-modules-part",
+								text: "Выбор модулей теперь находится чуть ниже.",
+								onclick: () => GEBI("switcher-layout__choosing-modules-part").scrollIntoView({ behavior: "smooth" })
+							}
+						]
+					},
+					{
+						tag: "ul",
+						id: "switcher-layout__list",
+						children: [
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Когда включать"
+							},
+							...LocalBuildTimeSwitchers(),
+							...((Date.now() - parseInt(GetRecord("s42_donate")) || 0) > 86400 * 5 * 1e3 ? [
+								{
+									class: "switcher-layout__list__separator switcher-layout__list__donate",
+									onclick: LocalHideDonate
+								},
+								{
+									tag: "a",
+									class: "switcher-layout__list__subheader switcher-layout__list__donate",
+									attr: {
+										href: "https://sobe.ru/na/dark_mode",
+										target: "_blank",
+										style: `color: ${SITES_COLORS[window.location.hostname]}; text-decoration: underline;`
+									},
+									text: "Поддержать автора",
+									onclick: LocalHideDonate
+								},
+								{
+									tag: "li",
+									class: "switcher-layout__list__subheader switcher-layout__list__donate",
+									text: "Можете просто скрыть это сообщение, нажав на него или сюда 👆🏻",
+									onclick: LocalHideDonate
+								}
+							] : []),
+							{ class: "switcher-layout__list__separator" },
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Выбор дополнений к тёмной теме"
+							},
+							...LocalBuildAdditionalDarkThemes(),
+							{ class: "switcher-layout__list__separator" },
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Выбор дополнений к светлой теме"
+							},
+							...LocalBuildAdditionalLightThemes(),
+							{
+								class: "switcher-layout__list__separator",
+								id: "switcher-layout__choosing-modules-part"
+							},
+							{
+								class: "switcher-layout__header",
+								text: "Выбор модулей"
+							},
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Кнопки в левом меню"
+							},
+							...([
+								{
+									name: "newentriesbadge",
+									title: "Улучшенный индикатор новых записей",
+									checked: GetRecord("s42_newentriesbadge") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_newentriesbadge", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+
+										addBadgeFlag = !!e.currentTarget.checked;
+
+										if (addBadgeFlag)
+											GlobalStartBadgeProcedure();
+										else
+											GlobalStopBadgeProcedure();
+									}
+								},
+								{
+									name: "editorial",
+									title: "Добавить кнопку «От редакции»",
+									checked: GetRecord("s42_editorial") === "1",
+									onchange: (e) => {
+										SetRecord("s42_editorial", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+
+										if (e.currentTarget.checked) {
+											GlobalPlaceEditorialButton();
+										} else {
+											GR(GEBI("s42-editorial-link-btn"));
+										};
+									}
+								},
+								{
+									name: "hidesubscriptions",
+									title: "Скрыть кнопку подписок",
+									checked: GetRecord("s42_hidesubscriptions") === "1",
+									onchange: (e) => {
+										SetRecord("s42_hidesubscriptions", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("hidesubscriptions", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "messageslinkdisabled",
+									title: "Скрыть кнопки «Сообщения», «Вакансии», «Компании», «Мероприятия», «Хакатоны» и «Трансляции» в левом меню",
+									checked: GetRecord("s42_messageslinkdisabled") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+
+										if (e.currentTarget.checked) {
+											GlobalSetSidebarItemsStyle("none");
+										} else {
+											GlobalSetSidebarItemsStyle("");
+										};
+									}
+								}
+							].map(LocalBuildCheckboxByCommonRule)),
+							{
+								class: "switcher-layout__list__separator"
+							},
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Настройки ленты и постов"
+							},
+							...([
+								{
+									name: "beautifulfeedposts",
+									title: "Кнопки оценки постов без теней",
+									checked: GetRecord("s42_beautifulfeedposts") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_beautifulfeedposts", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("beautifulfeedposts", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "favouritesicon",
+									title: "Красная иконка закладок",
+									checked: GetRecord("s42_favouritesicon") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_favouritesicon", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("favouritesicon", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "favouritemarker",
+									title: "Количество закладок в постах",
+									checked: GetRecord("s42_favouritemarker") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_favouritemarker", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+
+										addFavouriteMarkerFlag = !!e.currentTarget.checked;
+
+										if (addFavouriteMarkerFlag)
+											GlobalStartFavouriteMarkerProcedure();
+										else
+											GlobalStopFavouriteMarkerProcedure();
+									}
+								},
+								{
+									name: "previous_editor",
+									title: "Старое оформление редактора постов",
+									checked: GetRecord("s42_previous_editor") === "1",
+									onchange: (e) => {
+										SetRecord("s42_previous_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("previous_editor", e.currentTarget.checked);
+									}
+								}
+							].map(LocalBuildCheckboxByCommonRule)),
+							{
+								class: "switcher-layout__list__separator"
+							},
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Карма и подписчики"
+							},
+							LocalBuildCheckboxByCommonRule({
+								name: "karma",
+								title: "Блок с кармой, подписчиками и подписками в шапке включён",
+								checked: GetRecord("s42_karma") !== "off",
+								onchange: (e) => {
+									SetRecord("s42_karma", e.currentTarget.checked ? "on" : "off", DEFAULT_RECORD_OPTIONS);
+
+									if (e.currentTarget.checked) {
+										GEBI("switcher-layout__list__item--karma-cover").classList.remove("is-faded");
+										SetStatsDash(true);
+									} else {
+										GEBI("switcher-layout__list__item--karma-cover").classList.add("is-faded");
+										GR(GEBI("main_menu__auth__stats"));
+									};
+								}
+							}),
+							{
+								id: "switcher-layout__list__item--karma-cover",
+								class: GetRecord("s42_karma") === "off" ? "is-faded" : "",
+								children: [
+									{
+										name: "karma_rating",
+										title: "Количество кармы",
+										checked: GetRecord("s42_karma_rating") !== "off",
+										onchange: (e) => {
+											SetRecord("s42_karma_rating", e.currentTarget.checked ? "on" : "off", DEFAULT_RECORD_OPTIONS);
+											SetStatsDash(true);
+										}
+									},
+									{
+										name: "karma_subscribers",
+										title: "Подписчики",
+										checked: GetRecord("s42_karma_subscribers") !== "off",
+										onchange: (e) => {
+											SetRecord("s42_karma_subscribers", e.currentTarget.checked ? "on" : "off", DEFAULT_RECORD_OPTIONS);
+											SetStatsDash(true);
+										}
+									},
+									{
+										name: "karma_subscriptions",
+										title: "Подписки",
+										checked: GetRecord("s42_karma_subscriptions") !== "off",
+										onchange: (e) => {
+											SetRecord("s42_karma_subscriptions", e.currentTarget.checked ? "on" : "off", DEFAULT_RECORD_OPTIONS);
+											SetStatsDash(true);
+										}
+									}
+								].map(LocalBuildCheckboxByCommonRule).concat({
+									id: "switcher-layout__list__item--karma-cover__obfuscator"
+								})
+							},
+							{
+								class: "switcher-layout__list__separator"
+							},
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Другие дополнительные модули"
+							},
+							...([
+								{
+									name: "gray_signs",
+									title: "Серые оценки у постов и комментариев",
+									checked: GetRecord("s42_gray_signs") === "1",
+									onchange: (e) => {
+										SetRecord("s42_gray_signs", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+										ManageModule("gray_signs", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "snow_by_neko",
+									title: "Добавить снег фоном",
+									checked: GetRecord("s42_snow_by_neko") === "1",
+									onchange: (e) => {
+										SetRecord("s42_snow_by_neko", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+										ManageModule("snow_by_neko", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "material",
+									title: "Добавить оформление «Material»",
+									checked: GetRecord("s42_material") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_material", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+										ManageModule("material", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "defaultscrollers",
+									title: "Включить стандартные полосы прокрутки",
+									checked: GetRecord("s42_defaultscrollers") === "1",
+									onchange: (e) => {
+										SetRecord("s42_defaultscrollers", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+
+										if (e.currentTarget.checked) {
+											GlobalSetScrollers("default");
+										} else {
+											GlobalSetScrollers("custom");
+										};
+									}
+								},
+								{
+									name: "columns_narrow",
+									title: "Прижать боковые колонки к центру экрана",
+									checked: GetRecord("s42_columns_narrow") === "1",
+									onchange: (e) => {
+										SetRecord("s42_columns_narrow", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+										ManageModule("columns_narrow", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "gay",
+									title: "Добавить оформление «G.A.Y»",
+									checked: GetRecord("s42_gay") === "1",
+									onchange: (e) => {
+										SetRecord("s42_gay", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("gay", e.currentTarget.checked);
+									}
+								}
+							].map(LocalBuildCheckboxByCommonRule)),
+							{
+								class: "switcher-layout__list__separator switcher-layout__list--for-small-screen"
+							},
+							{
+								class: "switcher-layout__list--for-small-screen",
+								id: "switcher-layout__close-button-container",
+								child: {
+									class: "mdl-js-button mdl-js-ripple-effect",
+									mdlUpgrade: true,
+									id: "switcher-layout__close-button",
+									text: "Закрыть опции",
+									onclick: () => LocalHidePanel(),
+									contextSameAsClick: true
+								}
+							}
+						].filter((switcherBlock) => !!switcherBlock)
+					}
+				]
+			}
+		},
+		{
+			id: "switcher-layout--obfuscator",
+			attr: {
+				style: "display: none;"
+			},
+			onclick: () => LocalHidePanel(),
+			contextSameAsClick: true
+		}
+	], document.body, false);
+
+	/**
+	 * @param {CustomEventType} e
+	 */
+	const LocalShowPanel = (e) => {
+		let smallScreenFlag = false;
+		if ((window.innerWidth - e.clientX) * 2 + 500 > window.innerWidth) smallScreenFlag = true;
+		if (window.innerHeight <= 660) smallScreenFlag = true;
+
+
+		const switchersContainerMaxHeight = smallScreenFlag ? window.innerHeight - 60 : 600,
+			  switchersContainerMaxWidth = smallScreenFlag ? window.innerWidth : 500,
+			  switchersContainer = GEBI("switcher-layout"),
+			  switchersScroller = GEBI("switcher-layout--scroller"),
+			  switchersObfuscator = GEBI("switcher-layout--obfuscator");
+
+
+		if (smallScreenFlag) {
+			switchersContainer.classList.add("switcher-layout--small-screen");
+			switchersContainer.style.removeProperty("right");
+		} else {
+			switchersContainer.style.right = (window.innerWidth - e.clientX) + "px";
+			switchersContainer.classList.remove("switcher-layout--small-screen");
+		};
+
+
+		switchersContainer.style.width = 0;
+		switchersContainer.style.height = 0;
+		switchersContainer.style.opacity = 0;
+		switchersContainer.style.display = "block";
+		switchersScroller.style.overflowY = "hidden";
+		switchersObfuscator.style.display = "block";
+
+
+		GlobalAnimation(4e2, (iProgress) => {
+			switchersContainer.style.width = iProgress * switchersContainerMaxWidth + "px";
+			switchersContainer.style.height = iProgress * switchersContainerMaxHeight + "px";
+
+			if (iProgress < 0.25)
+				switchersContainer.style.opacity = iProgress * 4;
+			else
+				switchersContainer.style.opacity = 1;
+		}).then(() => {
+			switchersContainer.style.width = switchersContainerMaxWidth + "px";
+			switchersContainer.style.height = switchersContainerMaxHeight + "px";
+			switchersContainer.style.opacity = 1;
+			switchersScroller.style.overflowY = "auto";
+		});
+	};
+
+	const LocalHidePanel = () => {
+		const switchersContainer = GEBI("switcher-layout"),
+			  switchersScroller = GEBI("switcher-layout--scroller"),
+			  switchersObfuscator = GEBI("switcher-layout--obfuscator");
+
+
+		switchersScroller.style.overflowY = "hidden";
+
+		GlobalAnimation(4e2, (iProgress) => {
+			switchersContainer.style.opacity = 1 - iProgress;
+		}).then(() => {
+			switchersContainer.style.opacity = 0;
+			switchersContainer.style.display = "none";
+			switchersObfuscator.style.display = "none";
+
+			GR(switchersContainer);
+			GR(switchersObfuscator);
+		});
+	};
+
+
 	const switchersBtn = document.createElement("div");
 		  switchersBtn.innerHTML = `<i class="material-icons material-icons-round">settings</i>`;
 		  switchersBtn.id = "switchers-btn";
 		  switchersBtn.className = "mdl-js-button mdl-js-ripple-effect";
 		  switchersBtn.addEventListener("click", (e) => {
-			let smallScreenFlag = false;
-			if ((window.innerWidth - e.clientX) * 2 + 500 > window.innerWidth) smallScreenFlag = true;
-			if (window.innerHeight <= 660) smallScreenFlag = true;
-
-
-			const SWITCHERS_LAYOUT =
-			`<div class="switcher-layout__header">
-				<span>Выбор тем</span>
-				<span class="switcher-layout__header__supporting-text" id="switcher-layout__scroll-to-modules-part">
-					Выбор модулей теперь находится чуть ниже.
-				</span>
-			</div>
-			<ul id="switcher-layout__list">
-				<div class="switcher-layout__list__subheader">Когда включать</div>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="always" data-serguun42-labels data-serguun42-time>
-						<input type="radio" id="always" class="mdl-radio__button" name="time" value="always" data-serguun42-switchers ${GetRecord("s42_always") === "1" ? "checked" : ""}>
-						<span class="mdl-radio__label">Тёмная тема с дополнениями всегда <b>включена</b></span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="turn_off" data-serguun42-labels data-serguun42-time>
-						<input type="radio" id="turn_off" class="mdl-radio__button" name="time" value="turn_off" data-serguun42-switchers ${GetRecord("s42_turn_off") === "1" ? "checked" : ""}>
-						<span class="mdl-radio__label">Тёмная тема и её дополнения всегда <b>отключены</b></span>
-						<span class="mdl-radio__sub-label">Вместо этого применяется <i>слегка<i> модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="usual" data-serguun42-labels data-serguun42-time>
-						<input type="radio" id="usual" class="mdl-radio__button" name="time" value="usual" data-serguun42-switchers ${(GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1") ? "checked" : ""}>
-						<span class="mdl-radio__label">По расписанию</span>
-						<span class="mdl-radio__sub-label">Выбранная тёмная тема применяется после заката и до восхода, время определяется динамически (солнцестояние – равноденствие – солнцестояние и т.д.)</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="no_themes" data-serguun42-labels data-serguun42-time>
-						<input type="radio" id="no_themes" class="mdl-radio__button" name="time" value="no_themes" data-serguun42-switchers ${(GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1" && GetRecord("s42_no_themes") === "1") ? "checked" : ""}>
-						<span class="mdl-radio__label">Не применять никакие темы никогда</span>
-						<span class="mdl-radio__sub-label">Всё так же можно подключить дополнительные модули: красные закладки, Material, прижать боковые колонки и прочее. См. «Выбор модулей»</span>
-					</label>
-				</li>
-				${(Date.now() - parseInt(GetRecord("s42_donate")) || 0) > 86400 * 5 * 1e3 ? `<div class="switcher-layout__list__separator switcher-layout__list__donate"></div>
-				<a class="switcher-layout__list__subheader switcher-layout__list__donate" href="https://sobe.ru/na/dark_mode" target="_blank" style="color: ${SITES_COLORS[window.location.hostname]}; text-decoration: underline;">
-					Поддержать автора
-				</a>
-				<li class="switcher-layout__list__subheader switcher-layout__list__donate">
-					Можете просто скрыть это сообщение, нажав на него или сюда 👆🏻
-				</li>` : ""}
-				<div class="switcher-layout__list__separator"></div>
-				<div class="switcher-layout__list__subheader">Выбор дополнений к тёмной теме</div>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="ultra_dark" data-serguun42-labels data-serguun42-add-dark>
-						<input type="radio" id="ultra_dark" class="mdl-radio__button" name="add-dark" value="ultra_dark" ${GetRecord("s42_ultra_dark") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-radio__label">Ultra Dark</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="deep_blue" data-serguun42-labels data-serguun42-add-dark>
-						<input type="radio" id="deep_blue" class="mdl-radio__button" name="add-dark" value="deep_blue" ${GetRecord("s42_deep_blue") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-radio__label">Deep Blue</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="covfefe" data-serguun42-labels data-serguun42-add-dark>
-						<input type="radio" id="covfefe" class="mdl-radio__button" name="add-dark" value="covfefe" ${GetRecord("s42_covfefe") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-radio__label">Covfefe</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="blackchrome" data-serguun42-labels data-serguun42-add-dark>
-						<input type="radio" id="blackchrome" class="mdl-radio__button" name="add-dark" value="blackchrome" ${GetRecord("s42_blackchrome") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-radio__label">Black Monochrome</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="vampire" data-serguun42-labels data-serguun42-add-dark>
-						<input type="radio" id="vampire" class="mdl-radio__button" name="add-dark" value="vampire" ${GetRecord("s42_vampire") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-radio__label">«Кроваво-чёрное ничто»</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="nothing" data-serguun42-labels data-serguun42-add-dark>
-						<input type="radio" id="nothing" class="mdl-radio__button" name="add-dark" value="nothing" ${(GetRecord("s42_ultra_dark") !== "1" && GetRecord("s42_deep_blue") !== "1" && GetRecord("s42_covfefe") !== "1" && GetRecord("s42_blackchrome") !== "1" && GetRecord("s42_vampire") !== "1") ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-radio__label">Без дополнений к тёмной теме</span>
-					</label>
-				</li>
-				<div class="switcher-layout__list__separator"></div>
-				<div class="switcher-layout__list__subheader">Выбор дополнений к светлой теме</div>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="monochrome" data-serguun42-labels data-serguun42-add-light>
-						<input type="radio" id="monochrome" class="mdl-radio__button" name="add-light" value="monochrome" ${GetRecord("s42_monochrome") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-radio__label">Monochrome</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="nothing-light" data-serguun42-labels data-serguun42-add-light>
-						<input type="radio" id="nothing-light" class="mdl-radio__button" name="add-light" value="nothing-light" ${(GetRecord("s42_monochrome") !== "1") ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-radio__label">Без дополнений к светлой теме</span>
-					</label>
-				</li>
-				<div class="switcher-layout__list__separator" id="switcher-layout__choosing-modules-part"></div>
-				<div class="switcher-layout__header">Выбор модулей</div>
-				<div class="switcher-layout__list__subheader">Кнопки в левом меню</div>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="newentriesbadge" data-serguun42-labels>
-						<input type="checkbox" id="newentriesbadge" class="mdl-checkbox__input" ${GetRecord("s42_newentriesbadge") !== "0" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Улучшенный индикатор новых записей</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="editorial" data-serguun42-labels>
-						<input type="checkbox" id="editorial" class="mdl-checkbox__input" ${GetRecord("s42_editorial") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Добавить кнопку «От редакции»</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="hidesubscriptions" data-serguun42-labels>
-						<input type="checkbox" id="hidesubscriptions" class="mdl-checkbox__input" ${GetRecord("s42_hidesubscriptions") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Скрыть кнопку подписок</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="messageslinkdisabled" data-serguun42-labels>
-						<input type="checkbox" id="messageslinkdisabled" class="mdl-checkbox__input" ${GetRecord("s42_messageslinkdisabled") === "0" ? "" : "checked"} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Скрыть кнопки «Сообщения», «Вакансии», «Компании», «Мероприятия», «Хакатоны» и «Трансляции» в левом меню</span>
-					</label>
-				</li>
-				<div class="switcher-layout__list__separator"></div>
-				<div class="switcher-layout__list__subheader">Настройки ленты и постов</div>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="beautifulfeedposts" data-serguun42-labels>
-						<input type="checkbox" id="beautifulfeedposts" class="mdl-checkbox__input" ${GetRecord("s42_beautifulfeedposts") !== "0" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Кнопки оценки постов без теней</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="favouritesicon" data-serguun42-labels>
-						<input type="checkbox" id="favouritesicon" class="mdl-checkbox__input" ${GetRecord("s42_favouritesicon") !== "0" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Красная иконка закладок</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="favouritemarker" data-serguun42-labels>
-						<input type="checkbox" id="favouritemarker" class="mdl-checkbox__input" ${GetRecord("s42_favouritemarker") !== "0" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Количество закладок в постах</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="previous_editor" data-serguun42-labels>
-						<input type="checkbox" id="previous_editor" class="mdl-checkbox__input" ${GetRecord("s42_previous_editor") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Старое оформление редактора постов</span>
-					</label>
-				</li>
-				<div class="switcher-layout__list__separator"></div>
-				<div class="switcher-layout__list__subheader">Карма и подписчики</div>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma" data-serguun42-labels>
-						<input type="checkbox" id="karma" class="mdl-checkbox__input" ${GetRecord("s42_karma") !== "off" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Блок с кармой, подписчиками и подписками в шапке включён</span>
-					</label>
-				</li>
-				<div id="switcher-layout__list__item--karma-cover" class="${GetRecord("s42_karma") === "off" ? "is-faded" : ""}">
-					<li class="switcher-layout__list__item">
-						<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma_rating" data-serguun42-labels>
-							<input type="checkbox" id="karma_rating" class="mdl-checkbox__input" ${GetRecord("s42_karma_rating") !== "off" ? "checked" : ""} data-serguun42-switchers>
-							<span class="mdl-checkbox__label">Количество кармы</span>
-						</label>
-					</li>
-					<li class="switcher-layout__list__item">
-						<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma_subscribers" data-serguun42-labels>
-							<input type="checkbox" id="karma_subscribers" class="mdl-checkbox__input" ${GetRecord("s42_karma_subscribers") !== "off" ? "checked" : ""} data-serguun42-switchers>
-							<span class="mdl-checkbox__label">Подписчики</span>
-						</label>
-					</li>
-					<li class="switcher-layout__list__item">
-						<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="karma_subscriptions" data-serguun42-labels>
-							<input type="checkbox" id="karma_subscriptions" class="mdl-checkbox__input" ${GetRecord("s42_karma_subscriptions") !== "off" ? "checked" : ""} data-serguun42-switchers>
-							<span class="mdl-checkbox__label">Подписки</span>
-						</label>
-					</li>
-					<div id="switcher-layout__list__item--karma-cover__obfuscator"></div>
-				</div>
-				<div class="switcher-layout__list__separator"></div>
-				<div class="switcher-layout__list__subheader">Другие дополнительные модули</div>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="gray_signs" data-serguun42-labels>
-						<input type="checkbox" id="gray_signs" class="mdl-checkbox__input" ${GetRecord("s42_gray_signs") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Серые оценки у постов и комментариев</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="snow_by_neko" data-serguun42-labels>
-						<input type="checkbox" id="snow_by_neko" class="mdl-checkbox__input" ${GetRecord("s42_snow_by_neko") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Добавить снег фоном</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="material" data-serguun42-labels>
-						<input type="checkbox" id="material" class="mdl-checkbox__input" ${GetRecord("s42_material") === "0" ? "" : "checked"} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Добавить оформление «Material»</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="defaultscrollers" data-serguun42-labels>
-						<input type="checkbox" id="defaultscrollers" class="mdl-checkbox__input" ${GetRecord("s42_defaultscrollers") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Включить стандартные полосы прокрутки</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="columns_narrow" data-serguun42-labels>
-						<input type="checkbox" id="columns_narrow" class="mdl-checkbox__input" ${GetRecord("s42_columns_narrow") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label">Прижать боковые колонки к центру экрана (убрать пространство между колонками и контентом в центре)</span>
-					</label>
-				</li>
-				<li class="switcher-layout__list__item" title="Gorgeous, astonishing, yummy(?)">
-					<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="gay" data-serguun42-labels>
-						<input type="checkbox" id="gay" class="mdl-checkbox__input" ${GetRecord("s42_gay") === "1" ? "checked" : ""} data-serguun42-switchers>
-						<span class="mdl-checkbox__label" title="Gorgeous, astonishing, yummy(?)">Добавить оформление «G.A.Y»</span>
-					</label>
-				</li>
-			</ul>
-
-
-			${smallScreenFlag ?
-				`<div class="switcher-layout__list__separator"></div>
-				<div id="switcher-layout__close-button-container">
-					<div class="mdl-js-button mdl-js-ripple-effect" id="switcher-layout__close-button" data-serguun42-labels>
-						Закрыть опции
-					</div>
-				</div>`
-				:
-				""}`;
-
-
-			const switchersContainer = document.createElement("div");
-				  switchersContainer.id = "switcher-layout";
-				  switchersContainer.style.width = 0;
-				  switchersContainer.style.height = 0;
-
-			if (smallScreenFlag)
-				switchersContainer.classList.add("switcher-layout--small-screen");
-			else
-				switchersContainer.style.right = (window.innerWidth - e.clientX) + "px";
-
-			document.body.appendChild(switchersContainer);
-
-
-			const switchersScroller = document.createElement("div");
-				  switchersScroller.id = "switcher-layout--scroller";
-
-			switchersContainer.appendChild(switchersScroller);
-			switchersScroller.innerHTML = SWITCHERS_LAYOUT;
-
-			const switchersObfuscator = document.createElement("div");
-				  switchersObfuscator.id = "switcher-layout--obfuscator";
-
-			document.body.appendChild(switchersObfuscator);
-
-
-			const switchersContainerMaxHeight = smallScreenFlag ? window.innerHeight - 60 : 600;
-			const switchersContainerMaxWidth = smallScreenFlag ? window.innerWidth : 500;
-
-			GlobalAnimation(4e2, (iProgress) => {
-				switchersContainer.style.width = iProgress * switchersContainerMaxWidth + "px";
-				switchersContainer.style.height = iProgress * switchersContainerMaxHeight + "px";
-				if (iProgress < 0.25)
-					switchersContainer.style.opacity = iProgress * 4;
-				else
-					switchersContainer.style.opacity = 1;
-			}).then(() => {
-				switchersContainer.style.width = switchersContainerMaxWidth + "px";
-				switchersContainer.style.height = switchersContainerMaxHeight + "px";
-				switchersContainer.style.opacity = 1;
-				switchersScroller.style.overflowY = "auto";
-			});
-
-
-
-
-			if ("componentHandler" in window) {
-				componentHandler.upgradeElement(switchersBtn);
-				componentHandler.upgradeElements(QSA("[data-serguun42-labels]"));
-			};
-
-
-
-
-			const LocalCloseSwitchers = () => {
-				switchersScroller.style.overflowY = "hidden";
-
-				GlobalAnimation(4e2, (iProgress) => {
-					switchersContainer.style.opacity = 1 - iProgress;
-				}).then(() => {
-					GR(switchersContainer);
-					GR(switchersObfuscator);
-				});
-			};
-
-			switchersObfuscator.addEventListener("click", () => LocalCloseSwitchers());
-
-			switchersObfuscator.addEventListener("contextmenu", () => {
-				LocalCloseSwitchers();
-				return false;
-			});
-
-			if (smallScreenFlag) {
-				if (GEBI("switcher-layout__close-button"))
-					GEBI("switcher-layout__close-button").addEventListener("click", () => LocalCloseSwitchers());
-			};
-
-
-
-			QSA("[data-serguun42-switchers]").forEach((switcher) => {
-				switcher.addEventListener("change", (e) => {
-					if (e.currentTarget.id === "material") {
-						SetRecord("s42_material", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("material", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "gray_signs") {
-						SetRecord("s42_gray_signs", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("gray_signs", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "snow_by_neko") {
-						SetRecord("s42_snow_by_neko", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("snow_by_neko", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "columns_narrow") {
-						SetRecord("s42_columns_narrow", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("columns_narrow", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "gay") {
-						SetRecord("s42_gay", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("gay", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "karma") {
-						SetRecord("s42_karma", e.currentTarget.checked ? "on" : "off", DEFAULT_RECORD_OPTIONS);
-
-						if (e.currentTarget.checked) {
-							GEBI("switcher-layout__list__item--karma-cover").classList.remove("is-faded");
-							SetStatsDash(true);
-						} else {
-							GEBI("switcher-layout__list__item--karma-cover").classList.add("is-faded");
-							GR(GEBI("main_menu__auth__stats"));
-						};
-					};
-
-					if (e.currentTarget.id === "karma_rating") {
-						SetRecord("s42_karma_rating", e.currentTarget.checked ? "on" : "off", DEFAULT_RECORD_OPTIONS);
-
-						SetStatsDash(true);
-					};
-
-					if (e.currentTarget.id === "karma_subscribers") {
-						SetRecord("s42_karma_subscribers", e.currentTarget.checked ? "on" : "off", DEFAULT_RECORD_OPTIONS);
-
-						SetStatsDash(true);
-					};
-
-					if (e.currentTarget.id === "karma_subscriptions") {
-						SetRecord("s42_karma_subscriptions", e.currentTarget.checked ? "on" : "off", DEFAULT_RECORD_OPTIONS);
-
-						SetStatsDash(true);
-					};
-
-					if (e.currentTarget.id === "hidesubscriptions") {
-						SetRecord("s42_hidesubscriptions", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("hidesubscriptions", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "beautifulfeedposts") {
-						SetRecord("s42_beautifulfeedposts", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("beautifulfeedposts", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "favouritesicon") {
-						SetRecord("s42_favouritesicon", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("favouritesicon", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "favouritemarker") {
-						SetRecord("s42_favouritemarker", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-						addFavouriteMarkerFlag = !!e.currentTarget.checked;
-
-						if (addFavouriteMarkerFlag)
-							GlobalStartFavouriteMarkerProcedure();
-						else
-							GlobalStopFavouriteMarkerProcedure();
-					};
-
-					if (e.currentTarget.id === "previous_editor") {
-						SetRecord("s42_previous_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-						ManageModule("previous_editor", e.currentTarget.checked);
-					};
-
-					if (e.currentTarget.id === "messageslinkdisabled") {
-						SetRecord("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						if (e.currentTarget.checked) {
-							GlobalSetSidebarItemsStyle("none");
-						} else {
-							GlobalSetSidebarItemsStyle("");
-						};
-					};
-
-					if (e.currentTarget.id === "defaultscrollers") {
-						SetRecord("s42_defaultscrollers", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						if (e.currentTarget.checked) {
-							GlobalSetScrollers("default");
-						} else {
-							GlobalSetScrollers("custom");
-						};
-					};
-
-					if (e.currentTarget.id === "newentriesbadge") {
-						SetRecord("s42_newentriesbadge", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-						addBadgeFlag = !!e.currentTarget.checked;
-
-						if (addBadgeFlag)
-							GlobalStartBadgeProcedure();
-						else
-							GlobalStopBadgeProcedure();
-					};
-
-					if (e.currentTarget.id === "editorial") {
-						SetRecord("s42_editorial", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-						if (e.currentTarget.checked) {
-							GlobalPlaceEditorialButton();
-						} else {
-							GR(GEBI("s42-editorial-link-btn"));
-						};
-					};
-
-					if (e.currentTarget.getAttribute("name") === "add-dark") {
-						SetRecord("s42_ultra_dark", (e.currentTarget.value === "ultra_dark" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-						SetRecord("s42_deep_blue", (e.currentTarget.value === "deep_blue" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-						SetRecord("s42_covfefe", (e.currentTarget.value === "covfefe" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-						SetRecord("s42_blackchrome", (e.currentTarget.value === "blackchrome" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-						SetRecord("s42_vampire", (e.currentTarget.value === "vampire" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						if (GetRecord("s42_no_themes") === "1") return;
-
-						if (
-							e.currentTarget.value === "ultra_dark" ||
-							e.currentTarget.value === "deep_blue" ||
-							e.currentTarget.value === "covfefe" ||
-							e.currentTarget.value === "blackchrome" ||
-							e.currentTarget.value === "vampire"
-						) {
-							if (
-								GetRecord("s42_turn_off") && parseInt(GetRecord("s42_turn_off")) ||
-								(!GetMode(true) && GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1")
-							) {
-								QS(`[for="always"]`).classList.add("is-checked");
-								QS(`[value="always"]`).checked = true;
-								QS(`[for="turn_off"]`).classList.remove("is-checked");
-								QS(`[value="turn_off"]`).checked = false;
-								QS(`[for="usual"]`).classList.remove("is-checked");
-								QS(`[value="usual"]`).checked = false;
-
-								SetRecord("s42_always", "1", DEFAULT_RECORD_OPTIONS);
-								SetRecord("s42_turn_off", "0", DEFAULT_RECORD_OPTIONS);
-
-								ManageModule("monochrome", false);
-								ManageModule("dark", true);
-								ManageModule(`${SITE}_dark`, true, true);
-								ManageModule("light", false);
-							};
-						};
-
-						ManageModule("ultra_dark", e.currentTarget.value === "ultra_dark");
-						ManageModule("deep_blue", e.currentTarget.value === "deep_blue");
-						ManageModule("covfefe", e.currentTarget.value === "covfefe");
-						ManageModule("blackchrome", e.currentTarget.value === "blackchrome");
-						ManageModule("vampire", e.currentTarget.value === "vampire");
-					};
-
-					if (e.currentTarget.getAttribute("name") === "add-light") {
-						SetRecord("s42_monochrome", (e.currentTarget.value === "monochrome" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-						if (GetRecord("s42_no_themes") === "1") return;
-
-						if (
-							e.currentTarget.value === "monochrome"
-						) {
-							if (
-								GetRecord("s42_turn_off") !== "1" || GetMode(true)
-							) {
-								QS(`[for="always"]`).classList.remove("is-checked");
-								QS(`[value="always"]`).checked = false;
-								QS(`[for="turn_off"]`).classList.add("is-checked");
-								QS(`[value="turn_off"]`).checked = true;
-								QS(`[for="usual"]`).classList.remove("is-checked");
-								QS(`[value="usual"]`).checked = false;
-
-								SetRecord("s42_always", "0", DEFAULT_RECORD_OPTIONS);
-								SetRecord("s42_turn_off", "1", DEFAULT_RECORD_OPTIONS);
-
-
-								ManageModule("ultra_dark", false);
-								ManageModule("deep_blue", false);
-								ManageModule("covfefe", false);
-								ManageModule("blackchrome", false);
-								ManageModule("vampire", false);
-								ManageModule("dark", false);
-								ManageModule(`${SITE}_dark`, false, true);
-								ManageModule("light", true);
-							};
-						};
-
-						ManageModule("monochrome", e.currentTarget.value === "monochrome");
-					};
-
-					if (e.currentTarget.getAttribute("name") === "time") {
-						SetRecord("s42_always", (e.currentTarget.value === "always" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-						SetRecord("s42_turn_off", (e.currentTarget.value === "turn_off" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-						SetRecord("s42_no_themes", (e.currentTarget.value === "no_themes" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-
-
-						ManageModule("ultra_dark", false);
-						ManageModule("deep_blue", false);
-						ManageModule("covfefe", false);
-						ManageModule("blackchrome", false);
-						ManageModule("vampire", false);
-						ManageModule("monochrome", false);
-						ManageModule("no_themes", false);
-
-
-						if (e.currentTarget.value === "always") {
-							QS(`meta[name="theme-color"]`)?.setAttribute("content", "#232323");
-
-							ManageModule("dark", true);
-							ManageModule(`${SITE}_dark`, true, true);
-							ManageModule("light", false);
-
-							["ultra_dark", "deep_blue", "covfefe", "blackchrome", "vampire"].forEach((addDarkModuleName) => {
-								if (GetRecord("s42_" + addDarkModuleName) === "1") {
-									ManageModule(addDarkModuleName, true);
-								};
-							});
-						} else if (e.currentTarget.value === "turn_off") {
-							QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
-
-							ManageModule("dark", false);
-							ManageModule(`${SITE}_dark`, false, true);
-							ManageModule("light", true);
-
-							["monochrome"].forEach((addLightModuleName) => {
-								if (GetRecord("s42_" + addLightModuleName) === "1") {
-									ManageModule(addLightModuleName, true);
-								};
-							});
-						} else if (e.currentTarget.value === "no_themes") {
-							QS(`meta[name="theme-color"]`)?.removeAttribute("content");
-
-							ManageModule("dark", false);
-							ManageModule(`${SITE}_dark`, false, true);
-							ManageModule("light", false);
-							ManageModule("no_themes", true);
-						} else {
-							GetMode().then((iNightMode) => {
-								if (iNightMode) {
-									QS(`meta[name="theme-color"]`)?.setAttribute("content", "#232323");
-
-									ManageModule("dark", true);
-									ManageModule(`${SITE}_dark`, true, true);
-									ManageModule("light", false);
-
-									["ultra_dark", "deep_blue", "covfefe", "blackchrome", "vampire"].forEach((addDarkModuleName) => {
-										if (GetRecord("s42_" + addDarkModuleName) === "1") {
-											ManageModule(addDarkModuleName, true);
-										};
-									});
-								} else {
-									QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
-
-									ManageModule("dark", false);
-									ManageModule(`${SITE}_dark`, false, true);
-									ManageModule("light", true);
-								};
-							});
-						};
-					};
-				});
-			});
-
-			QSA(".switcher-layout__list__donate").forEach((donatePromoteElem) => {
-				donatePromoteElem.addEventListener("click", () => {
-					SetRecord("s42_donate", Date.now().toString(), DEFAULT_RECORD_OPTIONS);
-
-
-					QSA(".switcher-layout__list__donate").forEach((donatePromoteElemToHide, donatePromoteElemToHideIndex) => {
-						donatePromoteElemToHide.style.overflow = "hidden";
-						let initHeight = donatePromoteElemToHide.scrollHeight,
-							initMargin = 12;
-
-						GlobalAnimation(4e2, (iProgress) => {
-							donatePromoteElemToHide.style.height = initHeight * (1 - iProgress) + "px";
-							donatePromoteElemToHide.style.marginBottom = initMargin * (1 - iProgress) + "px";
-
-							if (!donatePromoteElemToHideIndex) 
-								donatePromoteElemToHide.style.marginTop = initMargin * (1 - iProgress) + "px";
-						}, "ease-in-out").then(() => {
-							donatePromoteElemToHide.style.height = 0;
-							GR(donatePromoteElemToHide);
-						});
-					});
-				})
-			});
-
-			GEBI("switcher-layout__scroll-to-modules-part").addEventListener("click", () => {
-				GEBI("switcher-layout__choosing-modules-part").scrollIntoView({ behavior: "smooth" });
-			});
+				LocalBuildPanel();
+				requestAnimationFrame(() => LocalShowPanel(e));
+				requestAnimationFrame(() => componentHandler.upgradeElements(QSA("[data-mdl-upgrade]")));
 		  });
 
 	customDataContainer.appendChild(switchersBtn);
+	componentHandler.upgradeElement(switchersBtn);
 });
 
 
@@ -1655,15 +1992,15 @@ const GlobalStartBadgeProcedure = () => {
 		};
 	};
 
-	setTimeout(() => {
-		if (addBadgeFlag) {
+
+	if (addBadgeFlag)
+		setTimeout(() => {
 			if (windowLoaded) {
 				LocalStartBadgeProcedure();
 			} else {
 				window.addEventListener("load", () => LocalStartBadgeProcedure());
 			};
-		};
-	}, 250);
+		}, 250);
 };
 
 const GlobalStopBadgeProcedure = () => {
@@ -1761,15 +2098,14 @@ const GlobalStartFavouriteMarkerProcedure = () => {
 		}, 300);
 	};
 
-	setTimeout(() => {
-		if (addFavouriteMarkerFlag) {
+	if (addFavouriteMarkerFlag)
+		setTimeout(() => {
 			if (windowLoaded) {
 				LocalFavouriteMarkerProcedure();
 			} else {
 				window.addEventListener("load", () => LocalFavouriteMarkerProcedure());
 			};
-		};
-	}, 250);
+		}, 250);
 };
 
 const GlobalStopFavouriteMarkerProcedure = () => {
@@ -1947,27 +2283,4 @@ GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry
 window.addEventListener("load", () => {
 	windowLoaded = true;
 	GR(QS(".l-page__header > style"));
-
-	if (GetRecord("s42_no_themes") === "1") return;
-
-	setTimeout(() => {
-		const primaryColorVariable = getComputedStyle(document.documentElement).getPropertyValue("--primary-color");
-
-		GlobalWaitForElement("#writing-typograph").then((writingTypograph) => {
-			if (writingTypograph)
-				writingTypograph.childNodes[0].setAttribute("fill", primaryColorVariable || SITES_COLORS[window.location.hostname]);
-		});
-
-		GlobalWaitForElement("#andropov_play_default").then(() => {
-			if (window.S42_DARK_THEME_ENABLED) {
-				const andropovPlayDefaultSVG = GEBI("andropov_play_default");
-				if (andropovPlayDefaultSVG) andropovPlayDefaultSVG.childNodes[0].setAttribute("fill", "rgba(50,50,50,0.7)");
-				if (andropovPlayDefaultSVG) andropovPlayDefaultSVG.childNodes[1].setAttribute("fill", primaryColorVariable || SITES_COLORS[window.location.hostname]);
-
-				const briefcaseSVG = GEBI("ui_briefcase");
-				if (briefcaseSVG) briefcaseSVG.childNodes[0].setAttribute("stroke", primaryColorVariable || SITES_COLORS[window.location.hostname]);
-				if (briefcaseSVG) briefcaseSVG.childNodes[1].setAttribute("stroke", primaryColorVariable || SITES_COLORS[window.location.hostname]);
-			};
-		});
-	}, 2e3);
 });

@@ -1082,9 +1082,21 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc6) !important;
 }
 
+.ce-popover {
+	background-color: var(--tc4);
+	box-shadow: 0 4px 8px var(--tc13);
+}
 
+.ce-block-settings__item:not(.no-hover):hover,
+.remove-tool--confirm {
+	background-color: var(--tc6) !important;
+}
 
-
+@media (max-width: 1024px) {
+	.ce-toolbar {
+		background-color: var(--tc4);
+	}
+}
 
 .form2__field--image .image, .quote-tool__photo-wrapper, .cdx-input {
 	background: var(--tc2);
@@ -1387,7 +1399,8 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc2) !important;
 }
 
-.sidebar-tree-list-item__child-item:hover {
+.sidebar-tree-list-item__child-item:hover,
+.sidebar-tree-list-item:first-of-type .sidebar-tree-list-item__link:not(:only-child):hover {
 	background-color: var(--tc5) !important;
 }
 
@@ -1554,18 +1567,4 @@ html body .ce-redactor a.andropov_link {
 	--s42-spfb-backround-color: var(--tc5);
 	--s42-spfb-box-shadow: 0 1px 4px 1px var(--tc13);
 	--s42-spfb-border-color: var(--tc6);
-}
-
-
-
-
-
-.ce-popover {
-	background-color: var(--tc4);
-	box-shadow: 0 4px 8px var(--tc13);
-}
-
-.ce-block-settings__item:not(.no-hover):hover,
-.remove-tool--confirm {
-	background-color: var(--tc6) !important;
 }

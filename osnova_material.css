@@ -195,7 +195,6 @@
 	.new_entries {
 		border-radius: var(--br);
 		box-shadow: 0 3px 5px 0 var(--material-theme-shadow-color);
-		margin-bottom: 16px;
 	}
 
 	[air-module="module.special_stories"] {
@@ -398,7 +397,7 @@
 
 .content-feed[air-module="module.entry"]:hover,
 .entry_stub:hover {
-	box-shadow: 0 5px 10px 2px var(--material-theme-shadow-color);
+	box-shadow: 0 5px 15px 0 var(--material-theme-shadow-color);
 }
 
 .content-header-note {

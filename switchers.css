@@ -316,3 +316,7 @@ label.mdl-checkbox {
 #switcher-layout__list__item--karma-cover.is-faded #switcher-layout__list__item--karma-cover__obfuscator {
 	display: block;
 }
+
+#switcher-layout:not(.switcher-layout--small-screen) .switcher-layout__list--for-small-screen {
+	display: none;
+}

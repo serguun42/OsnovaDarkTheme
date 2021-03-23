@@ -410,11 +410,17 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	background-color: #444 !important;
 }
 
+@media (max-width: 1024px) {
+	.ce-toolbar {
+		background-color: #333333;
+	}
+}
+
 
 
 
 
 
 .comments__item__children {
-	border-left: 1px dashed #3e3e3e;
+	border-left: 1px dashed #3E3E3E;
 }
