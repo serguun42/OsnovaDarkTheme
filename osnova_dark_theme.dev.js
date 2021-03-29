@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.1.5-A (2021-03-20)
+// @version      9.1.6-A (2021-03-23)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.1.5",
+	VERSION = "9.1.6",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -1001,33 +1001,6 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 
 
 
-	/** @type {{what: String, label: String, sublabel?: String, checked: Boolean}[]} */
-	const TIME_SWITCHERS =  [
-		{
-			what: "always",
-			label: `Тёмная тема с выбранными дополнениями всегда <b>включена</b>`,
-			checked: GetRecord("s42_always") === "1"
-		},
-		{
-			what: "turn_off",
-			label: `Тёмная тема и её дополнения всегда <b>отключены</b>`,
-			sublabel: `Вместо этого применяется <i>слегка<i> модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.`,
-			checked: GetRecord("s42_turn_off") === "1"
-		},
-		{
-			what: "usual",
-			label: `По расписанию`,
-			sublabel: `Выбранная тёмная тема применяется после заката и до восхода, время определяется динамически (солнцестояние – равноденствие – солнцестояние и т.д.)`,
-			checked: (GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1")
-		},
-		{
-			what: "no_themes",
-			label: `Не применять никакие темы никогда`,
-			sublabel: `Всё так же можно подключить дополнительные модули: красные закладки, Material, прижать боковые колонки и прочее. См. «Выбор модулей»`,
-			checked: (GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1" && GetRecord("s42_no_themes") === "1")
-		}
-	];
-
 	/**
 	 * @param {CustomEventType} e
 	 */
@@ -1105,7 +1078,31 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 	/**
 	 * @returns {ElementDescriptorType[]}
 	 */
-	const LocalBuildTimeSwitchers = () => TIME_SWITCHERS.map((timeSwitcher) => ({
+	const LocalBuildTimeSwitchers = () => [
+		{
+			what: "always",
+			label: `Тёмная тема с выбранными дополнениями всегда <b>включена</b>`,
+			checked: GetRecord("s42_always") === "1"
+		},
+		{
+			what: "turn_off",
+			label: `Тёмная тема и её дополнения всегда <b>отключены</b>`,
+			sublabel: `Вместо этого применяется <i>слегка<i> модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.`,
+			checked: GetRecord("s42_turn_off") === "1"
+		},
+		{
+			what: "usual",
+			label: `По расписанию`,
+			sublabel: `Выбранная тёмная тема применяется после заката и до восхода, время определяется динамически (солнцестояние – равноденствие – солнцестояние и т.д.)`,
+			checked: GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1" && GetRecord("s42_no_themes") !== "1"
+		},
+		{
+			what: "no_themes",
+			label: `Не применять никакие темы никогда`,
+			sublabel: `Всё так же можно подключить дополнительные модули: красные закладки, Material, прижать боковые колонки и прочее. См. «Выбор модулей»`,
+			checked: GetRecord("s42_no_themes") === "1"
+		}
+	].map((timeSwitcher) => ({
 		tag: "li",
 		class: "switcher-layout__list__item",
 		child: {
@@ -1126,7 +1123,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 						type: "radio",
 						name: "time",
 						value: timeSwitcher.what,
-						...(timeSwitcher.checked ? { checked: "checked" } : {})
+						...(timeSwitcher.checked === true ? { checked: "checked" } : {})
 					},
 					listeners: {
 						change: LocalOnTimeChange
