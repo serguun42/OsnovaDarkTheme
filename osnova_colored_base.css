@@ -1568,3 +1568,29 @@ html body .ce-redactor a.andropov_link {
 	--s42-spfb-box-shadow: 0 1px 4px 1px var(--tc13);
 	--s42-spfb-border-color: var(--tc6);
 }
+
+
+
+
+
+.booster-constructor .bc-preview-button__settings {
+	background-color: var(--tc2);
+}
+
+
+
+
+
+
+
+.__vcbf__popup {
+	background-color: var(--tc2) !important;
+}
+
+.__vcbf__popup-header {
+	border-bottom-color: var(--tc5) !important;
+}
+
+.__vcbf__popup::before {
+	background-color: var(--tc2) !important;
+}

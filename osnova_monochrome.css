@@ -612,7 +612,8 @@ svg[aria-labelledby="verified"],
 .live__item__media img,
 .content ol li, .content ul li,
 .content .content-image-caption__title,
-.content .content-image-caption__author {
+.content .content-image-caption__author,
+.__vcbf__popup {
 	filter: grayscale(1);
 }
 

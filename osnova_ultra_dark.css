@@ -424,3 +424,30 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 .comments__item__children {
 	border-left: 1px dashed #3E3E3E;
 }
+
+
+
+
+
+
+
+.booster-constructor .bc-preview-button__settings {
+	background-color: #333;
+}
+
+
+
+
+
+
+.__vcbf__popup {
+	background-color: #333 !important;
+}
+
+.__vcbf__popup-header {
+	border-bottom-color: #666 !important;
+}
+
+.__vcbf__popup::before {
+	background-color: #333 !important;
+}

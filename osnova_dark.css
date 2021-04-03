@@ -7476,6 +7476,11 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: transparent;
 }
 
+.booster-constructor .bc-preview-button__settings {
+	background-color: #121212;
+	border-bottom-color: transparent;
+}
+
 
 
 
@@ -7522,4 +7527,30 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .gallery-item {
 	background-color: transparent;
+}
+
+
+
+
+
+.__vcbf__popup {
+	background-color: #121212 !important;
+	color: #E1E1E1;
+}
+
+.__vcbf__popup-header {
+	border-bottom-color: #444 !important;
+}
+
+.__vcbf__popup::before {
+	background-color: #121212 !important;
+	color: #E1E1E1;
+}
+
+.__vcbf__popup-header_karma--positive {
+	background-color: rgba(0, 170, 17, 0.15);
+}
+
+.__vcbf__popup-header_karma--negative {
+	background-color: rgba(205, 25, 46, 0.2);
 }
