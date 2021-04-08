@@ -7538,6 +7538,16 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	color: #E1E1E1;
 }
 
+.__vcbf__popup-preloader,
+.__vcbf__popup-header,
+.__vcbf__popup-content {
+	padding: 12px 16px;
+}
+
+.__vcbf__popup-preloader {
+	color: #888888;
+}
+
 .__vcbf__popup-header {
 	border-bottom-color: #444 !important;
 }

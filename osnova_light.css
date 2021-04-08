@@ -771,3 +771,9 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: var(--primary-color--faded26);
 	color: #000;
 }
+
+.__vcbf__popup-preloader,
+.__vcbf__popup-header,
+.__vcbf__popup-content {
+	padding: 12px 16px;
+}

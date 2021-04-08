@@ -58,3 +58,9 @@
 	color: var(--gray-signs-primary-color);
 	background: var(--gray-signs-primary-background-color);
 }
+
+.__vcbf__popup-header_karma--positive,
+.__vcbf__popup-header_karma--negative {
+	color: var(--gray-signs-primary-color);
+	background: var(--gray-signs-primary-background-color);
+}
