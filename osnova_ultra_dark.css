@@ -451,3 +451,19 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 .__vcbf__popup::before {
 	background-color: #333 !important;
 }
+
+
+
+
+
+.dstr-unit__outer {
+	background-color: #333;
+}
+
+.commercial-list__item:hover {
+	background-color: #444 !important;
+}
+
+.commercial-list__item--active {
+	background-color: #333 !important;
+}

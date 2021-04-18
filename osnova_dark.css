@@ -6075,6 +6075,10 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 	background-color: #333;
 }
 
+.v-popup-window__close--inside {
+	color: #FFF;
+}
+
 [air-module="module.donatesCabinet"] .layout--bg,
 [air-module="module.donatesCabinet"] .l-island-bg {
 	background-color: #333;
@@ -7563,4 +7567,57 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .__vcbf__popup-header_karma--negative {
 	background-color: rgba(205, 25, 46, 0.2);
+}
+
+
+
+
+.dstr-unit__outer {
+	background-color: #121212;
+}
+
+.commercial-list__item:hover {
+	background-color: #242424 !important;
+}
+
+.commercial-list__item--active {
+	background-color: #121212 !important;
+}
+
+.commercial-list__name {
+	color: #E1E1E1 !important;
+}
+
+.ad-contacts__title {
+	color: #DDD;
+}
+
+.ad-user__position {
+	color: #BBB;
+}
+
+.ad-user::after {
+	background-color: #888;
+}
+
+
+
+
+/* Kekw blocking script */
+
+#dataheadBlock {
+	left: -30px;
+}
+
+#custom-data-container + #dataheadBlock {
+	left: -64px;
+}
+
+#blockListId {
+	margin: 8px;
+}
+
+._kekw_dtf_block_user .v-button__label {
+	margin-top: 2px;
+	margin-bottom: unset;
 }

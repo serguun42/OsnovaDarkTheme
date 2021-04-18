@@ -1594,3 +1594,19 @@ html body .ce-redactor a.andropov_link {
 .__vcbf__popup::before {
 	background-color: var(--tc2) !important;
 }
+
+
+
+
+
+.dstr-unit__outer {
+	background-color: var(--tc4);
+}
+
+.commercial-list__item:hover {
+	background-color: var(--tc4) !important;
+}
+
+.commercial-list__item--active {
+	background-color: var(--tc2) !important;
+}

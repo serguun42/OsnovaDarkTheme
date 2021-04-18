@@ -777,3 +777,26 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .__vcbf__popup-content {
 	padding: 12px 16px;
 }
+
+
+
+
+
+/* Kekw blocking script */
+
+#dataheadBlock {
+	left: -30px;
+}
+
+#custom-data-container + #dataheadBlock {
+	left: -64px;
+}
+
+#blockListId {
+	margin: 8px;
+}
+
+._kekw_dtf_block_user .v-button__label {
+	margin-top: 2px;
+	margin-bottom: unset;
+}

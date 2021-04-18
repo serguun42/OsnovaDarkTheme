@@ -624,3 +624,11 @@
 	border-top-left-radius: var(--br) !important;
 	border-top-right-radius: var(--br) !important;
 }
+
+
+
+
+
+.commercial-list__item {
+	border-radius: var(--br);
+}
