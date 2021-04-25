@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.1.6-A (2021-03-23)
+// @version      9.1.7-A (2021-04-25)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.1.6",
+	VERSION = "9.1.7",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -1939,7 +1939,19 @@ const GlobalStartBadgeProcedure = () => {
 				  badge.id = "s42-feed-link-new-entries-badge";
 				  badge.className = "is-hidden";
 
-			QS(".sidebar-tree-list-item").querySelector(".sidebar-tree-list-item__link").appendChild(badge);
+			
+			const sidebarLinks = Array.from(document.querySelectorAll(".sidebar-tree-list-item")),
+				  parent = (
+					sidebarLinks[0].querySelector(".sidebar-tree-list-item__child-item") ?
+						sidebarLinks[0]
+					:
+						sidebarLinks[1]
+				  ),
+				  linkToPlaceBadge = parent?.querySelector(".sidebar-tree-list-item__link");
+
+			if (!parent || !linkToPlaceBadge) return;
+
+			linkToPlaceBadge.appendChild(badge);
 
 
 			const count = newEntriesModule.getUnreadCount();
@@ -1975,13 +1987,13 @@ const GlobalStartBadgeProcedure = () => {
 
 
 			document.body.classList.add("s42-has-counter");
-			QS(".sidebar-tree-list-item").addEventListener("click", LocalSidebarListItemClickListener);
+			parent.addEventListener("click", LocalSidebarListItemClickListener);
 
 
 			OnSidebarHomeListener = () => {
 				newEntriesModule.off("Unread count changed");
 				document.body.classList.remove("s42-has-counter");
-				QS(".sidebar-tree-list-item").removeEventListener("click", LocalSidebarListItemClickListener);
+				parent.removeEventListener("click", LocalSidebarListItemClickListener);
 				GR(badge);
 			};
 		} catch (e) {
