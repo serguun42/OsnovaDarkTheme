@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.1.7-A (2021-04-25)
+// @version      9.2.0-A (2021-04-26)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.1.7",
+	VERSION = "9.2.0",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -119,6 +119,12 @@ const
 			title: "Прижать боковые колонки к центру экрана",
 			default: false,
 			priority: 5
+		},
+		{
+			name: "verified",
+			title: "Добавить галочки всем пользователям",
+			default: false,
+			priority: 6
 		},
 		{
 			name: "gay",
@@ -576,19 +582,19 @@ const SetMode = iNightMode => {
 			body.classList.remove("s42-is-dark");
 	});
 
-	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}.css`, 1, "site");
+	GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}.css`, 1, SITE);
 
 
 	if (GetRecord("s42_no_themes") !== "1") {
 		if (iNightMode) {
-			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_dark.css`, 2, "osnova");
-			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}_dark.css`, 3, "site");
+			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_dark.css`, 2, "dark");
+			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${SITE}_dark.css`, 3, `${SITE}_dark`);
 
 			GlobalWaitForElement(`meta[name="theme-color"]`).then((meta) => {
 				if (meta) meta.setAttribute("content", "#232323");
 			});
 		} else {
-			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_light.css`, 2, "osnova");
+			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_light.css`, 2, "light");
 
 			GlobalWaitForElement(`meta[name="theme-color"]`).then((meta) => {
 				if (meta) meta.setAttribute("content", SITES_COLORS[window.location.hostname]);
@@ -610,7 +616,7 @@ const SetMode = iNightMode => {
 
 		if ((addon.dark || addon.light) && GetRecord("s42_no_themes") === "1") return false;
 
-		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${addon.name}.css`, addon.priority, "additional");
+		GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_${addon.name}.css`, addon.priority, addon.name);
 	});
 };
 
@@ -637,21 +643,25 @@ const ManageModule = (iModuleName, iStatus, iWithoutPrefix = false) => {
 	const moduleURL = `https://${RESOURCES_DOMAIN}/tampermonkey/osnova/${(iWithoutPrefix ? "" : "osnova_") + iModuleName}.css`;
 
 	if (CUSTOM_ELEMENTS[moduleURL] && !iStatus) {
+		GlobalWaitForElement("body").then((body) => {
+			if (body) body.classList.remove(`s42-${iModuleName.replace(/^osnova_/, "").replace(/_/g, "-")}`);
+		});
+
 		GR(CUSTOM_ELEMENTS[moduleURL]);
 		delete CUSTOM_ELEMENTS[moduleURL];
 	} else if (!CUSTOM_ELEMENTS[moduleURL] && iStatus) {
 		const moduleSpecWithPriority = ALL_MODULES.find((moduleSpec) => moduleSpec.name === iModuleName);
 
-		GlobalAddStyle(moduleURL, moduleSpecWithPriority.priority);
+		GlobalAddStyle(moduleURL, moduleSpecWithPriority.priority, iModuleName);
 	};
 };
 
 /**
  * @param {String} iLink
  * @param {Number} iPriority
- * @param {String} [iDataFor]
+ * @param {String} [iModuleName]
  */
-const GlobalAddStyle = (iLink, iPriority, iDataFor = false) => {
+const GlobalAddStyle = (iLink, iPriority, iModuleName = "") => {
 	const stylesNode = document.createElement("link");
 		  stylesNode.setAttribute("data-priority", iPriority);
 		  stylesNode.setAttribute("data-author", "serguun42");
@@ -659,10 +669,11 @@ const GlobalAddStyle = (iLink, iPriority, iDataFor = false) => {
 		  stylesNode.setAttribute("href", iLink);
 
 
-	if (iDataFor)
-		stylesNode.setAttribute("data-for", iDataFor);
-	else
-		stylesNode.setAttribute("data-for", "site");
+	if (iModuleName) {
+		GlobalWaitForElement("body").then((body) => {
+			if (body) body.classList.add(`s42-${iModuleName.replace(/^osnova_/, "").replace(/_/g, "-")}`);
+		});
+	}
 
 
 	GlobalWaitForElement(`#container-for-custom-elements-${iPriority}`).then(
@@ -678,19 +689,12 @@ const GlobalAddStyle = (iLink, iPriority, iDataFor = false) => {
 /**
  * @param {String} iLink
  * @param {Number} iPriority
- * @param {String} [iDataFor]
  */
-const GlobalAddScript = (iLink, iPriority, iDataFor = false) => {
+const GlobalAddScript = (iLink, iPriority) => {
 	const scriptNode = document.createElement("script");
 		  scriptNode.setAttribute("data-priority", iPriority);
 		  scriptNode.setAttribute("data-author", "serguun42");
 		  scriptNode.setAttribute("src", iLink);
-
-
-	if (iDataFor)
-		scriptNode.setAttribute("data-for", iDataFor);
-	else
-		scriptNode.setAttribute("data-for", "site");
 
 
 	GlobalWaitForElement(`#container-for-custom-elements-${iPriority}`).then(
@@ -830,6 +834,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_deep_blue",
 	"s42_filter",
 	"s42_gay",
+	"s42_verified",
 	"s42_karma",
 	"s42_lastkarmaandsub",
 	"s42_material",
@@ -976,11 +981,11 @@ GlobalWaitForElement("body").then((body) => {
 });
 
 
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/mdl-switchers.css`, 0, "osnova");
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/material-icons.css`, 0, "osnova");
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_com_rules.css`, 0, "osnova");
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/switchers.css`, 0, "osnova");
-GlobalAddScript(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/getmdl.min.js`, 0, "osnova");
+GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/mdl-switchers.css`, 0);
+GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/material-icons.css`, 0);
+GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_com_rules.css`, 0);
+GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/switchers.css`, 0);
+GlobalAddScript(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/getmdl.min.js`, 0);
 
 
 if (GetRecord("s42_turn_off") === "1")
@@ -1707,6 +1712,15 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									}
 								},
 								{
+									name: "verified",
+									title: "Добавить галочки всем пользователям",
+									checked: GetRecord("s42_verified") === "1",
+									onchange: (e) => {
+										SetRecord("s42_verified", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("verified", e.currentTarget.checked);
+									}
+								},
+								{
 									name: "gay",
 									title: "Добавить оформление «G.A.Y»",
 									checked: GetRecord("s42_gay") === "1",
@@ -2145,7 +2159,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 
 		setTimeout(() =>
-			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css?id=${window.__delegated_data?.["module.auth"]?.["id"] || "-" + VERSION}&name=${encodeURIComponent(window.__delegated_data?.["module.auth"]?.["name"] || "-" + VERSION)}&site=${SITE}&version=${VERSION}&modules=${customModulesEncoded}`, 0, "osnova")
+			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css?id=${window.__delegated_data?.["module.auth"]?.["id"] || "-" + VERSION}&name=${encodeURIComponent(window.__delegated_data?.["module.auth"]?.["name"] || "-" + VERSION)}&site=${SITE}&version=${VERSION}&modules=${customModulesEncoded}`, 0)
 		, 2e3);
 	};
 
