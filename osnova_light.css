@@ -765,7 +765,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: var(--primary-color--faded26);
 }
 
-.page.page--editor .v-button.v-button--blue:hover,
+.editor .v-button.v-button--blue:hover,
 .v-header__actions .v-button--blue:hover,
 .v-header-actions--mini .v-button--blue:hover {
 	background-color: var(--primary-color--faded26);
@@ -799,4 +799,25 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 ._kekw_dtf_block_user .v-button__label {
 	margin-top: 2px;
 	margin-bottom: unset;
+}
+
+
+
+
+
+.ce-block--focused,
+.ce-block--focused .ce-block__content {
+	z-index: 999;
+}
+
+
+
+
+
+
+
+
+.editor-subsite-select__current:hover,
+.editor-cp-tab__label:hover {
+	color: var(--primary-color);
 }

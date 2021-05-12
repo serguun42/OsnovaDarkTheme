@@ -246,29 +246,29 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 
 
-.page.page--editor .header {
+.editor .header {
 	background-color: var(--tc1) !important;
 }
 
-.page.page--editor .header .tab__content {
+.editor .editor-cp-tab__content {
 	background-color: var(--tc5);
 }
 
-.page.page--editor .header .tab__content .history .item {
+.editor .editor-cp-tab__content .editor-history-item {
 	background-color: var(--tc13);
 }
 
-.miniEditor__attach, .miniEditor__actions .attachButton {
+.miniEditor__attach, .miniEditor__actions .attachButton, .mini-editor__button {
 	color: var(--primary-color);
 	background-color: var(--tc2);
 }
 
-.miniEditor__attach:hover, .miniEditor__actions .attachButton:hover {
+.miniEditor__attach:hover, .miniEditor__actions .attachButton:hover, .mini-editor__button:hover {
 	background-color: var(--primary-color);
 	color: var(--tc5);
 }
 
-.miniEditor__attach:hover .icon, .miniEditor__actions .attachButton:hover .icon {
+.miniEditor__attach:hover .icon, .miniEditor__actions .attachButton:hover .icon, .mini-editor__button:hover .icon {
 	color: var(--tc5);
 	fill: var(--tc5);
 }
@@ -1484,11 +1484,11 @@ html body .ce-redactor a.andropov_link {
 
 
 
-.tab__content .path__input,
-.tab__content .style__input,
-.tab__content .push__title,
-.tab__content .push__text,
-.tab__content .announcements__input .form-text-input {
+.editor-cp-tab__content .path__input,
+.editor-cp-tab__content .style__input,
+.editor-cp-tab__content .push__title,
+.editor-cp-tab__content .push__text,
+.editor-cp-tab__content .announcements__input .form-text-input {
 	border-color: var(--tc6) !important;
 }
 
@@ -1609,4 +1609,13 @@ html body .ce-redactor a.andropov_link {
 
 .commercial-list__item--active {
 	background-color: var(--tc2) !important;
+}
+
+
+
+
+
+
+:root {
+	--editor-color: var(--tc1);
 }

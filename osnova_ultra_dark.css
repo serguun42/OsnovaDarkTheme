@@ -92,7 +92,7 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 
 
-.page.page--editor .header {
+.editor .header {
 	background-color: #121212 !important;
 }
 
@@ -466,4 +466,13 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 .commercial-list__item--active {
 	background-color: #333 !important;
+}
+
+
+
+
+
+
+:root {
+	--editor-color: #121212;
 }
