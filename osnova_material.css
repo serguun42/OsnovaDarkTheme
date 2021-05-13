@@ -443,16 +443,17 @@
 	overflow: hidden;	
 }
 
-.miniEditor__dummy, .miniEditor__main, .miniEditor {
+.miniEditor__dummy, .miniEditor__main, .miniEditor, .mini-editor {
 	border-radius: var(--br);
 	transition: box-shadow .2s ease-in-out 0s;
 	box-shadow: 0 3px 5px 0 var(--material-theme-shadow-color);
 }
 
-.miniEditor__dummy:hover, .miniEditor__dummy:hover {
+.miniEditor__dummy:hover, .miniEditor__dummy:hover, .mini-editor {
 	box-shadow: 0 5px 10px 2px var(--material-theme-shadow-color);
 }
 
+.page.page--editor .header .tab__content,
 .editor .editor-cp-tab__content {
 	border-radius: var(--br);
 	transition: box-shadow .2s ease-in-out 0s;

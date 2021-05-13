@@ -4,6 +4,26 @@
 	@serguun42
  */
 
+ :root {
+	--tc1: #14131d;
+	--tc2: #221f30;
+	--tc3: #1017311a;
+	--tc4: #29263B;
+	--tc5: #34314b;
+	--tc6: #433e72;
+	--tc7: #8598ad;
+	--tc8: #f3eff3;
+	--tc9: #f4f4f6;
+	--tc10: #f7f7f8;
+	--tc11: #907990;
+	--tc12: rgba(26, 22, 48, 0.3);
+	--tc13: rgba(131, 120, 221, 0.3);
+	--tc14: rgba(67, 62, 114, 0.25);
+	--tc15: rgba(34, 31, 48, 0.8);
+	--tc16: rgba(16, 23, 49, .1);
+	--tc17: rgba(52, 49, 75, 0.95);
+}
+
 :root {
 	--material-theme-gradient-color: var(--tc4);
 	--current-theme-gradient-color-huge-tabs: var(--tc4);
@@ -52,7 +72,7 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	background-color: var(--tc2) !important;
 }
 
-.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .content-feed[air-module="module.entry"], .new_entries, .news_widget, .entry_flash, .entry_stub {
+.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"], .new_entries, .news_widget, .entry_flash, .entry_stub {
 	background-color: var(--tc4) !important;
 }
 
@@ -246,14 +266,17 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 
 
+.page.page--editor .header,
 .editor .header {
 	background-color: var(--tc1) !important;
 }
 
+.page.page--editor .header .tab__content,
 .editor .editor-cp-tab__content {
 	background-color: var(--tc5);
 }
 
+.page.page--editor .header .tab__content .history .item,
 .editor .editor-cp-tab__content .editor-history-item {
 	background-color: var(--tc13);
 }
@@ -1483,7 +1506,11 @@ html body .ce-redactor a.andropov_link {
 
 
 
-
+.tab__content .path__input,
+.tab__content .style__input,
+.tab__content .push__title,
+.tab__content .push__text,
+.tab__content .announcements__input .form-text-input,
 .editor-cp-tab__content .path__input,
 .editor-cp-tab__content .style__input,
 .editor-cp-tab__content .push__title,
@@ -1611,7 +1638,13 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc2) !important;
 }
 
+.input-select__options-item {
+	background-color: var(--tc2);
+}
 
+.input-select__options-item:hover {
+	background-color: var(--tc6);
+}
 
 
 
@@ -1619,3 +1652,22 @@ html body .ce-redactor a.andropov_link {
 :root {
 	--editor-color: var(--tc1);
 }
+
+
+
+
+
+
+.v-button--green {
+	color: var(--tc2);
+}
+
+.cs-list-item,
+.cs-list-item__bottom {
+	background-color: var(--tc4);
+}
+
+.bp-unit {
+	background-color: var(--tc6);
+}
+

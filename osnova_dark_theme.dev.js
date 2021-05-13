@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.2.0-A (2021-04-26)
+// @version      9.2.1-A (2021-05-13)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.2.0",
+	VERSION = "9.2.1",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -1864,6 +1864,8 @@ const GlobalSetSidebarItemsStyle = iStyle => {
 		QS(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
 	if (QS(`.sidebar-tree-list-item[href="/events"]`))
 		QS(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
+	if (QS(`.sidebar-tree-list-item[href="/cabinet"]`))
+		QS(`.sidebar-tree-list-item[href="/cabinet"]`).style.display = iStyle;
 
 
 	QSA(`.sidebar-tree-list-item--custom-html`).forEach((sidebarLink) => {

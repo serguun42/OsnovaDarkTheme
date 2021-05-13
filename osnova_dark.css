@@ -4849,29 +4849,34 @@ html body .ce-redactor a.andropov_link {
 	color: #E1E1E1;
 }
 
+.page.page--editor .header,
 .editor .header {
 	background-color: #333 !important;
 }
 
+.page.page--editor .header .tab__label:hover,
 .editor .editor-cp-tab__label:hover {
 	color: var(--primary-color);
 }
 
+.page.page--editor .header .tab--active .tab__label:after,
 .editor .editor-cp-tab--active .editor-cp-tab__label:after {
 	background-color: var(--primary-color);
 }
 
-
+.page.page--editor .header .tab__content,
 .editor .editor-cp-tab__content {
 	background-color: transparent;
 	border: none;
 }
 
+.page.page--editor .header .tab__content .history .item,
 .editor .editor-cp-tab__content .editor-history-item {
 	background-color: #555;
 	color: #E1E1E1;
 }
 
+.page.page--editor .select__current:hover,
 .editor .select__current:hover {
 	color: var(--lighter-color) !important;
 }
@@ -5198,7 +5203,7 @@ html body .ce-redactor a.andropov_link {
 	fill: #333;
 }
 
-.miniEditor__main, .miniEditor {
+.miniEditor__main, .miniEditor, .mini-editor {
 	background-color: #333;
 }
 
@@ -6160,6 +6165,8 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 
 
 .v-button.v-button--default,
+.page.page--editor .v-button.v-button--blue,
+.v-button--blue,
 .editor .v-button.v-button--blue,
 .v-header__actions .v-button--blue,
 .v-header-actions--mini .v-button--blue,
@@ -6174,7 +6181,9 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 	background-color: var(--primary-color--faded50);
 }
 
+.page.page--editor .v-button.v-button--blue:hover,
 .editor .v-button.v-button--blue:hover,
+.v-button--blue:hover,
 .v-header__actions .v-button--blue:hover,
 .v-header-actions--mini .v-button--blue:hover,
 .bc-form__button .v-button--blue:hover {
@@ -6214,6 +6223,7 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 
 }
 
+.v-tab:hover,
 .v-tabs__content a:hover {
 	color: var(--lighter-color);
 }
@@ -6959,20 +6969,28 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 
 
-
+.tab__content .settings__title,
+.tab__content .settings__block .path__button,
 .editor-cp-tab__content .editor-settings__title,
 .editor-cp-tab__content .editor-settings__block .path__button {
 	color: #888 !important;
 }
 
+.tab__content .settings__block .path__button:hover,
 .editor-cp-tab__content .path__button:hover {
 	color: var(--lighter-color) !important;
 }
 
+.tab__content .settings__block .path__label,
 .editor-cp-tab__content .path__label {
 	color: #888;
 }
 
+.tab__content .path__input,
+.tab__content .style__input,
+.tab__content .push__title,
+.tab__content .push__text,
+.tab__content .announcements__input .form-text-input,
 .editor-cp-tab__content .path__input,
 .editor-cp-tab__content .style__input,
 .editor-cp-tab__content .push__title,
@@ -6983,64 +7001,84 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	border-color: #555 !important;
 }
 
+.tab__content .v-ui-checkbox,
 .editor-cp-tab__content .v-ui-checkbox {
 	background-color: transparent !important;
 }
 
+.tab__content .v-ui-checkbox.v-ui-checkbox--checked,
 .editor-cp-tab__content .v-ui-checkbox.v-ui-checkbox--checked {
 	border-color: var(--lighter-color) !important;
 }
 
+.tab__content .v-ui-checkbox--disabled,
 .editor-cp-tab__content .v-ui-checkbox--disabled {
 	background-color: transparent !important;
 }
 
+.tab__content .v-ui-checkbox.v-ui-checkbox--checked:before,
+.tab__content .v-ui-checkbox.v-ui-checkbox--checked.v-ui-checkbox--disabled:before,
 .editor-cp-tab__content .v-ui-checkbox.v-ui-checkbox--checked:before,
 .editor-cp-tab__content .v-ui-checkbox.v-ui-checkbox--checked.v-ui-checkbox--disabled:before {
 	border-color: var(--lighter-color) !important;
 }
 
+.tab__content .v-ui-radio,
 .editor-cp-tab__content .v-ui-radio {
 	background-color: transparent !important;
 }
 
+.tab__content .v-ui-radio.v-ui-radio--checked,
 .editor-cp-tab__content .v-ui-radio.v-ui-radio--checked {
 	border-color: var(--lighter-color) !important;
 }
 
+.tab__content .settings__checkboxes .v-ui-radio--disabled,
 .editor-cp-tab__content .settings__checkboxes .v-ui-radio--disabled {
 	background-color: transparent !important;
 }
 
+.tab__content .v-ui-radio.v-ui-radio--checked:before,
+.tab__content .v-ui-radio.v-ui-radio--checked.v-ui-radio--disabled:before,
 .editor-cp-tab__content .v-ui-radio.v-ui-radio--checked:before,
 .editor-cp-tab__content .v-ui-radio.v-ui-radio--checked.v-ui-radio--disabled:before {
 	background-color: var(--lighter-color) !important;
 }
 
+.tab__content .push__tabs .push__tab--active:after
 .editor-cp-tab__content .push__tabs .push__tab--active:after {
 	background-color: var(--lighter-color) !important;
 }
 
+.tab__content .push__tabs .push__tab,
 .editor-cp-tab__content .editor-distribution__title {
 	color: #888 !important;
 }
 
+.tab__content .push__tabs .push__tab--active,
 .editor-cp-tab__content .push__tabs .push__tab--active {
 	color: #E1E1E1 !important;
 }
 
+.tab__content .settings__block .clearcache,
+.tab__content .settings__block .cover__button,
+.tab__content .settings__block .announcements__button,
 .editor-cp-tab__content .editor-clear-cache,
 .editor-cp-tab__content .editor-custom-cover__button,
 .editor-cp-tab__content .editor-announcements__button {
 	color: var(--lighter-color) !important;
 }
 
+.tab__content .settings__block .clearcache:hover,
+.tab__content .settings__block .cover__button:hover,
+.tab__content .settings__block .announcements__button:hover,
 .editor-cp-tab__content .clearcache:hover,
 .editor-cp-tab__content .editor-custom-cover__button:hover,
 .editor-cp-tab__content .editor-announcements__button:hover {
 	color: #E1E1E1 !important;
 }
 
+.tab__content .ui-limited-input::after,
 .editor-cp-tab__content .ui-limited-input::after {
 	background-color: transparent !important;
 }
@@ -7614,6 +7652,10 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: #888;
 }
 
+.input-select__options-item {
+	background-color: #333;
+}
+
 
 
 
@@ -7661,9 +7703,60 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .editor-title {
 	background-color: transparent;
 	color: #E1E1E1;
+	--color-placeholder: #999;
 }
 
 .editor-subsite-select__current:hover,
 .editor-cp-tab__label:hover {
 	color: var(--primary-color);
+}
+
+
+
+
+.v-services .dummy {
+	color: #888 !important;
+}
+
+.bc-form__prediction {
+	color: #888;
+}
+
+.v-button--green {
+	background-color: #10EC0D;
+	color: #121212;
+}
+
+.v-form-radio {
+	border-color: var(--primary-color--faded);
+}
+
+.v-form-radio--checked .v-form-radio__dot {
+	background-color: var(--primary-color--faded);
+}
+
+
+
+
+.cs-list-item,
+.cs-list-item__bottom {
+	background-color: #333;
+}
+
+.cs-list-item__other,
+.cs-list-item__ask {
+	color: var(--primary-color);
+}
+
+.cs-list-item__other:hover,
+.cs-list-item__ask:hover {
+	color: #E1E1E1;
+}
+
+.bp-unit {
+	background-color: #242424;
+}
+
+.cs-list-item__control-button:hover {
+	color: #E1E1E1;
 }
