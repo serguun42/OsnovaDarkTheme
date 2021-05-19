@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.2.1-A (2021-05-13)
+// @version      9.3.0-A (2021-05-20)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.2.1",
+	VERSION = "9.3.0",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -76,7 +76,7 @@ const
 			default: false,
 			priority: 5
 		},
-	
+
 		{
 			name: "beautifulfeedposts",
 			title: "Кнопки оценки постов без теней",
@@ -327,11 +327,12 @@ const GlobalClearInterval = iIntervalID => {
 
 /**
  * @param {String | ObserverQueueType} iKey
+ * @param {false | Promise} [iWaitAlways=false]
  * @returns {Promise<HTMLElement>}
  */
-const GlobalWaitForElement = iKey => {
+const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
 	if (typeof iKey == "object" && iKey.parent)
-		return new Promise(() => {
+		return new Promise((resolve) => {
 			observerQueue.push({
 				...iKey,
 				resolver: resolve
@@ -360,7 +361,7 @@ const GlobalWaitForElement = iKey => {
 		if (tagName) selectorForQueue.tag = tagName;
 		if (id) selectorForQueue.id = id;
 		if (className) selectorForQueue.className = className;
-		if (attributeMatch[1] && attributeMatch[2]) selectorForQueue.attribute = { name: attributeMatch[1], value: 	attributeMatch[2] };
+		if (attributeMatch[1] && attributeMatch[2]) selectorForQueue.attribute = { name: attributeMatch[1], value: attributeMatch[2] };
 
 
 		return new Promise((resolve) => {
@@ -376,19 +377,25 @@ const GlobalWaitForElement = iKey => {
 				if (foundQueueItemIndex > -1) {
 					observerQueue.splice(foundQueueItemIndex, 1);
 
-					let intervalCounter = 0;					
+					let intervalCounter = 0;
 					const backupInterval = GlobalSetInterval(() => {
 						const found = QS(iQuery);
 
 						if (found) {
 							GlobalClearInterval(backupInterval);
 							return resolve(found);
-						};
+						}
 
-						if (++intervalCounter > 50) {
+						if (++intervalCounter > 50 && !iWaitAlways) {
 							GlobalClearInterval(backupInterval);
 							return resolve(null);
 						}
+
+						if (iWaitAlways && iWaitAlways instanceof Promise)
+							iWaitAlways.then(() => {
+								GlobalClearInterval(backupInterval);
+								return resolve(null);
+							}).catch(console.warn)
 					}, 300);
 				};
 			}, 1e3);
@@ -537,14 +544,14 @@ const GetMode = iReturning => {
 
 	const
 		RATIO = (+D - SESSION_START) / (+SESSION_END - SESSION_START),
-		TODAY_SUNRISE = 
+		TODAY_SUNRISE =
 			CURRENT_TENDENCY
 			?
 				SCHEDULE.winter.sunrise - (SCHEDULE.winter.sunrise - SCHEDULE.summer.sunrise) * RATIO
 			:
 				SCHEDULE.summer.sunrise + (SCHEDULE.winter.sunrise - SCHEDULE.summer.sunrise) * RATIO
 		,
-		TODAY_SUNSET = 
+		TODAY_SUNSET =
 			CURRENT_TENDENCY
 			?
 				SCHEDULE.winter.sunset + (SCHEDULE.summer.sunset - SCHEDULE.winter.sunset) * RATIO
@@ -575,7 +582,7 @@ const SetMode = iNightMode => {
 
 	GlobalWaitForElement("body").then((body) => {
 		if (!body) return;
-		
+
 		if (iNightMode)
 			body.classList.add("s42-is-dark");
 		else
@@ -744,7 +751,7 @@ const GlobalAddScript = (iLink, iPriority) => {
  * @typedef {{[propertyName: string]: AdditionalHandlingPropertyHandler}} AdditionalHandlingProperties
  */
 /**
- * @param {ElementDescriptorType[] | ElementDescriptorType} elements 
+ * @param {ElementDescriptorType[] | ElementDescriptorType} elements
  * @param {HTMLElement} container
  * @param {Boolean} [clearContainer=true]
  * @param {AdditionalHandlingProperties} [additionalHandlingProperties=null]
@@ -755,7 +762,7 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 		container.innerHTML = null;
 
 	/**
-	 * @param {ElementDescriptorType} element 
+	 * @param {ElementDescriptorType} element
 	 */
 	const LocalBuildElement = element => {
 		if (!element) return;
@@ -863,7 +870,7 @@ const ALL_RECORDS_NAMES = [
 /**
  * @param {String} iName
  * @param {String} iValue
- * @param {{infinite?: true, erase?: true, Path?: string, Domain?: string}} iOptions 
+ * @param {{infinite?: true, erase?: true, Path?: string, Domain?: string}} iOptions
  * @returns {void}
  */
 const SetCookie = (iName, iValue, iOptions) => {
@@ -904,7 +911,7 @@ const GetCookie = iName => {
 /**
  * @param {String} iName
  * @param {String} iValue
- * @param {{infinite?: true, erase?: true, Path?: string, Domain?: string}} iOptions 
+ * @param {{infinite?: true, erase?: true, Path?: string, Domain?: string}} iOptions
  * @returns {void}
  */
 const SetRecord = (iName, iValue, iOptions) => {
@@ -1160,7 +1167,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 				donatePromoteElemToHide.style.height = initHeight * (1 - iProgress) + "px";
 				donatePromoteElemToHide.style.marginBottom = initMargin * (1 - iProgress) + "px";
 
-				if (!donatePromoteElemToHideIndex) 
+				if (!donatePromoteElemToHideIndex)
 					donatePromoteElemToHide.style.marginTop = initMargin * (1 - iProgress) + "px";
 			}, "ease-in-out").then(() => {
 				donatePromoteElemToHide.style.height = 0;
@@ -1374,7 +1381,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 					e.preventDefault();
 
 					const checked = !!input.checked;
-					
+
 					if (checked)
 						e.currentTarget.classList.remove("is-checked");
 					else
@@ -1583,6 +1590,16 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 											GlobalStartFavouriteMarkerProcedure();
 										else
 											GlobalStopFavouriteMarkerProcedure();
+									}
+								},
+								{
+									name: "previous_editor",
+									title: "Развёртывать редактор на всю страницу при его открытии",
+									checked: GetRecord("s42_fullpage_editor") === "1",
+									onchange: (e) => {
+										SetRecord("s42_fullpage_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+
+										SetFullpageEditor(e.currentTarget.checked);
 									}
 								},
 								{
@@ -1941,6 +1958,81 @@ const GlobalPlaceEditorialButton = () => {
 if (GetRecord("s42_editorial") === "1") GlobalPlaceEditorialButton();
 
 
+const FullpageEditor = {
+	/* Идея частично, но ответственно взята у Лемура */
+
+	lastStatus: false,
+	interruptingChecker: false,
+	disabled: () => {
+		FullpageEditor.interruptingChecker = true;
+	},
+	enable: () => {
+		GlobalWaitForElement(".v-popup-fp-overlay:not(.v-popup-fp-overlay--maximized)", new Promise((resolveInterruptingPromise) => {
+			const interruptingInterval = GlobalSetInterval(() => {
+				if (FullpageEditor.interruptingChecker) {
+					FullpageEditor.interruptingChecker = false;
+					GlobalClearInterval(interruptingInterval);
+					resolveInterruptingPromise();
+				}
+			}, 100);
+		})).then((popupOverlay) => {
+			if (!popupOverlay) return;
+			if (popupOverlay.classList.contains("v-popup-fp-overlay--maximized")) return Promise.resolve(null);
+
+			return GlobalWaitForElement(".v-popup-fp-window__control--size");
+		}).then(/** @param {HTMLElement} goToFullpageButton */ (goToFullpageButton) => {
+			if (!goToFullpageButton) return setTimeout(() => FullpageEditor.enable(), 1e3);
+
+
+			if (!FullpageEditor.lastStatus || FullpageEditor.interruptingChecker) return;
+
+
+			goToFullpageButton.dispatchEvent(new Event("click"));
+
+			QS("body").classList.add("app--popup-fullpage-maximized", "app--left-column-off");
+			QS(".v-popup-fp-container").classList.add("v-popup-fp-container--maximized");
+			QS(".v-popup-fp-overlay").classList.add("v-popup-fp-overlay--maximized");
+			QS(".v-popup-fp-window").classList.add("v-popup-fp-window--maximized");
+			GR(goToFullpageButton);
+
+
+			new MutationObserver((mutationList, observer) => {
+				mutationList.forEach(mutation => {
+					if (
+						mutation.removedNodes.length &&
+						Array.from(mutation.removedNodes).some((node) => node?.classList?.contains("v-popup-fp-overlay"))
+					) {
+						QS(".v-popup-fp-container").classList.remove("v-popup-fp-container--maximized");
+						QS("body").classList.remove("app--popup-fullpage-maximized", "app--left-column-off");
+
+						observer.disconnect();
+					}
+				})
+			}).observe(QS(".v-popup-fp-container"), { childList: true });
+
+
+			FullpageEditor.enable();
+		}).catch(console.warn);
+	}
+}
+
+/**
+ * @param {Boolean} iFullpageEditorStatus
+ * @returns {void}
+ */
+const SetFullpageEditor = iFullpageEditorStatus => {
+	if (iFullpageEditorStatus === FullpageEditor.lastStatus) return;
+	FullpageEditor.lastStatus = iFullpageEditorStatus;
+
+	if (iFullpageEditorStatus)
+		FullpageEditor.enable();
+	else
+		FullpageEditor.disabled();
+};
+
+if (GetRecord("s42_fullpage_editor") === "1") SetFullpageEditor(true);
+
+
 let addBadgeFlag = (GetRecord("s42_newentriesbadge") !== "0"),
 	OnSidebarHomeListener = null;
 
@@ -1955,7 +2047,7 @@ const GlobalStartBadgeProcedure = () => {
 				  badge.id = "s42-feed-link-new-entries-badge";
 				  badge.className = "is-hidden";
 
-			
+
 			const sidebarLinks = Array.from(document.querySelectorAll(".sidebar-tree-list-item")),
 				  parent = (
 					sidebarLinks[0].querySelector(".sidebar-tree-list-item__child-item") ?
@@ -2174,7 +2266,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 	document.body.appendChild(additionalStyleForAccountsBubble);
 
-	
+
 	/**
 	 * @param {Number} karma
 	 * @param {Number} subscribers

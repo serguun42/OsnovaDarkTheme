@@ -54,12 +54,6 @@
 	overflow: unset;
 }
 
-.live__header {
-	height: 50px;
-	line-height: 50px;
-	background-color: #232323;
-}
-
 .live__scrollable_parent {
 	width: calc(100% + 20px) !important;
 }

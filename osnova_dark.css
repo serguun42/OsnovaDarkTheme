@@ -7496,7 +7496,12 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 }
 
 .booster-constructor .bc-calendar__cell--selected-sequence {
+	color: #000;
 	background-color: var(--lighter-color);
+}
+
+.booster-constructor .bc-calendar__cell--selected-sequence .bc-calendar__day--current {
+	color: rgba(0, 0, 0, 0.5);
 }
 
 .booster-constructor .form-text-input,
@@ -7696,7 +7701,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .editor__body,
 .v-popup-fp-window,
 .editor__authors,
-.editor-cp__content::before {
+.editor-cp__content::before,
+.v-mobile-menu__header {
 	background-color: var(--editor-color);
 }
 
@@ -7759,4 +7765,36 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .cs-list-item__control-button:hover {
 	color: #E1E1E1;
+}
+
+.v-mobile-menu__icon {
+	color: #E1E1E1;
+}
+
+.editor-push__tab--active {
+	color: #E1E1E1;
+}
+
+.editor-push__tab--active:after {
+	background-color: var(--primary-color);
+}
+
+.editor-push__tab:hover {
+	color: var(--primary-color);
+}
+
+
+
+
+.live__header {
+	--height: 48px !important;
+}
+
+.live-header__title {
+	font-size: 16px;
+}
+
+#v_chevron_right path {
+	color: #E1E1E1 !important;
+	fill: #E1E1E1 !important;
 }

@@ -822,3 +822,15 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .editor-cp-tab__label:hover {
 	color: var(--primary-color);
 }
+
+
+
+
+
+.live__header {
+	--height: 48px !important;
+}
+
+.live-header__title {
+	font-size: 16px;
+}
