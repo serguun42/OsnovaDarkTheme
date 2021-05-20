@@ -61,6 +61,11 @@
 	bottom: unset !important;
 }
 
+
+
+
+
+
 /* New Editor 2021-05-12 */
 
 .editor__actions {
@@ -76,3 +81,10 @@
 	top: var(--height) !important;
 	bottom: unset !important;
 }
+
+@media (min-width: 1025px) {
+	.editor-cp__left .v-button.v-button--blue:first-of-type {
+		margin-right: 64px;
+	}
+}
+

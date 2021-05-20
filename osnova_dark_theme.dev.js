@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.3.0-A (2021-05-20)
+// @version      9.3.3-A (2021-05-20)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.3.0",
+	VERSION = "9.3.3",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -861,6 +861,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_favouritesicon",
 	"s42_favouritemarker",
 	"s42_previous_editor",
+	"s42_fullpage_editor",
 	"s42_hideviewsanddate",
 	"s42_newentriesbadge",
 	"s42_donate",
@@ -1591,10 +1592,19 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 										else
 											GlobalStopFavouriteMarkerProcedure();
 									}
-								},
+								}
+							].map(LocalBuildCheckboxByCommonRule)),
+							{
+								class: "switcher-layout__list__separator"
+							},
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Редактор постов"
+							},
+							...([
 								{
 									name: "previous_editor",
-									title: "Развёртывать редактор на всю страницу при его открытии",
+									title: "Автоматически раскрывать редактор на всю страницу при его открытии",
 									checked: GetRecord("s42_fullpage_editor") === "1",
 									onchange: (e) => {
 										SetRecord("s42_fullpage_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
@@ -1604,7 +1614,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 								},
 								{
 									name: "previous_editor",
-									title: "Старое оформление редактора постов",
+									title: "Старое оформление редактора",
 									checked: GetRecord("s42_previous_editor") === "1",
 									onchange: (e) => {
 										SetRecord("s42_previous_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
@@ -1989,7 +1999,13 @@ const FullpageEditor = {
 
 			goToFullpageButton.dispatchEvent(new Event("click"));
 
-			QS("body").classList.add("app--popup-fullpage-maximized", "app--left-column-off");
+
+			const leftColumnOffChecker = document.body.classList.contains("app--left-column-off"),
+			      leftColumnOnChecker = document.body.classList.contains("app--left-column-on");
+
+			if (leftColumnOnChecker) document.body.classList.remove("app--left-column-on");
+
+			document.body.classList.add("app--popup-fullpage-maximized", "app--left-column-off");
 			QS(".v-popup-fp-container").classList.add("v-popup-fp-container--maximized");
 			QS(".v-popup-fp-overlay").classList.add("v-popup-fp-overlay--maximized");
 			QS(".v-popup-fp-window").classList.add("v-popup-fp-window--maximized");
@@ -2003,7 +2019,10 @@ const FullpageEditor = {
 						Array.from(mutation.removedNodes).some((node) => node?.classList?.contains("v-popup-fp-overlay"))
 					) {
 						QS(".v-popup-fp-container").classList.remove("v-popup-fp-container--maximized");
-						QS("body").classList.remove("app--popup-fullpage-maximized", "app--left-column-off");
+						document.body.classList.remove("app--popup-fullpage-maximized");
+
+						if (!leftColumnOffChecker) document.body.classList.remove("app--left-column-off");
+						if (leftColumnOnChecker) document.body.classList.add("app--left-column-on");
 
 						observer.disconnect();
 					}
