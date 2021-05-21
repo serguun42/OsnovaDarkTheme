@@ -71,6 +71,9 @@
 .editor__actions {
 	-ms-flex-order: 0 !important;
 	order: 0 !important;
+
+	top: 0;
+	bottom: unset;
 }
 
 .editor__authors {
@@ -84,7 +87,7 @@
 
 @media (min-width: 1025px) {
 	.editor-cp__left .v-button.v-button--blue:first-of-type {
-		margin-right: 64px;
+		margin-right: 96px;
 	}
 }
 
