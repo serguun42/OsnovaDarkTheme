@@ -1671,3 +1671,14 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc6);
 }
 
+
+
+
+
+.v-form__legal:before {
+	background-color: var(--tc6);
+}
+
+.v-form__legal a {
+	border-bottom-color: var(--tc6);
+}

@@ -15,21 +15,6 @@
 	position: relative;
 }
 
-.feed__item:hover,
-.content-feed:hover .content-footer  {
-	z-index: 3;
-}
-
-.feed__item:hover .quiz,
-.feed__item .quiz:hover {
-	z-index: 4;
-}
-
-.vote--comment .vote__users,
-.vote--content .vote__users {
-	z-index: 6;
-}
-
 .vote--comment .vote__users__item:before {
 	width: calc(66% + 10px);
 }
