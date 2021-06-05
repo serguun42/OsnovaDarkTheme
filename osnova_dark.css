@@ -7791,3 +7791,12 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .v-form__legal a {
 	border-bottom-color: #888;
 }
+
+
+
+
+
+
+.block-hidden {
+	background-color: #242424;
+}

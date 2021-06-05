@@ -1682,3 +1682,13 @@ html body .ce-redactor a.andropov_link {
 .v-form__legal a {
 	border-bottom-color: var(--tc6);
 }
+
+
+
+
+
+
+
+.block-hidden {
+	background-color: var(--tc5);
+}
