@@ -477,3 +477,13 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 :root {
 	--editor-color: #121212;
 }
+
+
+
+
+
+:root {
+	--bc-default-dark-color: #121212;
+	--bc-default-dark-color--faded50: rgba(18, 18, 18, 0.5);
+	--bc-default-dark-color--faded26: rgba(18, 18, 18, 0.26);
+}

@@ -1692,3 +1692,13 @@ html body .ce-redactor a.andropov_link {
 .block-hidden {
 	background-color: var(--tc5);
 }
+
+
+
+
+
+:root {
+	--bc-default-dark-color: var(--tc4);
+	--bc-default-dark-color--faded50: var(--tc12);
+	--bc-default-dark-color--faded26: var(--tc14);
+}

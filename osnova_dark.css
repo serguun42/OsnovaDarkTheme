@@ -7800,3 +7800,141 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .block-hidden {
 	background-color: #242424;
 }
+
+
+
+
+
+
+
+
+
+:root {
+	--bc-default-dark-color: #242424;
+	--bc-default-dark-color--faded50: rgba(36, 36, 36, 0.5);
+	--bc-default-dark-color--faded26: rgba(36, 36, 36, 0.25);
+}
+
+.cs-list-item,
+.cs-list-item__bottom {
+	background-color: var(--bc-default-dark-color);
+}
+
+.v-field__wrapper {
+	background-color: var(--bc-default-dark-color);
+}
+
+.v-field__wrapper:hover {
+    background-color: var(--primary-color--faded26);
+	border-color: var(--primary-color--faded50);
+	box-shadow: 0 0 0 3px var(--primary-color--faded26);
+}
+
+.v-field--focused .v-field__wrapper {
+	background-color: var(--primary-color--faded50);
+	border-color: var(--primary-color);
+}
+
+.v-text-input__input,
+.v-field__icon.v-field__icon--right {
+	color: #E1E1E1;
+}
+
+.v-field--datepicker:hover .v-field__icon,
+.v-field--select:hover .v-field__icon--right {
+	color: var(--primary-color);
+}
+
+.v-datepicker__date {
+	background-color: var(--primary-color);
+}
+
+.v-select__popover .popover {
+	background-color: var(--bc-default-dark-color);
+}
+
+.popover-item--selected {
+	--color-background: var(--primary-color--faded26);
+}
+
+.popover-item--selected:hover,
+.popover-item--selected.popover-item--focused {
+	--color-background: var(--primary-color--faded50);
+}
+
+.v-checkbox--checked .v-checkbox__control,
+.v-checkbox--checked:hover .v-checkbox__control {
+	background-color: var(--primary-color);
+	border-color: var(--primary-color);
+}
+
+.v-checkbox:hover .v-checkbox__control {
+	background-color: rgba(0, 0, 0, .25);
+	border-color: var(--primary-color--faded26);
+}
+
+.v-range__fill {
+	background-color: var(--primary-color);
+}
+
+.v-calendar {
+	background-color: var(--bc-default-dark-color);
+}
+
+.v-calendar__arrow {
+	color: var(--primary-color);
+	background-color: var(--primary-color--faded26);
+}
+
+.v-calendar__arrow:hover {
+	background-color: var(--primary-color--faded50);
+}
+
+.v-calendar__cell--selected-sequence {
+	color: var(--bc-default-dark-color);
+	background-color: var(--primary-color);
+}
+
+.v-calendar__cell--selected-sequence:hover {
+	background-color: var(--primary-color--faded50);
+}
+
+.v-calendar__cell--hovered,
+.v-calendar__day:hover {
+	color: var(--bc-default-dark-color);
+	background-color: var(--primary-color--faded50);
+}
+
+.v-calendar__cell--selected .v-calendar__day {
+	color: var(--bc-default-dark-color);
+	background-color: var(--primary-color--faded50);
+}
+
+.v-calendar__cell--selected .v-calendar__day:hover {
+	background-color: var(--bc-default-dark-color--faded50);
+}
+
+.v-calendar__day--disabled {
+	color: rgba(255, 255, 255, 0.2);
+}
+
+.v-calendar__button:hover {
+	color: var(--bc-default-dark-color);
+	background-color: var(--lighter-color);
+	opacity: 0.6;
+}
+
+.v-calendar__button--primary {
+	color: var(--bc-default-dark-color);
+	background-color: var(--primary-color);
+}
+
+.v-calendar__button--primary:hover {
+	background-color: var(--lighter-color);
+	opacity: 0.6;
+}
+
+.v-calendar__notice {
+	color: #E1E1E1;
+	background-color: var(--bc-default-dark-color);
+}
