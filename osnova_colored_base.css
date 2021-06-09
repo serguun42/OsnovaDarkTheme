@@ -859,6 +859,7 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	border-color: var(--tc6) !important;
 }
 
+.settings-footer,
 .subsite_settings__section--save-settings.layout--bg,
 .subsite_settings__section--save-settings.l-island-bg {
 	background-color: var(--tc4) !important;
@@ -1539,6 +1540,7 @@ html body .ce-redactor a.andropov_link {
 
 .comments_form,
 .comments_pseudo_form {
+	background-color: var(--tc1);
 	border-color: var(--tc5);
 }
 
@@ -1698,7 +1700,52 @@ html body .ce-redactor a.andropov_link {
 
 
 :root {
-	--bc-default-dark-color: var(--tc4);
+	--bc-default-dark-color: var(--tc2);
 	--bc-default-dark-color--faded50: var(--tc12);
 	--bc-default-dark-color--faded26: var(--tc14);
+}
+
+
+
+
+.tg-tooltip {
+	background-color: var(--tc6);
+}
+
+
+
+
+
+.subsite-sidebar > .l-island-bg {
+	background-color: var(--tc4);
+}
+
+.user-settings__content {
+	background-color: var(--tc4);
+}
+
+.sidebar-navigation .sidebar-navigation__desktop {
+	background-color: var(--tc4);
+}
+
+.social-links__item {
+	background-color: var(--tc6) !important;
+}
+
+.v-etc__dropdown,
+.v-etc__item:first-child::before {
+	background-color: var(--tc2);
+}
+
+.v-etc__item:hover,
+.v-etc__item:first-child:hover::before {
+  background-color: var(--tc4);
+}
+
+.sidebar__footer {
+	background-color: var(--tc1) !important;
+}
+
+.sidebar__footer:before {
+	background-image: linear-gradient(0deg, var(--tc1), transparent) !important;
 }

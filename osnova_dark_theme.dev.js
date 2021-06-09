@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.3.3-A (2021-05-20)
+// @version      9.3.4-A (2021-06-09)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -22,9 +22,9 @@
 
 
 const
-	SITE = window.location.hostname.split(".")[0],
+	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.3.3",
+	VERSION = "9.3.4",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -196,7 +196,6 @@ const
 		"dtf.ru": "#66D7FF",
 		"vc.ru": "#E25A76"
 	};
-
 
 
 

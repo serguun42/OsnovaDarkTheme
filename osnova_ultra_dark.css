@@ -487,3 +487,15 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	--bc-default-dark-color--faded50: rgba(18, 18, 18, 0.5);
 	--bc-default-dark-color--faded26: rgba(18, 18, 18, 0.26);
 }
+
+
+
+
+
+.sidebar__footer {
+	background-color: #121212 !important;
+}
+
+.sidebar__footer:before {
+	background-image: linear-gradient(0deg, #121212, transparent) !important;
+}
