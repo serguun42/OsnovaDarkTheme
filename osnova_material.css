@@ -663,3 +663,10 @@
 .ui-tabs.ui-tabs--small ~ .feed {
 	margin-top: calc(3 * var(--br));
 }
+
+
+
+
+.company_card {
+	border-radius: var(--br);
+}

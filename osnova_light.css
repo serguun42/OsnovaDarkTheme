@@ -819,3 +819,15 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .live-header__title {
 	font-size: 16px;
 }
+
+
+
+
+.show_vacancy_contact--ani-pulse {
+	color: #FFF;
+	background-color: var(--primary-color) !important;
+}
+
+.show_vacancy_contact--ani-pulse:after {
+	background-color: var(--primary-color);
+}

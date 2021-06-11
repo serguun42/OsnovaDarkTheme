@@ -499,3 +499,10 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 .sidebar__footer:before {
 	background-image: linear-gradient(0deg, #121212, transparent) !important;
 }
+
+
+
+
+.comments_form, .comments_pseudo_form {
+	background-color: #1A1A1A;
+}

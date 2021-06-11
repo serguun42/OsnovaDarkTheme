@@ -8083,3 +8083,24 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: transparent;
 	color: #E1E1E1;
 }
+
+
+
+
+
+.show_vacancy_contact--ani-pulse {
+	color: #121212;
+	background-color: var(--primary-color) !important;
+}
+
+.show_vacancy_contact--ani-pulse:after {
+	background-color: var(--primary-color);
+}
+
+.company_card {
+	border-color: #555;
+}
+
+.feed_header__label {
+	color: #888;
+}

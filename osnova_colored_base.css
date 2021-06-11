@@ -1749,3 +1749,12 @@ html body .ce-redactor a.andropov_link {
 .sidebar__footer:before {
 	background-image: linear-gradient(0deg, var(--tc1), transparent) !important;
 }
+
+
+
+
+
+
+.company_card {
+	border-color: var(--tc5);
+}
