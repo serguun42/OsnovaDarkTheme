@@ -132,10 +132,6 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	user-select: none;
 }
 
-.content-editorial-tick {
-	z-index: 2 !important;
-}
-
 .block-quote--centered .block-quote__content .icon, .block-quote--opinion .block-quote__content .icon {
 	display: block;
 }
@@ -325,21 +321,6 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 
 /*
-	DROPDOWN MENU FIX
- */
-
-.feed_header {
-	z-index: 9999;
-}
-
-.navigationDropdown__menu.navigationDropdown__menu--shown {
-	z-index: 9999;
-}
-
-
-
-
-/*
 	TJ PLUS Jan 2020
  */
 .page.page--plus .ui-button.ui-button--large {
@@ -494,9 +475,6 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 
 
-.vb-content {
-	padding-right: 12px !important;
-}
 
 body.s42-default-scrollers .vb-content::-webkit-scrollbar-track,
 body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-track {
@@ -785,15 +763,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 ._kekw_dtf_block_user .v-button__label {
 	margin-top: 2px;
 	margin-bottom: unset;
-}
-
-
-
-
-
-.ce-block--focused,
-.ce-block--focused .ce-block__content {
-	z-index: 999;
 }
 
 

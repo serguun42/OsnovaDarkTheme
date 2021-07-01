@@ -48,7 +48,9 @@
 .kp-br-bt,
 .adviser__toggler,
 .dstr-unit__outer,
-.ancientrussia-branding
+.ancientrussia-branding,
+.hp-branding-header,
+.hp-tech-footer
 {
 	display: none !important;
 	visibility: hidden !important;

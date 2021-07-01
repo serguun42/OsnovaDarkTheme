@@ -1,3 +1,7 @@
 .site-header .icon.icon--site_logo {
 	color: var(--primary-color);
 }
+
+#oldschool_site_logo path {
+	fill: var(--primary-color) !important;
+}

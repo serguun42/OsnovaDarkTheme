@@ -506,3 +506,12 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 .comments_form, .comments_pseudo_form {
 	background-color: #1A1A1A;
 }
+
+
+
+
+
+
+.block-hidden-wrapper::before {
+	background-color: #121212;
+}

@@ -143,6 +143,10 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	color: var(--tc4) !important;
 }
 
+:root {
+	--attacher-darktheme-active-text-color: var(--tc4);
+}
+
 .comments_pseudo_form__button {
 	background-color: var(--tc2);
 }
@@ -179,6 +183,10 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 .attacher__input input {
 	border: 1px solid var(--tc7);
+}
+
+.v-form-input input:focus {
+	background-color: var(--tc7);
 }
 
 .v-form-range .vue-slider-rail {
@@ -1419,12 +1427,12 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc4) !important;
 }
 
-.sidebar-tree-list-item:hover:not(.sidebar-tree-list-item--active) {
+.sidebar-tree-list-item:hover:not(.sidebar-tree-list-item--active):not(.sidebar-tree-list-item--hover-disabled) {
 	background-color: var(--tc2) !important;
 }
 
-.sidebar-tree-list-item__child-item:hover,
-.sidebar-tree-list-item:first-of-type .sidebar-tree-list-item__link:not(:only-child):hover {
+.sidebar-tree-list-item__child-item:hover:not(.sidebar-tree-list-item--hover-disabled),
+.sidebar-tree-list-item:first-of-type:not(.sidebar-tree-list-item--hover-disabled) .sidebar-tree-list-item__link:not(:only-child):hover {
 	background-color: var(--tc5) !important;
 }
 
@@ -1544,6 +1552,10 @@ html body .ce-redactor a.andropov_link {
 	border-color: var(--tc5);
 }
 
+.comments_form:hover,
+.comments_pseudo_form:hover {
+	border-color: var(--tc6);
+}
 
 
 
@@ -1695,6 +1707,10 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc5);
 }
 
+.block-hidden-wrapper::before {
+	background-color: var(--tc1);
+}
+
 
 
 
@@ -1757,4 +1773,18 @@ html body .ce-redactor a.andropov_link {
 
 .company_card {
 	border-color: var(--tc5);
+}
+
+
+
+
+
+
+.ten-widget-user,
+.ten-widget__button {
+	background-color: var(--tc5) !important;
+}
+
+.page--search .search_results__dummy {
+	background-color: var(--tc2);
 }

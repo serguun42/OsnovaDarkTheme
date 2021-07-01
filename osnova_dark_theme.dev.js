@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.3.4-A (2021-06-09)
+// @version      9.4.2-A (2021-06-23)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.3.4",
+	VERSION = "9.4.2",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -95,16 +95,16 @@ const
 			default: false,
 			priority: 5
 		},
+		{
+			name: "stars_in_editor",
+			title: "Старое оформление редактора постов",
+			default: false,
+			priority: 5
+		},
 
 		{
 			name: "gray_signs",
 			title: "Серые оценки у постов и комментариев",
-			default: false,
-			priority: 5
-		},
-		{
-			name: "snow_by_neko",
-			title: "Добавить снег фоном",
 			default: false,
 			priority: 5
 		},
@@ -127,8 +127,8 @@ const
 			priority: 6
 		},
 		{
-			name: "gay",
-			title: "Добавить оформление «G.A.Y»",
+			name: "hide_likes",
+			title: "Спрятать все оценки и поля ввода",
 			default: false,
 			priority: 6
 		},
@@ -353,7 +353,7 @@ const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
 		const tagName = iQuery.split(/#|\.|\[/)[0],
 			  id = iQuery.match(/#([\w\-]+)/i)?.[1],
 			  className = iQuery.match(/\.([\w\-]+(\.[\w\-]+)*)/)?.[1],
-			  attributeMatch = iQuery.match(/\[([\w\-]+)\=\"([^\"]+)\"\]/i) || [];
+			  attributeMatch = iQuery.match(/\[([\w\-]+)\=\"([^\"]+)\"\]/i) || [];5
 
 		/** @type {ObserverQueueType} */
 		const selectorForQueue = {};
@@ -841,6 +841,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_filter",
 	"s42_gay",
 	"s42_verified",
+	"s42_hide_likes",
 	"s42_karma",
 	"s42_lastkarmaandsub",
 	"s42_material",
@@ -861,6 +862,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_favouritemarker",
 	"s42_previous_editor",
 	"s42_fullpage_editor",
+	"s42_stars_in_editor",
 	"s42_hideviewsanddate",
 	"s42_newentriesbadge",
 	"s42_donate",
@@ -1099,7 +1101,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 		{
 			what: "turn_off",
 			label: `Тёмная тема и её дополнения всегда <b>отключены</b>`,
-			sublabel: `Вместо этого применяется <i>слегка<i> модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.`,
+			sublabel: `Вместо этого применяется <i>слегка</i> модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.`,
 			checked: GetRecord("s42_turn_off") === "1"
 		},
 		{
@@ -1602,13 +1604,22 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 							},
 							...([
 								{
-									name: "previous_editor",
+									name: "fullpage_editor",
 									title: "Автоматически раскрывать редактор на всю страницу при его открытии",
 									checked: GetRecord("s42_fullpage_editor") === "1",
 									onchange: (e) => {
 										SetRecord("s42_fullpage_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 
 										SetFullpageEditor(e.currentTarget.checked);
+									}
+								},
+								{
+									name: "stars_in_editor",
+									title: "Вернуть в редактор быстрые действия: вывод в ленту, якоря, скрытие блоков и т.п.",
+									checked: GetRecord("s42_stars_in_editor") === "1",
+									onchange: (e) => {
+										SetRecord("s42_stars_in_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("stars_in_editor", e.currentTarget.checked);
 									}
 								},
 								{
@@ -1697,15 +1708,6 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									}
 								},
 								{
-									name: "snow_by_neko",
-									title: "Добавить снег фоном",
-									checked: GetRecord("s42_snow_by_neko") === "1",
-									onchange: (e) => {
-										SetRecord("s42_snow_by_neko", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-										ManageModule("snow_by_neko", e.currentTarget.checked);
-									}
-								},
-								{
 									name: "material",
 									title: "Добавить оформление «Material»",
 									checked: GetRecord("s42_material") !== "0",
@@ -1747,12 +1749,12 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									}
 								},
 								{
-									name: "gay",
-									title: "Добавить оформление «G.A.Y»",
-									checked: GetRecord("s42_gay") === "1",
+									name: "hide_likes",
+									title: "Спрятать все оценки и поля ввода",
+									checked: GetRecord("s42_hide_likes") === "1",
 									onchange: (e) => {
-										SetRecord("s42_gay", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-										ManageModule("gay", e.currentTarget.checked);
+										SetRecord("s42_hide_likes", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("hide_likes", e.currentTarget.checked);
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),
