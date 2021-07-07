@@ -1556,16 +1556,28 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 
 .comments_form {
 	border: 1px solid #3E3E3E;
+	background-color: transparent;
 }
 
-.comments_form:hover,
+.comments_form:hover {
+	border-color: #555;
+	background-color: transparent;
+	box-shadow: 0 0 0 3px var(--primary-color--faded26);
+}
+
 .comments_pseudo_form:hover {
 	border-color: #555;
-	/* box-shadow: 0 0 0 3px var(--primary-color--faded26); */
+	background-color: transparent;
 }
 
 .comments_form--focused {
-    border-color: var(--primary-color--faded26) !important;
+	box-shadow: 0 0 0 2px var(--primary-color--faded26);
+	border-color: var(--primary-color--faded50) !important;
+}
+
+.comments_form--focused:hover {
+	box-shadow: 0 0 0 2px var(--primary-color--faded50);
+	border-color: var(--primary-color) !important;
 }
 
 .comments_form--filled {
@@ -5056,6 +5068,10 @@ html body .ce-redactor a.andropov_link {
 	fill: var(--attacher-darktheme-active-text-color);
 }
 
+.thesis__custom_button {
+	color: #818181;
+}
+
 .comments_pseudo_form__button {
 	background-color: #1C1C1C;
 }
@@ -7954,6 +7970,11 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: var(--bc-default-dark-color);
 }
 
+.popover-item:hover,
+.popover-item--focused {
+	--color-background: #555;
+}
+
 .popover-item--selected {
 	--color-background: var(--primary-color--faded26);
 }
@@ -8292,4 +8313,40 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .bc-form-hidden-block__label:hover {
 	color: #E1E1E1
+}
+
+
+
+
+
+
+.layout__right-column > div > div > div:nth-of-type(2) > div > div:nth-child(2) > div > div[class]:not([class=""]) > a:nth-child(1) > div:nth-child(2) {
+	color: #E1E1E1;
+}
+
+.layout__right-column > div > div > div:nth-of-type(2) > div > div:nth-child(2) > div > div[class]:not([class=""]) > a:nth-child(2) {
+	color: #888;
+}
+
+.layout__right-column > div > div > div:nth-of-type(2) > div > div:nth-child(2) > div > a + div > a:hover {
+	color: var(--primary-color);
+}
+
+.layout__right-column > div > div > div:first-of-type {
+	background-color: transparent;
+}
+
+.block-code {
+	border-color: #555;
+}
+
+
+
+
+.comments__content_wrapper--open .comments__content_wrapper__container {
+	overflow-y: hidden;
+}
+
+.thesis__user.possession_inited {
+	display: flex;
 }

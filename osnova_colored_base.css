@@ -1788,3 +1788,18 @@ html body .ce-redactor a.andropov_link {
 .page--search .search_results__dummy {
 	background-color: var(--tc2);
 }
+
+
+
+
+
+
+.block-code {
+	border-color: var(--tc6);
+}
+
+
+.popover-item:hover,
+.popover-item--focused {
+	--color-background: var(--tc4);
+}

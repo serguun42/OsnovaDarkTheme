@@ -800,3 +800,15 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .show_vacancy_contact--ani-pulse:after {
 	background-color: var(--primary-color);
 }
+
+
+
+
+
+.comments__content_wrapper--open .comments__content_wrapper__container {
+	overflow-y: hidden;
+}
+
+.thesis__user.possession_inited {
+	display: flex;
+}
