@@ -1,9 +1,6 @@
 :root {
 	--switcher-layout-background: #FFF;
 	--switcher-layout-text: #222;
-	--gay-theme-flag: url('https://serguun42.ru/tampermonkey/osnova/svgs/flag.svg');
-	--current-gay-theme-entry-background: rgba(255, 255, 255, 0.9);
-	--gay-theme-icon-mouth: url('https://serguun42.ru/tampermonkey/osnova/svgs/mouth--color.svg');
 }
 
 .main_menu__logo {
@@ -85,8 +82,3 @@
 .comments__content_wrapper--open .comments__content_wrapper__container {
 	overflow-y: hidden;
 }
-
-.thesis__user.possession_inited {
-	display: flex;
-}
-

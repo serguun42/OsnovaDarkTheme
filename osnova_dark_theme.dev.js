@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.4.2-A (2021-06-23)
+// @version      9.4.4-A (2021-07-07)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.4.2",
+	VERSION = "9.4.4",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -61,7 +61,6 @@ const
 			dark: true,
 			priority: 4
 		},
-
 		{
 			name: "monochrome",
 			title: "Monochrome",
@@ -70,23 +69,11 @@ const
 			priority: 4
 		},
 
-		{
-			name: "hidesubscriptions",
-			title: "Скрыть кнопку подписок",
-			default: false,
-			priority: 5
-		},
 
 		{
-			name: "beautifulfeedposts",
-			title: "Кнопки оценки постов без теней",
-			default: true,
-			priority: 5
-		},
-		{
-			name: "favouritesicon",
-			title: "Красная иконка закладок",
-			default: true,
+			name: "stars_in_editor",
+			title: "Вернуть в редактор быстрые действия: вывод в ленту, якоря, скрытие блоков и т.п",
+			default: false,
 			priority: 5
 		},
 		{
@@ -95,17 +82,42 @@ const
 			default: false,
 			priority: 5
 		},
+
+
 		{
-			name: "stars_in_editor",
-			title: "Старое оформление редактора постов",
+			name: "hidesubscriptions",
+			title: "Скрыть кнопку подписок",
 			default: false,
 			priority: 5
 		},
-
+		{
+			name: "beautifulfeedposts",
+			title: "Кнопки оценки постов без теней",
+			default: true,
+			priority: 5
+		},
 		{
 			name: "gray_signs",
 			title: "Серые оценки у постов и комментариев",
 			default: false,
+			priority: 5
+		},
+		{
+			name: "hide_likes",
+			title: "Спрятать все оценки и поля ввода",
+			default: false,
+			priority: 6
+		},
+		{
+			name: "add_possession_choice",
+			title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария (β)",
+			default: false,
+			priority: 5
+		},
+		{
+			name: "favouritesicon",
+			title: "Красная иконка закладок",
+			default: true,
 			priority: 5
 		},
 		{
@@ -126,12 +138,7 @@ const
 			default: false,
 			priority: 6
 		},
-		{
-			name: "hide_likes",
-			title: "Спрятать все оценки и поля ввода",
-			default: false,
-			priority: 6
-		},
+
 
 		{
 			name: "no_themes",
@@ -839,9 +846,9 @@ const ALL_RECORDS_NAMES = [
 	"s42_vampire",
 	"s42_deep_blue",
 	"s42_filter",
-	"s42_gay",
 	"s42_verified",
 	"s42_hide_likes",
+	"s42_add_possession_choice",
 	"s42_karma",
 	"s42_lastkarmaandsub",
 	"s42_material",
@@ -1755,6 +1762,15 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									onchange: (e) => {
 										SetRecord("s42_hide_likes", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 										ManageModule("hide_likes", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "add_possession_choice",
+									title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария (β)",
+									checked: GetRecord("s42_add_possession_choice") === "1",
+									onchange: (e) => {
+										SetRecord("s42_add_possession_choice", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("add_possession_choice", e.currentTarget.checked);
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),

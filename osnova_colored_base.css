@@ -34,10 +34,6 @@
 	--switcher-layout-text: #e1e1e1;
 }
 
-:root {
-	--current-gay-theme-entry-background: var(--tc17);
-}
-
 body, .main.layout, .sidebar, .live {
 	color: #DDD;
 	background-color: var(--tc1) !important;

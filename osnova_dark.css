@@ -14,12 +14,6 @@
 	--switcher-layout-text: #E1E1E1;
 }
 
-:root {
-	--gay-theme-flag: url("https://serguun42.ru/tampermonkey/osnova/svgs/flag-dark.svg");
-	--current-gay-theme-entry-background: rgba(30, 30, 30, 0.9);
-	--gay-theme-icon-mouth: var(--current-platform-icon-mouth);
-}
-
 .mdl-checkbox__box-outline {
 	border: 2px solid #999999 !important;
 }
@@ -4826,7 +4820,7 @@ html body .ce-redactor a.andropov_link {
 }
 
 .possession_triangle:after {
-	border-top: 4px solid #E1E1E1;
+	border-top: 4px solid #888;
 }
 
 .content-header-label {
@@ -8345,8 +8339,4 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .comments__content_wrapper--open .comments__content_wrapper__container {
 	overflow-y: hidden;
-}
-
-.thesis__user.possession_inited {
-	display: flex;
 }
