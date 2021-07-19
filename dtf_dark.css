@@ -2,6 +2,11 @@
 	--primary-color--for-badge: #1989b6;
 }
 
+:root {
+	--switchers-color: var(--primary-color);
+	--switchers-background-color: var(--primary-color--faded26);
+}
+
 .site-header .icon.icon--site_logo {
 	color: var(--primary-color);
 }

@@ -29,8 +29,8 @@
 
 	box-sizing: border-box;
 	border-radius: calc(var(--br) / 2);
-	color: var(--primary-color);
-	background-color: var(--primary-color--faded26);
+	color: var(--switchers-color);
+	background-color: var(--switchers-background-color);
 
 	font-family: "Roboto", "Noto Sans", Arial, Helvetica, sans-serif;
 	font-weight: 400;
@@ -62,7 +62,7 @@
 
 	font-size: 20px;
 	line-height: 20px;
-	color: var(--primary-color);
+	color: var(--switchers-color);
 
 	user-select: none;
 	-ms-user-select: none;

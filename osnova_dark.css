@@ -8340,3 +8340,15 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .comments__content_wrapper--open .comments__content_wrapper__container {
 	overflow-y: hidden;
 }
+
+
+
+
+
+.popover-item__label[style*="46, 168, 58"] {
+	color: #10EC0D !important;
+}
+
+.popover-item__label[style*="229, 46, 58"] {
+	color: #FF0000 !important;
+}

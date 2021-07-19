@@ -9,5 +9,6 @@
 }
 
 :root {
-	--current-platform-icon-mouth: url('https://serguun42.ru/tampermonkey/osnova/svgs/mouth--color-tj.svg');
+	--switchers-color: var(--primary-color);
+	--switchers-background-color: var(--primary-color--faded26);
 }
