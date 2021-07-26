@@ -8309,6 +8309,11 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	color: #E1E1E1
 }
 
+.bc-form-range__ends,
+.bc-form-range__hint {
+	color: #888;
+}
+
 
 
 
@@ -8351,4 +8356,40 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .popover-item__label[style*="229, 46, 58"] {
 	color: #FF0000 !important;
+}
+
+
+
+
+
+
+.popover {
+	--text-color: #E1E1E1 !important;
+}
+
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:hover,
+.search__field .v-field--focused .v-field__wrapper,
+.search__field,
+.search--active .search__input,
+.search--filled .search__input {
+	background-color: transparent;
+}
+
+.search__button,
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-field__icon,
+.search__field .v-text-input__input,
+.search__field .v-field .v-field__wrapper .v-text-input__input,
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-text-input__input {
+	color: #E1E1E1;
+}
+
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-text-input__input::-webkit-input-placeholder,
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-text-input__input::-moz-placeholder,
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-text-input__input::-ms-input-placeholder,
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-text-input__input::placeholder {
+	color: #888 !important;
+}
+
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-text-input__input::placeholder {
+	color: #888 !important;
 }
