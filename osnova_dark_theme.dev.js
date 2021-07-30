@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.4.4-A (2021-07-07)
+// @version      9.5.1-A (2021-07-30)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.4.4",
+	VERSION = "9.5.1",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -79,6 +79,12 @@ const
 		{
 			name: "previous_editor",
 			title: "Старое оформление редактора постов",
+			default: false,
+			priority: 5
+		},
+		{
+			name: "hide_feed_top_mini_editor",
+			title: "Скрыть мини-редактор в начале ленты",
 			default: false,
 			priority: 5
 		},
@@ -868,6 +874,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_favouritesicon",
 	"s42_favouritemarker",
 	"s42_previous_editor",
+	"s42_hide_feed_top_mini_editor",
 	"s42_fullpage_editor",
 	"s42_stars_in_editor",
 	"s42_hideviewsanddate",
@@ -1636,6 +1643,15 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									onchange: (e) => {
 										SetRecord("s42_previous_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 										ManageModule("previous_editor", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "hide_feed_top_mini_editor",
+									title: "Скрыть мини-редактор в начале ленты",
+									checked: GetRecord("s42_hide_feed_top_mini_editor") === "1",
+									onchange: (e) => {
+										SetRecord("s42_hide_feed_top_mini_editor", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("hide_feed_top_mini_editor", e.currentTarget.checked);
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),
