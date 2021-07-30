@@ -1,10 +1,11 @@
 # OsnovaDarkTheme
-Userscript adding dark theme on Osnova. With multiple custom subthemes and modules
-
+Userscript bringing dark theme to Osnova platform. Contains multiple subthemes and modules.
 
 ## Main File
-Tampermonkey/Meddlemonkey/Greasemonkey launches `osnova_dark_theme.js` which adds custom CSS, JS (presented in this repo) and couple of elements into the page.
+Tampermonkey/Greasemonkey/-monkey launches `osnova_dark_theme.js`. JS-code will add custom CSS, JS (presented in this repo) and couple of elements to the page according to user's settings.
 
+## [LICENSE – GNU GPL v3](./LICENSE)
 
 ### Info
-[TJournal](https://tjournal.ru/u/99944-serguun42/137781-tut-vse-eshche-postit-atserguun42-a-takzhe-ustanovka-temnoy-temy#darkmode)
+[TJournal](https://tjournal.ru/137781#darkmode)
+[DTF](https://dtf.ru/666655#darkmode)
