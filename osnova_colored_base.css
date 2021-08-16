@@ -1069,10 +1069,6 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	background: var(--tc6) !important;
 }
 
-.ce-block .gallery .input {
-	background-color: var(--tc1) !important;
-}
-
 .ce-block .media-item-zoomed__inner {
 	background-color: var(--tc5) !important;
 }

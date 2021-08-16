@@ -799,6 +799,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 
 
-.comments__content_wrapper--open .comments__content_wrapper__container {
-	overflow-y: hidden;
+
+.gallery-image__media-settings .media-tool-settings__item--active .icon {
+	color: var(--primary-color);
 }

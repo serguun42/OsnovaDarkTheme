@@ -1,7 +1,3 @@
 .page--index > .mini-editor {
 	display: none;
 }
-
-.app--content-feed #page_wrapper {
-	padding-top: 0;
-}

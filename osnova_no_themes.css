@@ -74,11 +74,3 @@
 .__vcbf__popup-content {
 	padding: 12px 16px;
 }
-
-
-
-
-
-.comments__content_wrapper--open .comments__content_wrapper__container {
-	overflow-y: hidden;
-}
