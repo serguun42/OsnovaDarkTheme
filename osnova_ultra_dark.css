@@ -515,3 +515,11 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 .block-hidden-wrapper::before {
 	background-color: #121212;
 }
+
+
+
+
+
+.gallery-image__media-settings--small {
+	background-color: #121212;
+}

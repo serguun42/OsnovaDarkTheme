@@ -72,6 +72,10 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	background-color: var(--tc4) !important;
 }
 
+.new_entries:hover {
+	background-color: var(--tc5) !important;
+}
+
 .layout--entry {
 	border-radius: 0 0 var(--br) var(--br);
 }
@@ -498,6 +502,10 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 
 .u-notification--unread {
 	background: var(--tc6) !important;
+}
+
+.u-notification--blue.u-notification--bg {
+	background-color: var(--tc14);
 }
 
 .u-notification--hover:hover {
@@ -1794,4 +1802,13 @@ html body .ce-redactor a.andropov_link {
 .popover-item:hover,
 .popover-item--focused {
 	--color-background: var(--tc5);
+}
+
+
+
+
+
+
+.gallery-image__media-settings--small {
+	background-color: var(--tc2);
 }

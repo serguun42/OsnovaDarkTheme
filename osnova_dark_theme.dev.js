@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.5.1-A (2021-07-30)
+// @version      9.5.2-A (2021-08-31)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.5.1",
+	VERSION = "9.5.2",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -93,6 +93,12 @@ const
 		{
 			name: "hidesubscriptions",
 			title: "Скрыть кнопку подписок",
+			default: false,
+			priority: 5
+		},
+		{
+			name: "hideentriesbadge",
+			title: "Скрыть индикатор новых записей",
 			default: false,
 			priority: 5
 		},
@@ -878,7 +884,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_fullpage_editor",
 	"s42_stars_in_editor",
 	"s42_hideviewsanddate",
-	"s42_newentriesbadge",
+	"s42_hideentriesbadge",
 	"s42_donate",
 	"s42_no_themes"
 ];
@@ -1515,18 +1521,12 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 							},
 							...([
 								{
-									name: "newentriesbadge",
-									title: "Улучшенный индикатор новых записей",
-									checked: GetRecord("s42_newentriesbadge") !== "0",
+									name: "hideentriesbadge",
+									title: "Скрыть индикатор новых записей",
+									checked: GetRecord("s42_hideentriesbadge") !== "0",
 									onchange: (e) => {
-										SetRecord("s42_newentriesbadge", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-
-										addBadgeFlag = !!e.currentTarget.checked;
-
-										if (addBadgeFlag)
-											GlobalStartBadgeProcedure();
-										else
-											GlobalStopBadgeProcedure();
+										SetRecord("s42_hideentriesbadge", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("hideentriesbadge", e.currentTarget.checked);
 									}
 								},
 								{
@@ -2085,100 +2085,6 @@ const SetFullpageEditor = iFullpageEditorStatus => {
 if (GetRecord("s42_fullpage_editor") === "1") SetFullpageEditor(true);
 
 
-let addBadgeFlag = (GetRecord("s42_newentriesbadge") !== "0"),
-	OnSidebarHomeListener = null;
-
-const GlobalStartBadgeProcedure = () => {
-	const LocalStartBadgeProcedure = () => {
-		if (!!OnSidebarHomeListener || !addBadgeFlag) return;
-
-		try {
-			const newEntriesModule = Air.get("module.new_entries");
-
-			const badge = document.createElement("span");
-				  badge.id = "s42-feed-link-new-entries-badge";
-				  badge.className = "is-hidden";
-
-
-			const sidebarLinks = Array.from(document.querySelectorAll(".sidebar-tree-list-item")),
-				  parent = (
-					sidebarLinks[0].querySelector(".sidebar-tree-list-item__child-item") ?
-						sidebarLinks[0]
-					:
-						sidebarLinks[1]
-				  ),
-				  linkToPlaceBadge = parent?.querySelector(".sidebar-tree-list-item__link");
-
-			if (!parent || !linkToPlaceBadge) return;
-
-			linkToPlaceBadge.appendChild(badge);
-
-
-			const count = newEntriesModule.getUnreadCount();
-			if (count) {
-				badge.classList.remove("is-hidden");
-				badge.innerText = count;
-			};
-
-
-			newEntriesModule.on("Unread count changed", (count) => {
-				if (!badge) return;
-
-				if (count) {
-					badge.classList.remove("is-hidden");
-					badge.innerText = count;
-				} else {
-					badge.classList.add("is-hidden");
-				};
-			});
-
-
-			const LocalSidebarListItemClickListener = () => {
-				badge.classList.add("is-hidden");
-
-				setTimeout(() => {
-					const count = newEntriesModule.getUnreadCount();
-					if (count) {
-						badge.classList.remove("is-hidden");
-						badge.innerText = count;
-					};
-				}, 2e3);
-			};
-
-
-			document.body.classList.add("s42-has-counter");
-			parent.addEventListener("click", LocalSidebarListItemClickListener);
-
-
-			OnSidebarHomeListener = () => {
-				newEntriesModule.off("Unread count changed");
-				document.body.classList.remove("s42-has-counter");
-				parent.removeEventListener("click", LocalSidebarListItemClickListener);
-				GR(badge);
-			};
-		} catch (e) {
-			console.warn(e);
-		};
-	};
-
-
-	if (addBadgeFlag)
-		setTimeout(() => {
-			if (windowLoaded) {
-				LocalStartBadgeProcedure();
-			} else {
-				window.addEventListener("load", () => LocalStartBadgeProcedure());
-			};
-		}, 250);
-};
-
-const GlobalStopBadgeProcedure = () => {
-	if (OnSidebarHomeListener && typeof OnSidebarHomeListener === "function") {
-		OnSidebarHomeListener();
-		OnSidebarHomeListener = null;
-	}
-};
-
 
 let addFavouriteMarkerFlag = (GetRecord("s42_favouritemarker") !== "0"),
 	addingFavouriteMarkerInterval = -1;
@@ -2444,7 +2350,6 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 
 GlobalWaitForElement("body").then(() => SetStatsDash());
-GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalStartBadgeProcedure());
 GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
 .then(() => GlobalStartFavouriteMarkerProcedure());
 

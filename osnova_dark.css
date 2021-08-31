@@ -5223,8 +5223,12 @@ html body .ce-redactor a.andropov_link {
 	background: #444 !important;
 }
 
+.u-notification--blue.u-notification--bg {
+	background-color: rgba(75, 75, 75, 0.2);
+}
+
 .u-notification--hover:hover {
-	background: #333 !important;
+	background: #444 !important;
 }
 
 .u-notification__content__title a, .u-notification__content__button {
@@ -6744,11 +6748,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	display: none;
 }
 
-.s42-has-counter .sidebar-tree-list-item__child-item--with-badge::after {
-	content: none !important;
-	background-color: transparent !important;
-}
-
 #s42-editorial-link-btn .icon.icon--ui_check,
 .sidebar-tree-list-item__link[href="/editorial"] .icon.icon--ui_check {
 	width: 14px !important;
@@ -6785,6 +6784,10 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 }
 
 .sidebar-tree-list-item__child-item--with-badge::after {
+	background-color: var(--primary-color--for-badge) !important;
+}
+
+.sidebar-tree-list-item__badge {
 	background-color: var(--primary-color--for-badge) !important;
 }
 
@@ -8403,4 +8406,29 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .gallery-image__media-settings .media-tool-settings__item--active .icon {
 	color: var(--primary-color);
+}
+
+
+
+
+
+.comments__item__replied_to span {
+	color: #888;
+}
+
+.comments__item__self--author .comments__item__user__name .user_name {
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+
+
+
+.gallery-image__media-settings--small {
+	background-color: #333;
+}
+
+.gallery-image__media-settings--small .menu-heading__close,
+.gallery-image__media-settings--small .media-tool-settings__item .icon {
+	color: #E1E1E1;
 }

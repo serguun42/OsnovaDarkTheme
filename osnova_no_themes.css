@@ -60,11 +60,6 @@
 	background-color: var(--primary-color--for-badge) !important;
 }
 
-.s42-has-counter .sidebar-tree-list-item__child-item--with-badge::after {
-	content: none !important;
-	background-color: transparent !important;
-}
-
 .sidebar-tree-list-item__name {
 	line-height: 1.4em;
 }

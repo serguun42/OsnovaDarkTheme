@@ -1,0 +1,11 @@
+/**
+ * Hide Support
+ * @serguun42
+ * Aug 2020
+ */
+
+.sidebar-tree-list-item__badge {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}

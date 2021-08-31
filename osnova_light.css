@@ -633,9 +633,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: var(--primary-color--for-badge) !important;
 }
 
-.s42-has-counter .sidebar-tree-list-item__child-item--with-badge::after {
-	content: none !important;
-	background-color: transparent !important;
+.sidebar-tree-list-item__badge {
+	background-color: var(--primary-color--for-badge) !important;
 }
 
 .sidebar-tree-list-item__name {
@@ -671,6 +670,27 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .content-feed[air-module="module.entry"] .content__thanks,
 .content-feed[air-module="module.entry"] .content__updating {
 	margin: 8px 0 12px;
+}
+
+.new_entries {
+	color: #333;
+}
+
+.new_entries:hover {
+	color: #121212;
+	background-color: var(--scroll-color);
+}
+
+.new_entries__counter {
+	background-color: var(--primary-color);
+}
+
+.new_entries:hover .new_entries__counter {
+	background-color: var(--lighter-color);
+}
+
+.v-tab:hover {
+	color: var(--primary-color);
 }
 
 
@@ -802,4 +822,14 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .gallery-image__media-settings .media-tool-settings__item--active .icon {
 	color: var(--primary-color);
+}
+
+
+
+
+
+
+.comments__item__self--author .comments__item__user__name .user_name {
+	padding-right: 5px;
+	padding-left: 5px;
 }
