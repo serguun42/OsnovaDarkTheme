@@ -788,6 +788,10 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .editor-subsite-select__current:hover,
 .editor-cp-tab__label:hover {
+	color: var(--lighter-color);
+}
+
+.editor-cp-tab--active .editor-cp-tab__label {
 	color: var(--primary-color);
 }
 
@@ -832,4 +836,12 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .comments__item__self--author .comments__item__user__name .user_name {
 	padding-right: 5px;
 	padding-left: 5px;
+}
+
+
+
+
+
+.v-list-subsites-item__icon-container {
+	color: var(--primary-color);
 }

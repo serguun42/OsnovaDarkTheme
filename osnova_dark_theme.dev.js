@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.5.2-A (2021-08-31)
+// @version      9.5.3-A (2021-09-01)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.5.2",
+	VERSION = "9.5.3",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -1523,7 +1523,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 								{
 									name: "hideentriesbadge",
 									title: "Скрыть индикатор новых записей",
-									checked: GetRecord("s42_hideentriesbadge") !== "0",
+									checked: GetRecord("s42_hideentriesbadge") === "1",
 									onchange: (e) => {
 										SetRecord("s42_hideentriesbadge", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 										ManageModule("hideentriesbadge", e.currentTarget.checked);

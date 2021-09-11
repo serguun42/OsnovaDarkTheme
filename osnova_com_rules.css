@@ -52,7 +52,9 @@
 .hp-branding-header,
 .hp-tech-footer,
 .layout__right-column [href^="/ad"],
-.layout__right-column [href^="/ad"] + [href^="/plus"]
+.layout__right-column [href^="/ad"] + [href^="/plus"],
+.dstr-bn, .dstr-bn--top-desktop, .dstr-bn--active,
+.dstr-fl, .dstr-fl__outer
 {
 	display: none !important;
 	visibility: hidden !important;

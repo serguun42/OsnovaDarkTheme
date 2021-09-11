@@ -1528,6 +1528,10 @@ html body .ce-redactor a.andropov_link {
 	border-color: var(--tc6) !important;
 }
 
+.editor-push-tabs__item--active {
+	background-color: var(--tc4);
+}
+
 .content-stats__list__show {
 	background-color: var(--tc4);
 }
