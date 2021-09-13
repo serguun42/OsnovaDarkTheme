@@ -42,6 +42,11 @@ body, .main.layout, .sidebar, .live {
 	background-color: #333 !important;
 }
 
+.user-settings__content,
+.settings-footer {
+	background-color: #121212 !important;
+}
+
 .layout--bg[air-module="module.notifiesList"],
 [air-module="module.donatesCabinet"] .layout--bg,
 .l-island-bg[air-module="module.notifiesList"],

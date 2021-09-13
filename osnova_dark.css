@@ -612,12 +612,6 @@ body, .main.layout {
 	color: #333;
 }
 
-.settings-footer,
-.subsite_settings__section--save-settings.layout--bg,
-.subsite_settings__section--save-settings.l-island-bg {
-	background-color: #333 !important;
-}
-
 .ui_form input[type=checkbox]+label:before, .ui_form select, .ui_form textarea {
 	border: 1px solid #3E3E3E;
 	background: #1C1C1C;
@@ -7897,6 +7891,10 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	border-bottom-color: #888;
 }
 
+.v-form-section__subtitle {
+	color: #888;
+}
+
 
 
 
@@ -8120,7 +8118,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: #2A2A2A
 }
 
-.user-settings__content {
+.user-settings__content,
+.settings-footer {
 	background-color: #2A2A2A;
 }
 
@@ -8167,8 +8166,15 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	color: var(--primary-color);
 }
 
-.v-etc__dots {
+.v-etc__dots,
+.etc-control .v-etc__dots {
+	color: #AAA;
+}
+
+.v-etc__dots:hover,
+.etc-control .v-etc__dots:hover {
 	color: #E1E1E1;
+	opacity: 1;
 }
 
 .v-etc--active .v-etc__dots {
@@ -8374,6 +8380,10 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: transparent;
 }
 
+.layout__right-column > div > div > div:nth-of-type(2) > div > div:nth-child(1) > div > div[class]:not([class=""]) > a:nth-child(1) > div:nth-child(2) {
+	color: #E1E1E1 !important;
+}
+
 .block-code {
 	border-color: #555;
 }
@@ -8479,5 +8489,10 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 }
 
 .textarea-formatted__countdown {
+	color: #888 !important;
+}
+
+.v-list-subsites-item__title,
+.v-list-subsites-item__subtitle {
 	color: #888 !important;
 }

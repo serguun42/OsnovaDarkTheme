@@ -871,12 +871,6 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	border-color: var(--tc6) !important;
 }
 
-.settings-footer,
-.subsite_settings__section--save-settings.layout--bg,
-.subsite_settings__section--save-settings.l-island-bg {
-	background-color: var(--tc4) !important;
-}
-
 .chart[air-module="module.charts"] .tg-header__type-switcher {
 	background: var(--tc1);
 	color: var(--primary-color);
@@ -1740,7 +1734,8 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc4);
 }
 
-.user-settings__content {
+.user-settings__content,
+.settings-footer {
 	background-color: var(--tc4);
 }
 
