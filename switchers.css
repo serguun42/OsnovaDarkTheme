@@ -48,6 +48,12 @@
 	font-size: 18px;
 }
 
+#main_menu__auth__stats svg.icon {
+	width: 18px;
+	height: 18px;
+	vertical-align: -3px;
+}
+
 #switchers-btn {
 	display: block;
 	position: relative;
@@ -78,6 +84,12 @@
 	font-size: 20px;
 	line-height: 20px;
 	vertical-align: -0.1em;
+}
+
+#switchers-btn svg.icon {
+	width: 20px;
+	height: 20px;
+	vertical-align: 0;
 }
 
 #switchers-btn .mdl-ripple {

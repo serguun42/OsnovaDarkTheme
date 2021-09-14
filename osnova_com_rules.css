@@ -54,35 +54,16 @@
 .layout__right-column [href^="/ad"],
 .layout__right-column [href^="/ad"] + [href^="/plus"],
 .dstr-bn, .dstr-bn--top-desktop, .dstr-bn--active,
-.dstr-fl, .dstr-fl__outer
-{
-	display: none !important;
-	visibility: hidden !important;
-	opacity: 0 !important;
-}
-
-.igrozhur-promo-block {
-	display: none !important;
-	opacity: 0 !important;
-	visibility: hidden !important;
-	background-color: transparent !important;
-}
-
-.page--subsite .subsite__header--wrappable:before
-{
-	display: none !important;
-	visibility: hidden !important;
-	opacity: 0 !important;
-	content: none !important;
-}
-
+.dstr-fl, .dstr-fl__outer,
 .propaganda.propaganda--shown,
 .kinopoisk-branding-head,
 .kinopoisk-branding-head__container,
 .kinopoisk-branding__container,
 .kinopoisk-branding,
 .kp-branding-teaser,
-.kp-branding-teaser__inner
+.kp-branding-teaser__inner,
+.page--subsite .subsite__header--wrappable:before,
+.igrozhur-promo-block
 {
 	display: none !important;
 	visibility: hidden !important;

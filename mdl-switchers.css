@@ -19,3 +19,17 @@
 	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
 }
+
+.mdl-checkbox__sub-label {
+	display: block;
+	position: relative;
+
+	font-size: 12px;
+	line-height: 1.2em;
+	opacity: 0.5;
+
+	border: none;
+	outline: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}

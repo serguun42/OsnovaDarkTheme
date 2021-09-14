@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.5.3-A (2021-09-01)
+// @version      9.6.0-A (2021-09-14)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.5.3",
+	VERSION = "9.6.0",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -157,6 +157,12 @@ const
 			title: "Не применять никакие темы никогда",
 			default: false,
 			priority: 1
+		},
+		{
+			name: "com_rules",
+			title: "Отключить рекламу",
+			default: true,
+			priority: 0
 		}
 	],
 	ALL_MODULES = [
@@ -218,9 +224,9 @@ const
 
 
 
-/** @param {String} query @returns {HTMLElement} */ const QS = query => document.querySelector(query);
-/** @param {String} query @returns {HTMLElement[]} */ const QSA = query => Array.from(document.querySelectorAll(query));
-/** @param {String} query @returns {HTMLElement} */ const GEBI = query => document.getElementById(query);
+/** @param {string} query @returns {HTMLElement} */ const QS = query => document.querySelector(query);
+/** @param {string} query @returns {HTMLElement[]} */ const QSA = query => Array.from(document.querySelectorAll(query));
+/** @param {string} query @returns {HTMLElement} */ const GEBI = query => document.getElementById(query);
 /** @param {HTMLElement} elem @returns {void} */ const GR = elem => {
 	if (elem instanceof HTMLElement)
 		(elem.parentElement || elem.parentNode).removeChild(elem);
@@ -230,9 +236,9 @@ const
 
 /**
  * @typedef {Object} ObserverQueueType
- * @property {String} [tag]
- * @property {String} [id]
- * @property {String} [className]
+ * @property {string} [tag]
+ * @property {string} [id]
+ * @property {string} [className]
  * @property {{name: string, value: string}} [attribute]
  * @property {ObserverQueueType} [parent]
  * @property {(foundElem: HTMLElement) => void} resolver
@@ -249,7 +255,7 @@ const mainObserber = new MutationObserver((mutations) => {
 		/**
 		 * @param {ObserverQueueType} waitingElemSelector
 		 * @param {HTMLElement} addedNode
-		 * @returns {Boolean}
+		 * @returns {boolean}
 		 */
 		const LocalCheckNode = (waitingElemSelector, addedNode, iParent) => {
 			if (!(addedNode instanceof HTMLElement)) return false;
@@ -319,8 +325,8 @@ let createdIntervals = 0,
 
 /**
  * @param {() => void} iCallback
- * @param {Number} iDelay
- * @returns {Number}
+ * @param {number} iDelay
+ * @returns {number}
  */
 const GlobalSetInterval = (iCallback, iDelay) => {
 	if (!iCallback || !iDelay) return -1;
@@ -330,7 +336,7 @@ const GlobalSetInterval = (iCallback, iDelay) => {
 }
 
 /**
- * @param {Number} iIntervalID
+ * @param {number} iIntervalID
  */
 const GlobalClearInterval = iIntervalID => {
 	if (iIntervalID < 0) return;
@@ -344,7 +350,7 @@ const GlobalClearInterval = iIntervalID => {
 }
 
 /**
- * @param {String | ObserverQueueType} iKey
+ * @param {string | ObserverQueueType} iKey
  * @param {false | Promise} [iWaitAlways=false]
  * @returns {Promise<HTMLElement>}
  */
@@ -365,7 +371,7 @@ const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
 
 
 	/**
-	 * @param {String} iQuery
+	 * @param {string} iQuery
 	 * @returns {Promise<HTMLElement>}
 	 */
 	const LocalWaitUntilSignleElem = (iQuery) => {
@@ -426,10 +432,10 @@ const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
 
 /**
  * @callback AnimationStyleSettingFunc
- * @param {Number} iProgress
+ * @param {number} iProgress
  */
 /**
- * @param {Number} iDuration
+ * @param {number} iDuration
  * @param {AnimationStyleSettingFunc} iStyleSettingFunc - Function for setting props by progress
  * @param {"ease-in-out"|"ripple"|"linear"} [iCurveStyle="ease-in-out"] - Curve Style
  * @returns {Promise<null>}
@@ -467,9 +473,9 @@ const GlobalAnimation = (iDuration, iStyleSettingFunc, iCurveStyle = "ease-in-ou
 
 /**
  * @param {HTMLElement} iElem
- * @param {Number} iDuration
+ * @param {number} iDuration
  * @param {AnimationStyleSettingFunc} [iStyleSettingFunc]
- * @returns {Promise<String>}
+ * @returns {Promise<string>}
  */
 const SlideUp = (iElem, iDuration, iStyleSettingFunc) => {
 	if (!iElem || !(iElem instanceof HTMLElement)) return Promise.resolve();
@@ -503,8 +509,8 @@ const SlideUp = (iElem, iDuration, iStyleSettingFunc) => {
 };
 
 /**
- * @param {String} iMessageText
- * @param {Boolean} [iSuccess=true]
+ * @param {string} iMessageText
+ * @param {boolean} [iSuccess=true]
  */
 const GlobalShowOsnovaMessage = (iMessageText, iSuccess = true) => {
 	if (!iMessageText) return;
@@ -529,10 +535,10 @@ const GlobalShowOsnovaMessage = (iMessageText, iSuccess = true) => {
 };
 
 /**
- * @param {Boolean} iReturning - If true, returns `Boolean` instead of `Promise<Boolean>`
- * @returns {(Promise.<Boolean>|Boolean)}
+ * @param {boolean} iImmediateReturning - If true, returns `boolean` instead of `Promise<boolean>`
+ * @returns {(Promise<boolean>|boolean)}
  */
-const GetMode = iReturning => {
+const GetMode = (iImmediateReturning) => {
 	const
 		D = new Date(),
 		CURRENT_TENDENCY = (D.getMonth() < 5 || (D.getMonth() === 11 && D.getDate() > 22) || (D.getMonth() === 5 && D.getDate() < 22)),
@@ -587,12 +593,12 @@ const GetMode = iReturning => {
 	else if (D.getHours() == Math.floor(TODAY_SUNSET) & D.getMinutes() >= Math.floor((TODAY_SUNSET % 1) * 60))
 		nightModeFlag = true;
 
-	if (iReturning) return nightModeFlag;
+	if (iImmediateReturning) return nightModeFlag;
 	return Promise.resolve(nightModeFlag);
 };
 
 /**
- * @param {Boolean} iNightMode
+ * @param {boolean} iNightMode
  * @returns {void}
  */
 const SetMode = iNightMode => {
@@ -649,9 +655,9 @@ const SetMode = iNightMode => {
 const CUSTOM_ELEMENTS = new Object();
 
 /**
- * @param {String} iModuleName
- * @param {Boolean} iStatus
- * @param {Boolean} [iWithoutPrefix=false]
+ * @param {string} iModuleName
+ * @param {boolean} iStatus
+ * @param {boolean} [iWithoutPrefix=false]
  */
 const ManageModule = (iModuleName, iStatus, iWithoutPrefix = false) => {
 	if (iModuleName === "dark" && iStatus)
@@ -682,9 +688,9 @@ const ManageModule = (iModuleName, iStatus, iWithoutPrefix = false) => {
 };
 
 /**
- * @param {String} iLink
- * @param {Number} iPriority
- * @param {String} [iModuleName]
+ * @param {string} iLink
+ * @param {number} iPriority
+ * @param {string} [iModuleName]
  */
 const GlobalAddStyle = (iLink, iPriority, iModuleName = "") => {
 	const stylesNode = document.createElement("link");
@@ -712,8 +718,8 @@ const GlobalAddStyle = (iLink, iPriority, iModuleName = "") => {
 };
 
 /**
- * @param {String} iLink
- * @param {Number} iPriority
+ * @param {string} iLink
+ * @param {number} iPriority
  */
 const GlobalAddScript = (iLink, iPriority) => {
 	const scriptNode = document.createElement("script");
@@ -741,15 +747,15 @@ const GlobalAddScript = (iLink, iPriority) => {
  */
 /**
  * @typedef {Object} ElementDescriptorType
- * @property {String} [tag]
- * @property {String} [class]
- * @property {String} [id]
- * @property {String} [text]
- * @property {String} [html]
- * @property {Boolean} [ripple]
- * @property {Boolean} [mdlUpgrade]
+ * @property {string} [tag]
+ * @property {string} [class]
+ * @property {string} [id]
+ * @property {string} [text]
+ * @property {string} [html]
+ * @property {boolean} [ripple]
+ * @property {boolean} [mdlUpgrade]
  * @property {GlobalBuildLayoutListenerCallback} [onclick]
- * @property {Boolean} [contextSameAsClick] - `contextmenu` listener does the same thing as usual `click`
+ * @property {boolean} [contextSameAsClick] - `contextmenu` listener does the same thing as usual `click`
  * @property {{[dataPropName: string]: string | number}} [data]
  * @property {{[attributeName: string]: string | number}} [tags]
  * @property {{[attributeName: string]: string | number}} [attr]
@@ -760,7 +766,7 @@ const GlobalAddScript = (iLink, iPriority) => {
  */
 /**
  * @callback AdditionalHandlingPropertyHandler
- * @param {String | Number | Function} iAdditionalHandlingPropertyValue
+ * @param {string | number | function} iAdditionalHandlingPropertyValue
  * @param {ElementDescriptorType} iElemDesc
  * @param {HTMLElement} iDocElem
  * @param {HTMLElement} iParentElem
@@ -771,7 +777,7 @@ const GlobalAddScript = (iLink, iPriority) => {
 /**
  * @param {ElementDescriptorType[] | ElementDescriptorType} elements
  * @param {HTMLElement} container
- * @param {Boolean} [clearContainer=true]
+ * @param {boolean} [clearContainer=true]
  * @param {AdditionalHandlingProperties} [additionalHandlingProperties=null]
  * @returns {void}
  */
@@ -886,12 +892,13 @@ const ALL_RECORDS_NAMES = [
 	"s42_hideviewsanddate",
 	"s42_hideentriesbadge",
 	"s42_donate",
-	"s42_no_themes"
+	"s42_no_themes",
+	"s42_com_rules"
 ];
 
 /**
- * @param {String} iName
- * @param {String} iValue
+ * @param {string} iName
+ * @param {string} iValue
  * @param {{infinite?: true, erase?: true, Path?: string, Domain?: string}} iOptions
  * @returns {void}
  */
@@ -922,8 +929,8 @@ const SetCookie = (iName, iValue, iOptions) => {
 };
 
 /**
- * @param {String} iName
- * @returns {String | undefined}
+ * @param {string} iName
+ * @returns {string | undefined}
  */
 const GetCookie = iName => {
 	const matches = document.cookie.match(new RegExp("(?:^|; )" + iName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
@@ -931,8 +938,8 @@ const GetCookie = iName => {
 };
 
 /**
- * @param {String} iName
- * @param {String} iValue
+ * @param {string} iName
+ * @param {string} iValue
  * @param {{infinite?: true, erase?: true, Path?: string, Domain?: string}} iOptions
  * @returns {void}
  */
@@ -942,8 +949,8 @@ const SetRecord = (iName, iValue, iOptions) => {
 };
 
 /**
- * @param {String} iName
- * @returns {String | undefined}
+ * @param {string} iName
+ * @returns {string | undefined}
  */
 const GetRecord = iName => {
 	const gotCookie = GetCookie(iName),
@@ -1011,8 +1018,6 @@ GlobalWaitForElement("body").then((body) => {
 
 
 GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/mdl-switchers.css`, 0);
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/material-icons.css`, 0);
-GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/osnova_com_rules.css`, 0);
 GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/switchers.css`, 0);
 GlobalAddScript(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/getmdl.min.js`, 0);
 
@@ -1382,7 +1387,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 	}));
 
 	/**
-	 * @param {{name: String, title: String, checked: Boolean, onchange: (e: CustomEventType) => void}} checkboxRule
+	 * @param {{name: string, title: string, subtitle?: string, checked: boolean, onchange: (e: CustomEventType) => void}} checkboxRule
 	 * @returns {ElementDescriptorType}
 	 */
 	const LocalBuildCheckboxByCommonRule = (checkboxRule) => ({
@@ -1432,7 +1437,12 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 					tag: "span",
 					class: "mdl-checkbox__label",
 					text: checkboxRule.title
-				}
+				},
+				checkboxRule.subtitle ? {
+					tag: "span",
+					class: "mdl-checkbox__sub-label",
+					text: checkboxRule.subtitle
+				} : null
 			]
 		}
 	});
@@ -1458,7 +1468,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 								tag: "span",
 								class: "switcher-layout__header__supporting-text",
 								id: "switcher-layout__scroll-to-modules-part",
-								text: "Выбор модулей теперь находится чуть ниже.",
+								text: "Выбор модулей находится чуть ниже",
 								onclick: () => GEBI("switcher-layout__choosing-modules-part").scrollIntoView({ behavior: "smooth" })
 							}
 						]
@@ -1733,6 +1743,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 								{
 									name: "material",
 									title: "Добавить оформление «Material»",
+									subtitle: "Скруглённые углы у старых блоков, чуть больше «воздуха»",
 									checked: GetRecord("s42_material") !== "0",
 									onchange: (e) => {
 										SetRecord("s42_material", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
@@ -1756,6 +1767,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 								{
 									name: "columns_narrow",
 									title: "Прижать боковые колонки к центру экрана",
+									subtitle: "Весь контент будет в центре. Заметнее всего на широких экранах",
 									checked: GetRecord("s42_columns_narrow") === "1",
 									onchange: (e) => {
 										SetRecord("s42_columns_narrow", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
@@ -1774,6 +1786,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 								{
 									name: "hide_likes",
 									title: "Спрятать все оценки и поля ввода",
+									subtitle: "Например, в комментариях под записями",
 									checked: GetRecord("s42_hide_likes") === "1",
 									onchange: (e) => {
 										SetRecord("s42_hide_likes", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
@@ -1781,8 +1794,19 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									}
 								},
 								{
+									name: "com_rules",
+									title: "Отключить рекламу",
+									subtitle: "Фильтр регулярно обновляется",
+									checked: GetRecord("s42_com_rules") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_com_rules", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("com_rules", e.currentTarget.checked);
+									}
+								},
+								{
 									name: "add_possession_choice",
-									title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария (β)",
+									title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария",
+									subtitle: "β-версия",
 									checked: GetRecord("s42_add_possession_choice") === "1",
 									onchange: (e) => {
 										SetRecord("s42_add_possession_choice", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
@@ -1891,7 +1915,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 
 
 	const switchersBtn = document.createElement("div");
-		  switchersBtn.innerHTML = `<i class="material-icons material-icons-round">settings</i>`;
+		  switchersBtn.innerHTML = `<svg class="icon icon--v_gear"><use xlink:href="#v_gear"></use></svg>`;
 		  switchersBtn.id = "switchers-btn";
 		  switchersBtn.className = "mdl-js-button mdl-js-ripple-effect";
 		  switchersBtn.addEventListener("click", (e) => {
@@ -1910,30 +1934,30 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 let windowLoaded = false;
 
 const GlobalSetSidebarItemsStyle = iStyle => {
-	if (QS(`.sidebar-tree-list-item[href="/m"]`))
-		QS(`.sidebar-tree-list-item[href="/m"]`).style.display = iStyle;
-	if (QS(`.sidebar-tree-list-item[href="/job"]`))
-		QS(`.sidebar-tree-list-item[href="/job"]`).style.display = iStyle;
-	if (QS(`.sidebar-tree-list-item[href="/companies_new"]`))
-		QS(`.sidebar-tree-list-item[href="/companies_new"]`).style.display = iStyle;
-	if (QS(`.sidebar-tree-list-item[href="/companies/new"]`))
-		QS(`.sidebar-tree-list-item[href="/companies/new"]`).style.display = iStyle;
-	if (QS(`.sidebar-tree-list-item[href="/companies"]`))
-		QS(`.sidebar-tree-list-item[href="/companies"]`).style.display = iStyle;
-	if (QS(`.sidebar-tree-list-item[href="/events"]`))
-		QS(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
-	if (QS(`.sidebar-tree-list-item[href="/events"]`))
-		QS(`.sidebar-tree-list-item[href="/events"]`).style.display = iStyle;
-	if (QS(`.sidebar-tree-list-item[href="/cabinet"]`))
-		QS(`.sidebar-tree-list-item[href="/cabinet"]`).style.display = iStyle;
+	[
+		"/m",
+		"/job",
+		"/companies_new",
+		"/companies/new",
+		"/companies",
+		"/events",
+		"/events",
+		"/cabinet"
+	].forEach((sidebarLink) => {
+		const treeButton = QS(`.sidebar-tree-list-item[href="${sidebarLink}"]`);
 
-
-	QSA(`.sidebar-tree-list-item--custom-html`).forEach((sidebarLink) => {
-		sidebarLink.style.display = iStyle;
+		if (treeButton)
+			treeButton.style.display = iStyle;
 	});
 
-	QSA(`.sidebar-tree-list-item--colored`).forEach((sidebarLink) => {
-		sidebarLink.style.display = iStyle;
+
+	[
+		"custom-html",
+		"colored"
+	].forEach((sidebarLink) => {
+		QSA(`.sidebar-tree-list-item--${sidebarLink}`).forEach((treeButton) => {
+			treeButton.style.display = iStyle;
+		});
 	});
 };
 
@@ -1968,8 +1992,8 @@ const GlobalPlaceEditorialButton = () => {
 															.replace(/href="\/m"/gi, `href="/editorial"`)
 															.replace(/style="[^"]+"/gi, "")
 															.replace(/Сообщения/gi, "От редакции")
-															.replace(/icon icon--ui_sidebar_messenger/gi, "icon icon--ui_check")
-															.replace(/xlink:href="#ui_sidebar_messenger"/gi, `xlink:href="#ui_check"`)
+															.replace(/icon icon--v_messenger/gi, "icon icon--v_tick")
+															.replace(/xlink:href="#v_messenger"/gi, `xlink:href="#v_tick"`)
 															.replace(/sidebar-tree-list-item--active/gi, "");
 
 
@@ -2069,7 +2093,7 @@ const FullpageEditor = {
 }
 
 /**
- * @param {Boolean} iFullpageEditorStatus
+ * @param {boolean} iFullpageEditorStatus
  * @returns {void}
  */
 const SetFullpageEditor = iFullpageEditorStatus => {
@@ -2194,7 +2218,7 @@ const GlobalStopFavouriteMarkerProcedure = () => {
 }
 
 /**
- * @param {Boolean} [iSkipInitial=false]
+ * @param {boolean} [iSkipInitial=false]
  */
 const SetStatsDash = (iSkipInitial = false) => {
 	if (!iSkipInitial) {
@@ -2226,9 +2250,9 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 
 	/**
-	 * @param {Number} karma
-	 * @param {Number} subscribers
-	 * @param {Number} subscriptions
+	 * @param {number} karma
+	 * @param {number} subscribers
+	 * @param {number} subscriptions
 	 * @returns {void}
 	 */
 	const LocalPlaceBatch = (karma, subscribers, subscriptions) => {
@@ -2238,8 +2262,8 @@ const SetStatsDash = (iSkipInitial = false) => {
 		const relativeRecordName = ["karma_rating", "karma_subscribers", "karma_subscriptions"],
 			  wrapper = [
 				`__NUM__`,
-				`<i class="material-icons material-icons-round">groups</i>&nbsp;__NUM__`,
-				`<i class="material-icons material-icons-round">playlist_add_check</i>&nbsp;__NUM__`
+				`<svg class="icon icon--v_followers"><use xlink:href="#v_followers"></use></svg>&nbsp;__NUM__`,
+				`<svg class="icon icon--v_subs"><use xlink:href="#v_subs"></use></svg>&nbsp;__NUM__`
 			  ],
 			  descriptions = [
 				  "Карма",
