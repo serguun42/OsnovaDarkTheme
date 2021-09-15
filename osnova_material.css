@@ -1,6 +1,7 @@
 /**
  * Material Theme
  * @serguun42
+ * Jul 2019
  */
 
 :root {
@@ -142,7 +143,7 @@
 		width: 100%;
 		left: 0;
 	}
-	
+
 	.island {
 		border-radius: 0 0 var(--br) var(--br);
 	}
@@ -434,7 +435,7 @@
 
 .editor__dropdown {
 	border-radius: var(--br);
-	overflow: hidden;	
+	overflow: hidden;
 }
 
 .miniEditor__dummy, .miniEditor__main, .miniEditor, .mini-editor {
@@ -497,7 +498,7 @@
 }
 
 .chat-form {
-	box-shadow: 0 0 5px 0 var(--material-theme-shadow-color);	
+	box-shadow: 0 0 5px 0 var(--material-theme-shadow-color);
 }
 
 .captcha_wall__box,

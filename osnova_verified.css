@@ -1,3 +1,9 @@
+/*
+ * Add verified sign to every user
+ * @serguun42
+ * Apr 2021
+ */
+
 :root {
 	--verified-svg-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' id='ui_verified'%3E%3Cpath fill='%2327E' fill-rule='evenodd' d='M0 7a7 7 0 1114 0A7 7 0 010 7zm2.695.009l3.22 3.221 5.445-5.444-1.237-1.238-4.208 4.208-1.983-1.984-1.237 1.237z' clip-rule='evenodd'%3E%3C/path%3E%3Cpath fill='%23fff' fill-opacity='.2' fill-rule='evenodd' d='M0 7a7 7 0 1114 0A7 7 0 010 7zm2.695.009l3.22 3.221 5.445-5.444-1.237-1.238-4.208 4.208-1.983-1.984-1.237 1.237z' clip-rule='evenodd'%3E%3C/path%3E%3C/svg%3E");
 }
@@ -36,7 +42,7 @@
 	height: 14px;
 	margin-left: 6px;
 	vertical-align: -2px;
-	
+
 	background-image: var(--verified-svg-image);
 }
 

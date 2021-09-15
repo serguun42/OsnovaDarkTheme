@@ -1,7 +1,7 @@
 /*
-	APR 2020
-	MONOCHROME THEME
-	@serguun42
+ * Light Monochrome theme
+ * @serguun42
+ * Apr 2020
  */
 
 :root {
@@ -174,9 +174,9 @@ body:not(.s42-is-dark) .comments_counter__count__value,
 
 
 
-.widget_wrapper--type-red .widget_wrapper__title, 
-.widget_wrapper--type-pink .widget_wrapper__title, 
-.widget_wrapper--type-blue .widget_wrapper__title, 
+.widget_wrapper--type-red .widget_wrapper__title,
+.widget_wrapper--type-pink .widget_wrapper__title,
+.widget_wrapper--type-blue .widget_wrapper__title,
 .widget_wrapper--type-yellow .widget_wrapper__title,
 .island--blogs_entries .island__header__title {
 	color: #818181 !important;

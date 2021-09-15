@@ -1,3 +1,9 @@
+/**
+ * Basic styles for switchers and system components
+ * @serguun42
+ * Jul 2019
+ */
+
 #custom-data-container {
 	display: flex;
 	flex-direction: row;
@@ -274,7 +280,7 @@ label.mdl-checkbox {
 	border-radius: 3px;
 
 	overflow: hidden;
-	
+
 	border: none;
 	outline: none;
 	cursor: pointer;

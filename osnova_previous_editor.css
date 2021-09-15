@@ -1,5 +1,11 @@
+/*
+ * Old layout for editor
+ * @serguun42
+ * Mar 2021
+ */
+
 .page--editor .wrapper {
-	padding-top: 0 !important;	
+	padding-top: 0 !important;
 }
 
 .page--editor .wrapper .header {

@@ -1,3 +1,9 @@
+/**
+ * Hide mini-editor in feeds
+ * @serguun42
+ * Jul 2021
+ */
+
 .page--index > .mini-editor {
 	display: none;
 }

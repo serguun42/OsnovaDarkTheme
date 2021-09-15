@@ -1,7 +1,14 @@
+/**
+ * Style for hiding ads
+ * @serguun42
+ * Dec 2020
+ */
+
 #open-bank-quiz,
 .carantingo,
 .carantingo--index,
 .igrozhur-partner,
+.kojur-block,
 .igrozhur-promo-block,
 .daily-promo-unit,
 .daily-promo-unit--mode-event.daily-promo-unit--wide .daily-promo-unit__inner,
@@ -60,6 +67,8 @@
 .kinopoisk-branding-head__container,
 .kinopoisk-branding__container,
 .kinopoisk-branding,
+.kinopoisk-header-branding,
+.kinopoisk-branding-footer,
 .kp-branding-teaser,
 .kp-branding-teaser__inner,
 .page--subsite .subsite__header--wrappable:before,

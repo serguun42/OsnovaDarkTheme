@@ -1,3 +1,9 @@
+/*
+ * Basic style for No-Theme variant
+ * @serguun42
+ * Feb 2021
+ */
+
 :root {
 	--switcher-layout-background: #FFF;
 	--switcher-layout-text: #222;

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.6.0-A (2021-09-14)
+// @version      9.6.1-A (2021-09-16)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.6.0",
+	VERSION = "9.6.1",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -509,32 +509,6 @@ const SlideUp = (iElem, iDuration, iStyleSettingFunc) => {
 };
 
 /**
- * @param {string} iMessageText
- * @param {boolean} [iSuccess=true]
- */
-const GlobalShowOsnovaMessage = (iMessageText, iSuccess = true) => {
-	if (!iMessageText) return;
-
-	const notification = document.createElement("div");
-		  notification.className = `notify__item ${iSuccess ? "notify__item--success" : "notify__item--error"}`;
-		  notification.style.height = "74px";
-		  notification.innerHTML = `<i><svg class="icon ${iSuccess ? "icon--ui_success" : "icon--ui_cancel"}" width="100%" height="100%"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#${iSuccess ? "ui_success" : "ui_cancel"}"></use></svg></i><p>${iMessageText}</p>`;
-
-	GEBI("notify").appendChild(notification);
-
-
-	setTimeout(() => {
-		notification.classList.add("notify__item--shown");
-
-		setTimeout(() => {
-			notification.style.transform = `translateX(120%)`;
-
-			SlideUp(notification, 350).then(() => GR(notification));
-		}, 4e3);
-	}, 2e2);
-};
-
-/**
  * @param {boolean} iImmediateReturning - If true, returns `boolean` instead of `Promise<boolean>`
  * @returns {(Promise<boolean>|boolean)}
  */
@@ -771,7 +745,7 @@ const GlobalAddScript = (iLink, iPriority) => {
  * @param {HTMLElement} iDocElem
  * @param {HTMLElement} iParentElem
  * @returns {void}
- * 
+ *
  * @typedef {{[propertyName: string]: AdditionalHandlingPropertyHandler}} AdditionalHandlingProperties
  */
 /**
@@ -970,25 +944,10 @@ const GetRecord = iName => {
 	};
 };
 
-if (RESOURCES_DOMAIN === "localhost") {
-	window.CUSTOM_ELEMENTS = CUSTOM_ELEMENTS;
-	window.GetCookie = GetCookie;
-	window.SetCookie = SetCookie;
-	window.GetRecord = GetRecord;
-	window.SetRecord = SetRecord;
-	window.observerQueue = observerQueue;
-	window.ManageModule = ManageModule;
-	window.GlobalWaitForElement = GlobalWaitForElement;
-	window.GetIntervals = () => ({createdIntervals, deletedIntervals});
-	window.SHOW_COOKIES = () => console.log(ALL_RECORDS_NAMES.map((recordName) => `${recordName}: ${GetCookie(recordName)}`).join("\n"));
-	window.SHOW_STORAGE = () => console.log(ALL_RECORDS_NAMES.map((recordName) => `${recordName}: ${localStorage.getItem(recordName)}`).join("\n"));
-};
-window.UNLOAD_COOKIES = () => {
-	ALL_RECORDS_NAMES.forEach((recordName) => SetCookie(recordName, "1", { erase: true, Path: "/", Domain: window.location.hostname }));
-};
-window.UNLOAD_STORAGE = () => {
-	ALL_RECORDS_NAMES.forEach((recordName) => localStorage.removeItem(recordName));
-};
+
+window.UNLOAD_COOKIES = () => ALL_RECORDS_NAMES.forEach((recordName) => SetCookie(recordName, "1", { erase: true, Path: "/", Domain: window.location.hostname }));
+
+window.UNLOAD_STORAGE = () => ALL_RECORDS_NAMES.forEach((recordName) => localStorage.removeItem(recordName));
 
 
 
@@ -1915,7 +1874,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 
 
 	const switchersBtn = document.createElement("div");
-		  switchersBtn.innerHTML = `<svg class="icon icon--v_gear"><use xlink:href="#v_gear"></use></svg>`;
+		  switchersBtn.innerHTML = `<svg width="20" height="20" class="icon icon--v_gear" ><use xlink:href="#v_gear"></use></svg>`;
 		  switchersBtn.id = "switchers-btn";
 		  switchersBtn.className = "mdl-js-button mdl-js-ripple-effect";
 		  switchersBtn.addEventListener("click", (e) => {
@@ -2262,8 +2221,8 @@ const SetStatsDash = (iSkipInitial = false) => {
 		const relativeRecordName = ["karma_rating", "karma_subscribers", "karma_subscriptions"],
 			  wrapper = [
 				`__NUM__`,
-				`<svg class="icon icon--v_followers"><use xlink:href="#v_followers"></use></svg>&nbsp;__NUM__`,
-				`<svg class="icon icon--v_subs"><use xlink:href="#v_subs"></use></svg>&nbsp;__NUM__`
+				`<svg width="20" height="20" class="icon icon--v_followers"><use xlink:href="#v_followers"></use></svg>&nbsp;__NUM__`,
+				`<svg width="20" height="20" class="icon icon--v_subs"><use xlink:href="#v_subs"></use></svg>&nbsp;__NUM__`
 			  ],
 			  descriptions = [
 				  "Карма",

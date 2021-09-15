@@ -1,3 +1,9 @@
+/**
+ * Center whole site layout
+ * @serguun42
+ * Dec 2020
+ */
+
 @media (min-width: 1600px) {
 	.main.layout {
 		max-width: 1600px;
@@ -12,7 +18,7 @@
 		padding: 0 calc(50% - 750px) !important;
 		box-sizing: border-box;
 	}
-	
+
 	.layout__content .messenger {
 		margin: 0 12px;
 	}

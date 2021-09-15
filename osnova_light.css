@@ -1,3 +1,9 @@
+/**
+ * Light Theme
+ * @serguun42
+ * Jul 2019
+ */
+
 :root {
 	--material-theme-gradient-color: #FFF;
 	--current-theme-gradient-color-huge-tabs: #FFF;
@@ -411,8 +417,7 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 #qr-text {
 	padding: 16px;
-	
-	
+
 	font-family: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
 	font-weight: 500;
 	font-size: 15px;

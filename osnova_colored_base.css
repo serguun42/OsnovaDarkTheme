@@ -1,7 +1,7 @@
 /*
-	FEB 2021
-	COLORED THEME FOR COVFEFE AND DEEP BLUE
-	@serguun42
+ * Colored base theme for Covfefe and Deep Blue
+ * @serguun42
+ * Feb 2021
  */
 
  :root {
@@ -47,7 +47,6 @@ body:not(.s42-default-scrollers) * {
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar-track,
 body:not(.s42-default-scrollers) *::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0) !important;
 	background-color: var(--tc1) !important;
 }
 
@@ -185,7 +184,7 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	border: 1px solid var(--tc7);
 }
 
-.v-form-input input:focus {
+.v-form-input input:hover {
 	background-color: var(--tc7);
 }
 
@@ -1060,7 +1059,7 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 }
 
 .instagram-settings__item--toggled {
-	background-color: var(--tc6) !important;	
+	background-color: var(--tc6) !important;
 }
 
 .media-tool-settings__item--active, .cdx-plugin-settings__item--active, .ce-settings__remove-block-button--confirm, .ce-settings__remove-block-button--confirm:hover {
@@ -1567,6 +1566,12 @@ html body .ce-redactor a.andropov_link {
 
 
 .andropov_uploader__preview_item__remove {
+	background-color: var(--tc5);
+	border-color: var(--tc6);
+}
+
+
+.gallery-item__remover-button {
 	background-color: var(--tc5);
 	border-color: var(--tc6);
 }

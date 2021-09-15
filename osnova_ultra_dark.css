@@ -1,7 +1,7 @@
 /*
-	NOV 2019 BACKGROUND COLOR #333 -> #121212
-	SUPER DARK THEME
-	@serguun42
+ * Ultra Dark theme
+ * @serguun42
+ * Nov 2019
  */
 
 :root {
@@ -75,7 +75,7 @@ body, .main.layout, .sidebar, .live {
 body:not(.s42-default-scrollers) .head-notifies__items-wrapper {
 	scrollbar-color: var(--primary-color) #252525 !important;
 	scrollbar-width: thin;
-} 
+}
 
 body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollbar,
 body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollbar-track {
