@@ -1,0 +1,25 @@
+{
+  "name": "osnova",
+  "version": "1.0.0",
+  "description": "Userscript bringing dark theme to Osnova platform. Contains multiple subthemes and modules.",
+  "main": "osnova_dark_theme.dev.js",
+  "scripts": {
+    "webpack-for-custom": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serguun42/OsnovaDarkTheme.git"
+  },
+  "keywords": [],
+  "author": "serguun42",
+  "license": "GNU GPL v3",
+  "bugs": {
+    "url": "https://github.com/serguun42/OsnovaDarkTheme/issues"
+  },
+  "homepage": "https://github.com/serguun42/OsnovaDarkTheme#readme",
+  "dependencies": {
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-userscript": "^2.5.8"
+  }
+}
