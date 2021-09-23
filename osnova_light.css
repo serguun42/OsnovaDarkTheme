@@ -39,7 +39,6 @@ body:not(.s42-default-scrollers) * {
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar-track,
 body:not(.s42-default-scrollers) *::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px transparent;
 	background-color: transparent;
 }
 
@@ -477,7 +476,6 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 body.s42-default-scrollers .vb-content::-webkit-scrollbar-track,
 body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-track {
-	-webkit-box-shadow: none !important;
 	background-color: transparent !important;
 	opacity: 0 !important;
 }
@@ -849,4 +847,11 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .v-list-subsites-item__icon-container {
 	color: var(--primary-color);
+}
+
+
+
+
+.comment__other:hover .comment__children > .comment:not(.comment--level-last):last-child::before {
+	bottom: auto !important;
 }

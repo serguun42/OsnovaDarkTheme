@@ -1371,9 +1371,63 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 	background-color: #555!important;
 }
 
-.comments__item__self--author .comments__item__user__name .user_name {
+.comments__item__self--author .comments__item__user__name .user_name,
+.comment__self--author .comment-user__name {
 	color: #1C1C1C;
 	background-color: var(--lighter-color) !important;
+}
+
+.comments__item__self--author .comments__item__user__name .user_name,
+.comment__self--author .comment-user__name {
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+.comments {
+	--color-branch: #444;
+	--color-branch-hover: var(--lighter-color);
+}
+
+.comment__children > .comment:not(.comment--level-last):last-child {
+	box-shadow: calc(var(--offset-branch)*-1 - 1px) 0 0 0 #333;
+}
+
+.comment__other:hover .comment__children > .comment:not(.comment--level-last):last-child::before {
+	bottom: auto !important;
+}
+
+.comment__reply {
+	color: #888;
+}
+
+.comment__reply:hover {
+	color: var(--lighter-color);
+}
+
+.comment__expand {
+	background-color: transparent;
+	color: var(--primary-color);
+}
+
+.comment__expand {
+	background-color: transparent;
+	color: var(--primary-color);
+}
+
+.comment__space--highlighted::before,
+.comment__space--new::before,
+.comment__space--with-donate::before,
+.comment__space--pinned::before {
+	background-color: #444;
+	box-shadow: none;
+}
+
+.comment__replied_to,
+.comment__text__edited,
+.comment__self--ignored .comment__text,
+.comment__self--removed .comment__text,
+.comment__ico {
+	color: #888;
 }
 
 .comments__item__collapse_subtree:hover {
@@ -4294,6 +4348,7 @@ html body .ce-redactor a.andropov_link {
 	color: #E1E1E1;
 }
 
+.comment__text a,
 .andropov_tweet__text a,
 .andropov_telegram__text a,
 .andropov_telegram__text__more,
@@ -4334,6 +4389,7 @@ html body .ce-redactor a.andropov_link {
 	border-bottom: 1px solid #555;
 }
 
+.comment__text a:hover,
 .andropov_tweet__text a:hover,
 .andropov_telegram__text a:hover,
 .andropov_telegram__text__more:hover,
@@ -8042,12 +8098,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	color: #888;
 }
 
-.comments__item__self--author .comments__item__user__name .user_name {
-	padding-right: 5px;
-	padding-left: 5px;
-}
-
-
 
 
 .gallery-image__media-settings--small {
@@ -8075,4 +8125,20 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .v-list-subsites-item__title,
 .v-list-subsites-item__subtitle {
 	color: #888 !important;
+}
+
+.textarea-formatted__container .marked-text {
+	background: var(--primary-color) !important;
+}
+
+
+
+
+
+.comment .comment__copy-link {
+	color: #888;
+}
+
+.comment .comment__copy-link:hover {
+	color: var(--lighter-color);
 }

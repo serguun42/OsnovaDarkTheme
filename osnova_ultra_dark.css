@@ -528,3 +528,10 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 .gallery-image__media-settings--small {
 	background-color: #121212;
 }
+
+
+
+
+.comment__children > .comment:not(.comment--level-last):last-child {
+	box-shadow: calc(var(--offset-branch)*-1 - 1px) 0 0 0 #121212;
+}

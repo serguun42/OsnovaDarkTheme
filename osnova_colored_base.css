@@ -1816,3 +1816,21 @@ html body .ce-redactor a.andropov_link {
 .gallery-image__media-settings--small {
 	background-color: var(--tc2);
 }
+
+
+
+
+.comment__children > .comment:not(.comment--level-last):last-child {
+	box-shadow: calc(var(--offset-branch)*-1 - 1px) 0 0 0 var(--tc1);
+}
+
+.comments {
+	--color-branch: var(--tc5);
+}
+
+.comment__space--highlighted::before,
+.comment__space--new::before,
+.comment__space--with-donate::before,
+.comment__space--pinned::before {
+	background-color: var(--tc4);
+}
