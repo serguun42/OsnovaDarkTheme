@@ -70,26 +70,27 @@ body:not(.s42-default-scrollers) .v-field--scroll .v-text-area__input::-webkit-s
 	background-color: transparent !important;
 }
 
-.t-link-hovered,
-.t-link:hover,
-.t-link:hover time,
+.comment__avatar:hover ~ .comment__author a.comment-user,
+.vote .vote__users__item:hover,
+.vote .vote__users__item:hover time,
+.content-header-author:hover,
+.content-header-author:hover time,
+.content-header-number:hover,
+.content-header-number:hover time,
+.content-header__item:hover,
 .profile_comment_favorite__title:hover,
 .profile_comment_favorite__title:hover time,
 .profile_comment_favorite__user:hover,
 .profile_comment_favorite__user:hover time,
 .profile_comment_self__title:hover,
 .profile_comment_self__title:hover time,
-.vote--comment .vote__users__item:hover,
-.vote--comment .vote__users__item:hover time {
-	color: #FFFFFF;
-}
-
-.vote .vote__users__item:hover,
-.vote .vote__users__item:hover time,
-.content-header-author:hover,
-.content-header-author:hover time,
-.content-header-number:hover,
-.content-header-number:hover time {
+.t-link-hovered,
+.t-link:hover,
+.t-link:hover time,
+a.content-header-author:hover,
+a.content-header-author:hover time,
+a.content-header-number:hover,
+a.content-header-number:hover time {
 	color: var(--lighter-color);
 }
 
@@ -1783,11 +1784,11 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 	border-top-color: #000000;
 }
 
-.editor .ce-block--focused {
+.ce-block--focused {
 	background: #252525;
 }
 
-.editor .cdx-image--backgrounded {
+.cdx-image--backgrounded {
 	background: #3E3E3E;
 }
 
@@ -1928,7 +1929,7 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 	margin-left: 4px;
 }
 
-.editor .ce-redactor a, .small-editor .ce-redactor a {
+.ce-redactor a, .small.ce-redactor a {
 	color: var(--lighter-color) !important;
 	border-bottom: 1px solid #2E2E2E !important;
 }
@@ -1937,16 +1938,16 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 	color: #888888;
 }
 
-.editor .cdx-image-form, .small-editor .cdx-image-form {
+.cdx-image-form, .small.cdx-image-form {
 	background: #1C1C1C;
 	border: 2px dashed #3E3E3E;
 }
 
-.editor .cdx-tweet__caption, .editor .instagram-block .instagram-caption, .small-editor .cdx-tweet__caption, .small-editor .instagram-block .instagram-caption, .editor .cdx-plugin-link input::-webkit-input-placeholder, .editor .raw-plugin__input::-webkit-input-placeholder, .small-editor .cdx-plugin-link input::-webkit-input-placeholder, .small-editor .raw-plugin__input::-webkit-input-placeholder, .editor .cdx-gallery__caption::before, .editor .cdx-gallery__select-file:hover, .editor .cdx-image-form__button, .editor .cdx-image__caption::before, .editor .cdx-input::before, .editor .ce-header::before, .editor .ce-paragraph::before, .editor .ce-quote--author::before, .editor .ce-quote--job::before, .editor .ce-quote--text::before, .small-editor .cdx-gallery__caption::before, .small-editor .cdx-gallery__select-file:hover, .small-editor .cdx-image-form__button, .small-editor .cdx-image__caption::before, .small-editor .cdx-input::before, .small-editor .ce-header::before, .small-editor .ce-paragraph::before, .small-editor .ce-quote--author::before, .small-editor .ce-quote--job::before, .small-editor .ce-quote--text::before, .editor .cdx-audio__title:-ms-input-placeholder, .editor .cdx-plugin-link input:-ms-input-placeholder, .editor .cdx-plugin-link input::-ms-input-placeholder, .editor .raw-plugin__input:-ms-input-placeholder, .editor .raw-plugin__input::-ms-input-placeholder, .small-editor .cdx-audio__title:-ms-input-placeholder, .small-editor .cdx-plugin-link input:-ms-input-placeholder, .small-editor .cdx-plugin-link input::-ms-input-placeholder, .small-editor .raw-plugin__input:-ms-input-placeholder, .small-editor .raw-plugin__input::-ms-input-placeholder, .editor .cdx-plugin-link input::placeholder, .editor .raw-plugin__input::placeholder, .small-editor .cdx-plugin-link input::placeholder, .small-editor .raw-plugin__input::placeholder, .editor .cdx-audio__title::-webkit-input-placeholder, .small-editor .cdx-audio__title::-webkit-input-placeholder, .editor .cdx-audio__title::-ms-input-placeholder, .editor .cdx-wtrfall:-ms-input-placeholder, .small-editor .cdx-audio__title::-ms-input-placeholder, .small-editor .cdx-wtrfall:-ms-input-placeholder, .editor .cdx-audio__title::placeholder, .small-editor .cdx-audio__title::placeholder, .editor .cdx-wtrfall::-webkit-input-placeholder, .small-editor .cdx-wtrfall::-webkit-input-placeholder, .editor .cdx-wtrfall::-ms-input-placeholder, .small-editor .cdx-wtrfall::-ms-input-placeholder, .editor .cdx-wtrfall::placeholder, .small-editor .cdx-wtrfall::placeholder {
+.cdx-tweet__caption, .editor .instagram-block .instagram-caption, .small.cdx-tweet__caption, .small-editor .instagram-block .instagram-caption, .cdx-plugin-link input::-webkit-input-placeholder, .editor .raw-plugin__input::-webkit-input-placeholder, .small.cdx-plugin-link input::-webkit-input-placeholder, .small-editor .raw-plugin__input::-webkit-input-placeholder, .cdx-gallery__caption::before, .cdx-gallery__select-file:hover, .cdx-image-form__button, .cdx-image__caption::before, .cdx-input::before, .ce-header::before, .ce-paragraph::before, .ce-quote--author::before, .ce-quote--job::before, .ce-quote--text::before, .small.cdx-gallery__caption::before, .small.cdx-gallery__select-file:hover, .small.cdx-image-form__button, .small.cdx-image__caption::before, .small.cdx-input::before, .small.ce-header::before, .small.ce-paragraph::before, .small.ce-quote--author::before, .small.ce-quote--job::before, .small.ce-quote--text::before, .cdx-audio__title:-ms-input-placeholder, .cdx-plugin-link input:-ms-input-placeholder, .cdx-plugin-link input::-ms-input-placeholder, .editor .raw-plugin__input:-ms-input-placeholder, .editor .raw-plugin__input::-ms-input-placeholder, .small.cdx-audio__title:-ms-input-placeholder, .small.cdx-plugin-link input:-ms-input-placeholder, .small.cdx-plugin-link input::-ms-input-placeholder, .small-editor .raw-plugin__input:-ms-input-placeholder, .small-editor .raw-plugin__input::-ms-input-placeholder, .cdx-plugin-link input::placeholder, .editor .raw-plugin__input::placeholder, .small.cdx-plugin-link input::placeholder, .small-editor .raw-plugin__input::placeholder, .cdx-audio__title::-webkit-input-placeholder, .small.cdx-audio__title::-webkit-input-placeholder, .cdx-audio__title::-ms-input-placeholder, .cdx-wtrfall:-ms-input-placeholder, .small.cdx-audio__title::-ms-input-placeholder, .small.cdx-wtrfall:-ms-input-placeholder, .cdx-audio__title::placeholder, .small.cdx-audio__title::placeholder, .cdx-wtrfall::-webkit-input-placeholder, .small.cdx-wtrfall::-webkit-input-placeholder, .cdx-wtrfall::-ms-input-placeholder, .small.cdx-wtrfall::-ms-input-placeholder, .cdx-wtrfall::placeholder, .small.cdx-wtrfall::placeholder {
 	color: #888888!important;
 }
 
-.editor .cdx-gallery__select-file, .small-editor .cdx-gallery__select-file {
+.cdx-gallery__select-file, .small.cdx-gallery__select-file {
 	border: 2px dashed #ccc;
 	color: #888888;
 }
@@ -1957,11 +1958,11 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 	border: 1px solid #ddd;
 }
 
-.editor .cdx-quiz--input:empty::before, .small-editor .cdx-quiz--input:empty::before {
+.cdx-quiz--input:empty::before, .small.cdx-quiz--input:empty::before {
 	color: #888888;
 }
 
-.editor .cdx-audio__cover, .small-editor .cdx-audio__cover {
+.cdx-audio__cover, .small.cdx-audio__cover {
 	background-color: #fefefe;
 	border: 2px dashed #ccc;
 	color: #888888;
@@ -3897,12 +3898,12 @@ body:not(.s42-default-scrollers) .inline-dropdown::-webkit-scrollbar {
 	filter: none;
 }
 
-.cdx-plugin-settings__item svg {
-	fill: #E1E1E1;
+.gallery-image__media-settings .media-tool-settings {
+	background-color: #121212;
 }
 
 .media-tool-settings__item, .cdx-plugin-settings__item, .ce-settings__item {
-	color: #e1e1e1;
+	color: #E1E1E1;
 }
 
 .media-tool-settings__item--active,
@@ -8141,4 +8142,50 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .comment .comment__copy-link:hover {
 	color: var(--lighter-color);
+}
+
+.comment-more, .comment-more--root {
+	background-color: transparent;
+	border-color: var(--lighter-color);
+}
+
+
+
+
+.ce-toolbox-search {
+	background-color: transparent;
+}
+
+.ce-toolbox-search input::placeholder,
+.ce-toolbox__not-found {
+	color: #888;
+}
+
+.ce-toolbox__item-icon,
+.ce-block-settings__item svg,
+.cdx-plugin-settings__item svg,
+.ce-popover__close svg {
+	filter: invert(0.8);
+}
+
+.ce-toolbox-search-icon {
+	color: #E1E1E1;
+}
+
+.ce-block-settings__item--active,
+.ce-toolbar__content {
+	background-color: #555;
+}
+
+.ce-block--selected .ce-block__content {
+	background-color: var(--primary-color--faded26);
+}
+
+.cdx-inline-toolbar__button {
+	color: #E1E1E1;
+}
+
+.editor .ce-redactor a, .miniEditor .ce-redactor a {
+	color: var(--primary-color) !important;
+	border-color: var(--lighter-color) !important;
 }

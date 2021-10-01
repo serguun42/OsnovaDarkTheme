@@ -836,7 +836,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 
 
-.comments__item__self--author .comments__item__user__name .user_name {
+.comments__item__self--author .comments__item__user__name .user_name,
+.comment__self--author .comment-user__name {
 	padding-right: 5px;
 	padding-left: 5px;
 }

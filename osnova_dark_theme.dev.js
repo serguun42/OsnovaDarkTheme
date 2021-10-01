@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.6.1-A (2021-09-16)
+// @version      9.6.2-A (2021-09-28)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.6.1",
+	VERSION = "9.6.2",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -2271,7 +2271,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 			})
 			.then((page) => {
 				const subsiteHeader = page
-					.match(/<[\w]+(\s+[\w\-]+(\=("|')[^"']*(\3))?)*\sair-module="module.subsiteHeader"(\s+[\w\-]+(\=("|')[^"']*(\7))?)*>\s*<textarea(\s+[\w\-]+(\=("|')[^"']*(\11))?)*>([^<]+)/i)
+					.match(/<vue(\s+[\w\-]+(\=("|')[^"']*(\3))?)*\sname="subsite-header"(\s+[\w\-]+(\=("|')[^"']*(\7))?)*>[\s\n]*<textarea(\s+[\w\-]+(\=("|')[^"']*(\11))?)*>([^<]+)/i)
 					?.[13]
 					?.trim()
 					?.replace(/&quot;/g, `"`)
@@ -2285,7 +2285,6 @@ const SetStatsDash = (iSkipInitial = false) => {
 					?.replace(/&quot;/g, `"`)
 					?.replace(/&lt;/g, "<")
 					?.replace(/&gt;/g, ">");
-
 
 				const subsiteDataFromHeader = JSON.parse(subsiteHeader)?.["header"]?.["subsiteData"];
 				if (!subsiteDataFromHeader) return;

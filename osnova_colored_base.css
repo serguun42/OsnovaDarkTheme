@@ -939,11 +939,11 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	border-top-color: #000;
 }
 
-.editor .ce-block--focused {
+.ce-block--focused {
 	background: var(--tc4);
 }
 
-.editor .cdx-image--backgrounded {
+.cdx-image--backgrounded {
 	background: var(--tc5);
 }
 
@@ -1060,6 +1060,10 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 .instagram-settings__item--toggled {
 	background-color: var(--tc6) !important;
+}
+
+.gallery-image__media-settings .media-tool-settings {
+	background-color: var(--tc5);
 }
 
 .media-tool-settings__item--active, .cdx-plugin-settings__item--active, .ce-settings__remove-block-button--confirm, .ce-settings__remove-block-button--confirm:hover {
@@ -1833,4 +1837,13 @@ html body .ce-redactor a.andropov_link {
 .comment__space--with-donate::before,
 .comment__space--pinned::before {
 	background-color: var(--tc4);
+}
+
+
+
+
+
+.ce-block-settings__item--active,
+.ce-toolbar__content {
+	background-color: var(--tc5);
 }

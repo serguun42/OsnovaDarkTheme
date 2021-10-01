@@ -72,7 +72,8 @@
 .kp-branding-teaser,
 .kp-branding-teaser__inner,
 .page--subsite .subsite__header--wrappable:before,
-.igrozhur-promo-block
+.igrozhur-promo-block,
+.iport-teaser
 {
 	display: none !important;
 	visibility: hidden !important;
