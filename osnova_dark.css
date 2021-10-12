@@ -4037,6 +4037,7 @@ html body .ce-redactor a.andropov_link {
 }
 
 .cdx-inline-toolbar__input {
+	background-color: transparent;
 	color: #e1e1e1;
 }
 
@@ -7755,13 +7756,31 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: #2A2A2A
 }
 
+.mobile-navbar {
+	background-color: transparent !important;
+}
+
 .user-settings__content,
 .settings-footer {
 	background-color: #2A2A2A;
 }
 
+.user-settings__mobile-navbar {
+	background-color: #2A2A2A !important;
+}
+
+@media (max-width: 999px) {
+	.user-settings {
+		background-color: transparent !important;
+	}
+}
+
 .benefits-lock__icon {
 	fill: #888 !important;
+}
+
+.mobile-tab__caption {
+	color: #888;
 }
 
 .mobile-tab__icon {
@@ -7781,10 +7800,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .social-links__item {
 	background-color: #2A2A2A !important;
 	color: #E1E1E1;
-}
-
-.mobile-navbar {
-	background-color: transparent !important;
 }
 
 .v-hashtag {

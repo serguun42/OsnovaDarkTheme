@@ -1748,6 +1748,10 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc4);
 }
 
+.user-settings__mobile-navbar {
+	background-color: var(--tc4) !important;
+}
+
 .sidebar-navigation .sidebar-navigation__desktop {
 	background-color: var(--tc4);
 }

@@ -1,6 +1,6 @@
 {
   "name": "osnova",
-  "version": "1.0.0",
+  "version": "9.6.3",
   "description": "Userscript bringing dark theme to Osnova platform. Contains multiple subthemes and modules.",
   "main": "osnova_dark_theme.dev.js",
   "scripts": {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.6.2-A (2021-09-28)
+// @version      9.6.3-A (2021-10-12)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.6.2",
+	VERSION = "9.6.3",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -789,7 +789,7 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 			GlobalBuildLayout(element.child, docElem, false, additionalHandlingProperties);
 
 		if (element.ripple) docElem.classList.add("mdl-js-button", "mdl-js-ripple-effect");
-		if (element.mdlUpgrade || element.ripple) componentHandler.upgradeElement(docElem);
+		if (element.mdlUpgrade || element.ripple) componentHandler?.upgradeElement(docElem);
 
 		if (element.onclick) {
 			docElem.addEventListener("click", element.onclick);
@@ -1880,11 +1880,11 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 		  switchersBtn.addEventListener("click", (e) => {
 				LocalBuildPanel();
 				requestAnimationFrame(() => LocalShowPanel(e));
-				requestAnimationFrame(() => componentHandler.upgradeElements(QSA("[data-mdl-upgrade]")));
+				requestAnimationFrame(() => componentHandler?.upgradeElements(QSA("[data-mdl-upgrade]")));
 		  });
 
 	customDataContainer.appendChild(switchersBtn);
-	componentHandler.upgradeElement(switchersBtn);
+	componentHandler?.upgradeElement(switchersBtn);
 });
 
 
