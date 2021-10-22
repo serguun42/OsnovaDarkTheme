@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.6.4-A (2021-10-21)
+// @version      9.6.5-A (2021-10-22)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.6.4",
+	VERSION = "9.6.5",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -2261,7 +2261,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 		const userID = window.__delegated_data?.["module.auth"]?.["id"];
 		if (!userID) return console.warn("No user id!");
 
-		const LocalFetch = () => {
+		const LocalFetchUserForStats = () => {
 			fetch(`/u/${userID}`)
 			.then((res) => {
 				if (res.status === 200)
@@ -2279,7 +2279,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 					?.replace(/&gt;/g, ">");
 
 				const subsiteSidebar = page
-					.match(/<[\w]+(\s+[\w\-]+(\=("|')[^"']*(\3))?)*\sair-module="module.subsiteSidebar"(\s+[\w\-]+(\=("|')[^"']*(\7))?)*>\s*<textarea(\s+[\w\-]+(\=("|')[^"']*(\11))?)*>([^<]+)/i)
+					.match(/<vue(\s+[\w\-]+(\=("|')[^"']*(\3))?)*\sname="subsite-sidebar"(\s+[\w\-]+(\=("|')[^"']*(\7))?)*>[\s\n]*<textarea(\s+[\w\-]+(\=("|')[^"']*(\11))?)*>([^<]+)/i)
 					?.[13]
 					?.trim()
 					?.replace(/&quot;/g, `"`)
@@ -2324,9 +2324,9 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 
 		if (windowLoaded)
-			setTimeout(LocalFetch, 2e3);
+			setTimeout(LocalFetchUserForStats, 2e3);
 		else
-			window.addEventListener("load", () => setTimeout(LocalFetch, 2e3));
+			window.addEventListener("load", () => setTimeout(LocalFetchUserForStats, 2e3));
 	});
 };
 
