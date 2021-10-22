@@ -1744,6 +1744,7 @@ html body .ce-redactor a.andropov_link {
 }
 
 .user-settings__content,
+.subsite-settings__content,
 .settings-footer {
 	background-color: var(--tc4);
 }

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.6.3-A (2021-10-12)
+// @version      9.6.4-A (2021-10-21)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.6.3",
+	VERSION = "9.6.4",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -1921,7 +1921,7 @@ const GlobalSetSidebarItemsStyle = iStyle => {
 };
 
 if (GetRecord("s42_messageslinkdisabled") !== "0")
-	GlobalWaitForElement(".sidebar").then(() => GlobalSetSidebarItemsStyle("none"));
+	GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalSetSidebarItemsStyle("none"));
 
 const GlobalSetScrollers = iScrollersMode => {
 	if (iScrollersMode === "default") {

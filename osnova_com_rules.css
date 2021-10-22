@@ -73,7 +73,8 @@
 .kp-branding-teaser__inner,
 .page--subsite .subsite__header--wrappable:before,
 .igrozhur-promo-block,
-.iport-teaser
+.iport-teaser,
+.writing-button-mobile
 {
 	display: none !important;
 	visibility: hidden !important;

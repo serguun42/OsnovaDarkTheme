@@ -43,6 +43,7 @@ body, .main.layout, .sidebar, .live {
 }
 
 .user-settings__content,
+.subsite-settings__content,
 .settings-footer {
 	background-color: #121212 !important;
 }
