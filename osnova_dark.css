@@ -46,15 +46,15 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-track {
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar,
 body:not(.s42-default-scrollers) *::-webkit-scrollbar {
-	width: 12px !important;
-	height: 12px !important;
+	width: 6px !important;
+	height: 6px !important;
 	background-color: #232323 !important;
 }
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar-thumb,
 body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	background-color: var(--primary-color) !important;
-	border-radius: var(--br) 0 0 var(--br) !important;
+	border-radius: 3px 0 0 3px !important;
 }
 
 body:not(.s42-default-scrollers) .v-field--scroll .v-text-area__input {
@@ -657,7 +657,7 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 }
 
 .site-header-user .bubble .bubble__container .list .item:last-child {
-	color: rgb(233, 42, 64) !important;
+	color: #E84755 !important;
 }
 
 .bubble .bubble__container .list .item:nth-last-child(5) .item__icon {
@@ -1931,7 +1931,7 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 
 .ce-redactor a, .small.ce-redactor a {
 	color: var(--lighter-color) !important;
-	border-bottom: 1px solid #2E2E2E !important;
+	border-bottom: 1px solid var(--primary-color--faded26) !important;
 }
 
 .editor__title::-webkit-input-placeholder, .editor__title:-ms-input-placeholder, .editor__title::-ms-input-placeholder, .editor__title::placeholder, .editor .embed-block__caption:empty::before, .small-editor .embed-block__caption:empty::before {
@@ -1940,7 +1940,7 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 
 .cdx-image-form, .small.cdx-image-form {
 	background: #1C1C1C;
-	border: 2px dashed #3E3E3E;
+	border: 2px dashed var(--primary-color--faded26);
 }
 
 .cdx-tweet__caption, .editor .instagram-block .instagram-caption, .small.cdx-tweet__caption, .small-editor .instagram-block .instagram-caption, .cdx-plugin-link input::-webkit-input-placeholder, .editor .raw-plugin__input::-webkit-input-placeholder, .small.cdx-plugin-link input::-webkit-input-placeholder, .small-editor .raw-plugin__input::-webkit-input-placeholder, .cdx-gallery__caption::before, .cdx-gallery__select-file:hover, .cdx-image-form__button, .cdx-image__caption::before, .cdx-input::before, .ce-header::before, .ce-paragraph::before, .ce-quote--author::before, .ce-quote--job::before, .ce-quote--text::before, .small.cdx-gallery__caption::before, .small.cdx-gallery__select-file:hover, .small.cdx-image-form__button, .small.cdx-image__caption::before, .small.cdx-input::before, .small.ce-header::before, .small.ce-paragraph::before, .small.ce-quote--author::before, .small.ce-quote--job::before, .small.ce-quote--text::before, .cdx-audio__title:-ms-input-placeholder, .cdx-plugin-link input:-ms-input-placeholder, .cdx-plugin-link input::-ms-input-placeholder, .editor .raw-plugin__input:-ms-input-placeholder, .editor .raw-plugin__input::-ms-input-placeholder, .small.cdx-audio__title:-ms-input-placeholder, .small.cdx-plugin-link input:-ms-input-placeholder, .small.cdx-plugin-link input::-ms-input-placeholder, .small-editor .raw-plugin__input:-ms-input-placeholder, .small-editor .raw-plugin__input::-ms-input-placeholder, .cdx-plugin-link input::placeholder, .editor .raw-plugin__input::placeholder, .small.cdx-plugin-link input::placeholder, .small-editor .raw-plugin__input::placeholder, .cdx-audio__title::-webkit-input-placeholder, .small.cdx-audio__title::-webkit-input-placeholder, .cdx-audio__title::-ms-input-placeholder, .cdx-wtrfall:-ms-input-placeholder, .small.cdx-audio__title::-ms-input-placeholder, .small.cdx-wtrfall:-ms-input-placeholder, .cdx-audio__title::placeholder, .small.cdx-audio__title::placeholder, .cdx-wtrfall::-webkit-input-placeholder, .small.cdx-wtrfall::-webkit-input-placeholder, .cdx-wtrfall::-ms-input-placeholder, .small.cdx-wtrfall::-ms-input-placeholder, .cdx-wtrfall::placeholder, .small.cdx-wtrfall::placeholder {
@@ -5943,7 +5943,7 @@ a.v-list-subsites-item__main:hover {
 }
 
 .v-list-tab--active .v-list-tab__comment {
-	color: #555;
+	color: #121212;
 }
 
 .v-tab--active .v-tab__label::after {
@@ -7285,7 +7285,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .ce-block__content a {
 	color: var(--lighter-color);
-	border-color: var(--lighter-color);
+	border-color: var(--primary-color--faded26);
 }
 
 .vacancy_edit__form__office_photo {
@@ -8063,6 +8063,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 }
 
 .search__field .v-field:not(.v-field--focused) .v-field__wrapper:hover,
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover),
 .search__field .v-field--focused .v-field__wrapper,
 .search__field,
 .search--active .search__input,

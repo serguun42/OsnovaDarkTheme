@@ -4,24 +4,25 @@
  * Nov 2020
  */
 
-.favorite_marker--active .favorite_marker__count {
-	color: #e84755;
+.favorite_marker--active .favorite_marker__count,
+.v-etc-controls-container .popover .icon--v_bookmark_solid {
+	color: #E84755;
 }
 
 .favorite_marker--active .icon {
-	fill: #e84755;
-	stroke: #e84755;
+	fill: #E84755;
+	stroke: #E84755;
 }
 
 .favorite_marker--active .favorite_marker__title {
-	color: #e84755;
+	color: #E84755;
 }
 
 .favorite_marker:hover:not(.favorite_marker--just_clicked) .favorite_marker__count, .favorite_marker:hover:not(.favorite_marker--just_clicked) .favorite_marker__title {
-	color: #e84755;
+	color: #E84755;
 }
 
 .favorite_marker:hover:not(.favorite_marker--just_clicked) .icon {
-	fill: #e84755;
-	stroke: #e84755;
+	fill: #E84755;
+	stroke: #E84755;
 }

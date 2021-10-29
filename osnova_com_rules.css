@@ -74,7 +74,12 @@
 .page--subsite .subsite__header--wrappable:before,
 .igrozhur-promo-block,
 .iport-teaser,
-.writing-button-mobile
+.writing-button-mobile,
+.halloween-popup-wrapper,
+.halloween-vote,
+.halloween-web,
+.sidebar-tree-list-item__badge--halloween::before,
+.halloween-web-comments
 {
 	display: none !important;
 	visibility: hidden !important;

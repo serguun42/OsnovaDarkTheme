@@ -38,42 +38,6 @@
 	border-radius: var(--br);
 }
 
-.subsite_head {
-	margin-top: 16px;
-	border-radius: var(--br) var(--br) 0 0;
-}
-
-.subsite__cover, .custom_subsite_html {
-	margin-top: 64px;
-	border-radius: var(--br) var(--br) 0 0;
-	overflow: hidden;
-}
-
-.subsite__cover + .subsite_head, .custom_subsite_html + .subsite_head {
-	margin-top: unset;
-	border-radius: 0;
-	overflow: unset;
-}
-
-.live__scrollable_parent {
-	width: calc(100% + 20px) !important;
-}
-
-.live__scrollable {
-    height: calc(100% - 50px) !important;
-	width: 100%;
-}
-
-.live:not(:empty):after {
-	display: none;
-	visibility: hidden;
-	opacity: 0;
-}
-
-.live__item--comment {
-	margin-right: 20px;
-}
-
 .andropov_image--bordered, .andropov_preview, .comments__item__more__avatar, .editor__select .user-option img, .editor__select-picture-wrap img, .live__item--comment .live__item__user__image, .notification__image img, .page--subsite .subsite__user__avatar img, .profile_comment_favorite__header img, .subsite_card_short__avatar img, .subsite_card_simple__avatar img, .subsite_card_simple_short__avatar img, .subsite_widget__item__avatar img, .t-outline {
 	outline: none;
 	outline-offset: 0;

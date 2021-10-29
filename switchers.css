@@ -34,12 +34,12 @@
 	padding: 3px 8px;
 
 	box-sizing: border-box;
-	border-radius: calc(var(--br) / 2);
+	border-radius: 5px;
 	color: var(--switchers-color);
 	background-color: var(--switchers-background-color);
 
 	font-family: "Roboto", "Noto Sans", Arial, Helvetica, sans-serif;
-	font-weight: 400;
+	font-weight: 500;
 	font-size: 16px;
 	line-height: 1em;
 
@@ -55,9 +55,9 @@
 }
 
 #main_menu__auth__stats svg.icon {
-	width: 18px;
-	height: 18px;
-	vertical-align: -3px;
+	width: 16px;
+	height: 16px;
+	vertical-align: -2px;
 }
 
 #switchers-btn {
