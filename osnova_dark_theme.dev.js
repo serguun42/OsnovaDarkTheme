@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      9.6.5-A (2021-10-22)
+// @version      10.0.0-A (2021-11-04)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "9.6.5",
+	VERSION = "10.0.0",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -216,21 +216,45 @@ const
 		},
 		...ALL_ADDITIONAL_MODULES
 	],
+	ADDITIONAL_DARK_MODULES_NAMES = ALL_ADDITIONAL_MODULES.filter((module) => !!module.dark).map((module) => module.name),
+	ADDITIONAL_LIGHT_MODULES_NAMES = ALL_ADDITIONAL_MODULES.filter((module) => !!module.light).map((module) => module.name),
 	SITES_COLORS = {
 		"tjournal.ru": "#E8A427",
 		"dtf.ru": "#66D7FF",
 		"vc.ru": "#E25A76"
 	};
 
+/**
+ * Query selector
+ * 
+ * @param {string} query
+ * @returns {HTMLElement}
+ */
+const QS = query => document.querySelector(query);
 
+/**
+ * Query selector all
+ * 
+ * @param {string} query
+ * @returns {HTMLElement[]}
+ */
+const QSA = query => Array.from(document.querySelectorAll(query));
 
-/** @param {string} query @returns {HTMLElement} */ const QS = query => document.querySelector(query);
-/** @param {string} query @returns {HTMLElement[]} */ const QSA = query => Array.from(document.querySelectorAll(query));
-/** @param {string} query @returns {HTMLElement} */ const GEBI = query => document.getElementById(query);
-/** @param {HTMLElement} elem @returns {void} */ const GR = elem => {
-	if (elem instanceof HTMLElement)
-		(elem.parentElement || elem.parentNode).removeChild(elem);
-};
+/**
+ * Get element by ID
+ * 
+ * @param {string} query
+ * @returns {HTMLElement}
+ */
+const GEBI = query => document.getElementById(query);
+
+/**
+ * Remove element
+ * 
+ * @param {HTMLElement} elem
+ * @returns {void}
+ */
+const GR = elem => elem?.remove?.();
 
 
 
@@ -308,7 +332,7 @@ const mainObserber = new MutationObserver((mutations) => {
 			if (foundNode && waitingElemSelector.resolver) {
 				waitingElemSelector.resolver(foundNode);
 				waitingElemsArr.splice(waitingElemIndex, 1);
-			};
+			}
 		});
 	});
 });
@@ -398,30 +422,30 @@ const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
 			setTimeout(() => {
 				const foundQueueItemIndex = observerQueue.findIndex(({resolver}) => resolver === resolve);
 
-				if (foundQueueItemIndex > -1) {
-					observerQueue.splice(foundQueueItemIndex, 1);
+				if (foundQueueItemIndex < 0) return;
 
-					let intervalCounter = 0;
-					const backupInterval = GlobalSetInterval(() => {
-						const found = QS(iQuery);
+				observerQueue.splice(foundQueueItemIndex, 1);
 
-						if (found) {
-							GlobalClearInterval(backupInterval);
-							return resolve(found);
-						}
+				let intervalCounter = 0;
+				const backupInterval = GlobalSetInterval(() => {
+					const found = QS(iQuery);
 
-						if (++intervalCounter > 50 && !iWaitAlways) {
+					if (found) {
+						GlobalClearInterval(backupInterval);
+						return resolve(found);
+					}
+
+					if (++intervalCounter > 50 && !iWaitAlways) {
+						GlobalClearInterval(backupInterval);
+						return resolve(null);
+					}
+
+					if (iWaitAlways && iWaitAlways instanceof Promise)
+						iWaitAlways.then(() => {
 							GlobalClearInterval(backupInterval);
 							return resolve(null);
-						}
-
-						if (iWaitAlways && iWaitAlways instanceof Promise)
-							iWaitAlways.then(() => {
-								GlobalClearInterval(backupInterval);
-								return resolve(null);
-							}).catch(console.warn)
-					}, 300);
-				};
+						}).catch(console.warn);
+				}, 300);
 			}, 1e3);
 		});
 	};
@@ -437,35 +461,45 @@ const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
 /**
  * @param {number} iDuration
  * @param {AnimationStyleSettingFunc} iStyleSettingFunc - Function for setting props by progress
- * @param {"ease-in-out"|"ripple"|"linear"} [iCurveStyle="ease-in-out"] - Curve Style
+ * @param {"ease-in-out"|"ease-in-out-slow"|"ease-in"|"ease-out"|"ripple"|"linear"} [iCurveStyle="ease-in-out"] - Curve Style
+ * @param {number} [iSkipProgress=0] - How many of progress to skip, ranges from `0` to `1`
  * @returns {Promise<null>}
  */
-const GlobalAnimation = (iDuration, iStyleSettingFunc, iCurveStyle = "ease-in-out") => new Promise((resolve) => {
-	let startTime = performance.now();
+const GlobalAnimation = (iDuration, iStyleSettingFunc, iCurveStyle = "ease-in-out", iSkipProgress = 0) => new Promise((resolve) => {
+	const startTime = performance.now();
 
-
-	let LocalAnimation = iPassedTime => {
+	const LocalAnimation = iPassedTime => {
 		iPassedTime = iPassedTime - startTime;
 		if (iPassedTime < 0) iPassedTime = 0;
 
-		if (iPassedTime < iDuration) {
-			let cProgress = iPassedTime / iDuration;
-
+		let cProgress = iPassedTime / iDuration + iSkipProgress;
+		if (cProgress < 1) {
 			if (iCurveStyle == "ease-in-out") {
 				if (cProgress < 0.5)
 					cProgress = Math.pow(cProgress * 2, 2.75) / 2;
 				else
 					cProgress = 1 - Math.pow((1 - cProgress) * 2, 2.75) / 2;
+			} else if (iCurveStyle == "ease-in-out-slow") {
+				if (cProgress < 0.5)
+					cProgress = Math.pow(cProgress * 2, 2.25) / 2;
+				else
+					cProgress = 1 - Math.pow((1 - cProgress) * 2, 2.25) / 2;
+			} else if (iCurveStyle == "ease-in") {
+				cProgress = Math.pow(cProgress, 1.75);
+			} else if (iCurveStyle == "ease-out") {
+				cProgress = 1 - Math.pow(1 - cProgress, 1.75);
 			} else if (iCurveStyle == "ripple") {
 				cProgress = 0.6 * Math.pow(cProgress, 1/3) + 1.8 * Math.pow(cProgress, 2/3) - 1.4 * cProgress;
-			};
-
+			}
 
 			iStyleSettingFunc(cProgress);
 
 			requestAnimationFrame(LocalAnimation);
-		} else
+		} else {
+			iStyleSettingFunc(1);
+
 			return resolve();
+		}
 	};
 
 	requestAnimationFrame(LocalAnimation);
@@ -509,13 +543,12 @@ const SlideUp = (iElem, iDuration, iStyleSettingFunc) => {
 };
 
 /**
- * @param {boolean} iImmediateReturning - If true, returns `boolean` instead of `Promise<boolean>`
- * @returns {(Promise<boolean>|boolean)}
+ * @returns {boolean}
  */
-const GetMode = (iImmediateReturning) => {
+const CheckForScheduledNightMode = () => {
 	const
-		D = new Date(),
-		CURRENT_TENDENCY = (D.getMonth() < 5 || (D.getMonth() === 11 && D.getDate() > 22) || (D.getMonth() === 5 && D.getDate() < 22)),
+		DATE = new Date(),
+		CURRENT_TENDENCY = (DATE.getMonth() < 5 || (DATE.getMonth() === 11 && DATE.getDate() > 22) || (DATE.getMonth() === 5 && DATE.getDate() < 22)),
 		SCHEDULE = {
 			winter: {
 				sunrise: 9,
@@ -525,23 +558,23 @@ const GetMode = (iImmediateReturning) => {
 				sunrise: 6,
 				sunset: 21
 			}
-		};
+		},
+		SESSION_START = CURRENT_TENDENCY ? new Date(DATE.getFullYear(), 11, 22) : new Date(DATE.getFullYear(), 5, 22),
+		SESSION_END = CURRENT_TENDENCY ? new Date(DATE.getFullYear(), 5, 22) : new Date(DATE.getFullYear(), 11, 22);
 
-	let SESSION_START = CURRENT_TENDENCY ? new Date(D.getFullYear(), 11, 22) : new Date(D.getFullYear(), 5, 22),
-		SESSION_END = CURRENT_TENDENCY ? new Date(D.getFullYear(), 5, 22) : new Date(D.getFullYear(), 11, 22),
-		nightModeFlag = false;
+	let nightModeFlag = false;
 
 
 	if (CURRENT_TENDENCY) {
-		if (D.getMonth() === 11)
-			SESSION_END.setFullYear(D.getFullYear() + 1);
+		if (DATE.getMonth() === 11)
+			SESSION_END.setFullYear(DATE.getFullYear() + 1);
 		else
-			SESSION_START.setFullYear(D.getFullYear() - 1);
-	};
+			SESSION_START.setFullYear(DATE.getFullYear() - 1);
+	}
 
 
 	const
-		RATIO = (+D - SESSION_START) / (+SESSION_END - SESSION_START),
+		RATIO = (+DATE - SESSION_START) / (+SESSION_END - SESSION_START),
 		TODAY_SUNRISE =
 			CURRENT_TENDENCY
 			?
@@ -558,18 +591,61 @@ const GetMode = (iImmediateReturning) => {
 		;
 
 
-	if (D.getHours() < Math.floor(TODAY_SUNRISE))
+	if (DATE.getHours() < Math.floor(TODAY_SUNRISE))
 		nightModeFlag = true;
-	else if (D.getHours() == Math.floor(TODAY_SUNRISE) & D.getMinutes() <= Math.floor((TODAY_SUNRISE % 1) * 60))
+	else if (DATE.getHours() == Math.floor(TODAY_SUNRISE) & DATE.getMinutes() <= Math.floor((TODAY_SUNRISE % 1) * 60))
 		nightModeFlag = true;
-	else if (D.getHours() > Math.floor(TODAY_SUNSET))
+	else if (DATE.getHours() > Math.floor(TODAY_SUNSET))
 		nightModeFlag = true;
-	else if (D.getHours() == Math.floor(TODAY_SUNSET) & D.getMinutes() >= Math.floor((TODAY_SUNSET % 1) * 60))
+	else if (DATE.getHours() == Math.floor(TODAY_SUNSET) & DATE.getMinutes() >= Math.floor((TODAY_SUNSET % 1) * 60))
 		nightModeFlag = true;
 
-	if (iImmediateReturning) return nightModeFlag;
-	return Promise.resolve(nightModeFlag);
+	return nightModeFlag;
 };
+
+/**
+ * @returns {boolean}
+ */
+const CheckForSystemNightMode = () => (
+	typeof matchMedia !== "undefined" && matchMedia || window.matchMedia
+)?.("(prefers-color-scheme: dark)")?.matches;
+
+(
+	typeof matchMedia !== "undefined" && matchMedia || window.matchMedia
+)?.("(prefers-color-scheme: dark)")?.addEventListener("change", (mediaQueryListEvent) => {
+	if (GetRecord("s42_system_theme") !== "1") return;
+
+	ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) => ManageModule(darkModuleName, false));
+	ADDITIONAL_LIGHT_MODULES_NAMES.forEach((lightModuleName) => ManageModule(lightModuleName, false));
+
+	if (mediaQueryListEvent.matches) {
+		QS(`meta[name="theme-color"]`)?.setAttribute("content", "#232323");
+
+		ManageModule("dark", true);
+		ManageModule(`${SITE}_dark`, true, true);
+		ManageModule("light", false);
+		ManageModule("no_themes", false);
+
+		ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) => {
+			if (GetRecord("s42_" + darkModuleName) === "1")
+				ManageModule(darkModuleName, true);
+		});
+	} else {
+		QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
+
+		ManageModule("dark", false);
+		ManageModule(`${SITE}_dark`, false, true);
+		ManageModule("light", true);
+		ManageModule("no_themes", false);
+
+		ADDITIONAL_LIGHT_MODULES_NAMES.forEach((lightModuleName) => {
+			if (GetRecord("s42_" + lightModuleName) === "1")
+				ManageModule(lightModuleName, true);
+		});
+	}
+});
+
+
 
 /**
  * @param {boolean} iNightMode
@@ -604,8 +680,8 @@ const SetMode = iNightMode => {
 			GlobalWaitForElement(`meta[name="theme-color"]`).then((meta) => {
 				if (meta) meta.setAttribute("content", SITES_COLORS[window.location.hostname]);
 			});
-		};
-	};
+		}
+	}
 
 
 	ALL_ADDITIONAL_MODULES.forEach((addon) => {
@@ -613,7 +689,7 @@ const SetMode = iNightMode => {
 			if (!parseInt(GetRecord("s42_" + addon.name))) return false;
 		} else {
 			if (!addon.default) return false;
-		};
+		}
 
 
 		if (addon.dark === true && !iNightMode) return false;
@@ -658,7 +734,7 @@ const ManageModule = (iModuleName, iStatus, iWithoutPrefix = false) => {
 		const moduleSpecWithPriority = ALL_MODULES.find((moduleSpec) => moduleSpec.name === iModuleName);
 
 		GlobalAddStyle(moduleURL, moduleSpecWithPriority.priority, iModuleName);
-	};
+	}
 };
 
 /**
@@ -800,8 +876,8 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 					element.onclick(e);
 					return false;
 				});
-			};
-		};
+			}
+		}
 
 		if (element.listener)
 			for (const listenerName in element.listener)
@@ -832,6 +908,9 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 const DEFAULT_RECORD_OPTIONS = { infinite: true, Path: "/", Domain: window.location.hostname };
 const ALL_RECORDS_NAMES = [
 	"s42_always",
+	"s42_system_theme",
+	"s42_turn_off",
+	"s42_no_themes",
 	"s42_columns_narrow",
 	"s42_covfefe",
 	"s42_blackchrome",
@@ -850,7 +929,6 @@ const ALL_RECORDS_NAMES = [
 	"s42_defaultscrollers",
 	"s42_monochrome",
 	"s42_qrcode",
-	"s42_turn_off",
 	"s42_ultra_dark",
 	"s42_vbscroller",
 	"s42_editorial",
@@ -866,7 +944,6 @@ const ALL_RECORDS_NAMES = [
 	"s42_hideviewsanddate",
 	"s42_hideentriesbadge",
 	"s42_donate",
-	"s42_no_themes",
 	"s42_com_rules"
 ];
 
@@ -897,7 +974,7 @@ const SetCookie = (iName, iValue, iOptions) => {
 				cCookie += `; ${key}=${encodeURIComponent(iOptions[key])}`;
 		} else
 			cCookie += "; " + key;
-	};
+	}
 
 	document.cookie = cCookie;
 };
@@ -941,7 +1018,7 @@ const GetRecord = iName => {
 		return gotStorage;
 	} else {
 		return gotStorage || gotCookie;
-	};
+	}
 };
 
 
@@ -949,9 +1026,6 @@ window.UNLOAD_COOKIES = () => ALL_RECORDS_NAMES.forEach((recordName) => SetCooki
 
 window.UNLOAD_STORAGE = () => ALL_RECORDS_NAMES.forEach((recordName) => localStorage.removeItem(recordName));
 
-
-
-GR(QS(".l-page__header > style"));
 
 
 GlobalWaitForElement("body").then((body) => {
@@ -971,8 +1045,8 @@ GlobalWaitForElement("body").then((body) => {
 				  container.dataset.author = "serguun42";
 
 			body.appendChild(container);
-		};
-	};
+		}
+	}
 });
 
 
@@ -985,8 +1059,10 @@ if (GetRecord("s42_turn_off") === "1")
 	SetMode(false);
 else if (GetRecord("s42_always") === "1")
 	SetMode(true);
+else if (GetRecord("s42_system_theme") === "1")
+	SetMode(CheckForSystemNightMode());
 else
-	GetMode().then((mode) => SetMode(mode));
+	SetMode(CheckForScheduledNightMode());
 
 
 
@@ -998,23 +1074,22 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 	siteHeaderUser.after(customDataContainer);
 
 
-
 	/**
 	 * @param {CustomEventType} e
 	 */
 	const LocalOnTimeChange = (e) => {
-		SetRecord("s42_always", (e.currentTarget.value === "always" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-		SetRecord("s42_turn_off", (e.currentTarget.value === "turn_off" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-		SetRecord("s42_no_themes", (e.currentTarget.value === "no_themes" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+		[
+			"always",
+			"system_theme",
+			"turn_off",
+			"no_themes"
+		].forEach((timeOption) => SetRecord(
+			`s42_${timeOption}`, (e.currentTarget.value === timeOption ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS
+		));
 
 
-		ManageModule("ultra_dark", false);
-		ManageModule("deep_blue", false);
-		ManageModule("covfefe", false);
-		ManageModule("blackchrome", false);
-		ManageModule("vampire", false);
-		ManageModule("monochrome", false);
-		ManageModule("no_themes", false);
+		ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) => ManageModule(darkModuleName, false));
+		ADDITIONAL_LIGHT_MODULES_NAMES.forEach((lightModuleName) => ManageModule(lightModuleName, false));
 
 
 		if (e.currentTarget.value === "always") {
@@ -1023,23 +1098,49 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 			ManageModule("dark", true);
 			ManageModule(`${SITE}_dark`, true, true);
 			ManageModule("light", false);
+			ManageModule("no_themes", false);
 
-			["ultra_dark", "deep_blue", "covfefe", "blackchrome", "vampire"].forEach((addDarkModuleName) => {
-				if (GetRecord("s42_" + addDarkModuleName) === "1") {
-					ManageModule(addDarkModuleName, true);
-				};
+			ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) => {
+				if (GetRecord("s42_" + darkModuleName) === "1")
+					ManageModule(darkModuleName, true);
 			});
+		} else if (e.currentTarget.value === "system_theme") {
+			if (CheckForSystemNightMode()) {
+				QS(`meta[name="theme-color"]`)?.setAttribute("content", "#232323");
+
+				ManageModule("dark", true);
+				ManageModule(`${SITE}_dark`, true, true);
+				ManageModule("light", false);
+				ManageModule("no_themes", false);
+
+				ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) => {
+					if (GetRecord("s42_" + darkModuleName) === "1")
+						ManageModule(darkModuleName, true);
+				});
+			} else {
+				QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
+
+				ManageModule("dark", false);
+				ManageModule(`${SITE}_dark`, false, true);
+				ManageModule("light", true);
+				ManageModule("no_themes", false);
+
+				ADDITIONAL_LIGHT_MODULES_NAMES.forEach((lightModuleName) => {
+					if (GetRecord("s42_" + lightModuleName) === "1")
+						ManageModule(lightModuleName, true);
+				});
+			}
 		} else if (e.currentTarget.value === "turn_off") {
 			QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
 
 			ManageModule("dark", false);
 			ManageModule(`${SITE}_dark`, false, true);
 			ManageModule("light", true);
+			ManageModule("no_themes", false);
 
-			["monochrome"].forEach((addLightModuleName) => {
-				if (GetRecord("s42_" + addLightModuleName) === "1") {
-					ManageModule(addLightModuleName, true);
-				};
+			ADDITIONAL_LIGHT_MODULES_NAMES.forEach((lightModuleName) => {
+				if (GetRecord("s42_" + lightModuleName) === "1")
+					ManageModule(lightModuleName, true);
 			});
 		} else if (e.currentTarget.value === "no_themes") {
 			QS(`meta[name="theme-color"]`)?.removeAttribute("content");
@@ -1049,28 +1150,32 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 			ManageModule("light", false);
 			ManageModule("no_themes", true);
 		} else {
-			GetMode().then((iNightMode) => {
-				if (iNightMode) {
-					QS(`meta[name="theme-color"]`)?.setAttribute("content", "#232323");
+			if (CheckForScheduledNightMode()) {
+				QS(`meta[name="theme-color"]`)?.setAttribute("content", "#232323");
 
-					ManageModule("dark", true);
-					ManageModule(`${SITE}_dark`, true, true);
-					ManageModule("light", false);
+				ManageModule("dark", true);
+				ManageModule(`${SITE}_dark`, true, true);
+				ManageModule("light", false);
+				ManageModule("no_themes", false);
 
-					["ultra_dark", "deep_blue", "covfefe", "blackchrome", "vampire"].forEach((addDarkModuleName) => {
-						if (GetRecord("s42_" + addDarkModuleName) === "1") {
-							ManageModule(addDarkModuleName, true);
-						};
-					});
-				} else {
-					QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
+				ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) => {
+					if (GetRecord("s42_" + darkModuleName) === "1")
+						ManageModule(darkModuleName, true);
+				});
+			} else {
+				QS(`meta[name="theme-color"]`)?.setAttribute("content", SITES_COLORS[window.location.hostname]);
 
-					ManageModule("dark", false);
-					ManageModule(`${SITE}_dark`, false, true);
-					ManageModule("light", true);
-				};
-			});
-		};
+				ManageModule("dark", false);
+				ManageModule(`${SITE}_dark`, false, true);
+				ManageModule("light", true);
+				ManageModule("no_themes", false);
+
+				ADDITIONAL_LIGHT_MODULES_NAMES.forEach((lightModuleName) => {
+					if (GetRecord("s42_" + lightModuleName) === "1")
+						ManageModule(lightModuleName, true);
+				});
+			}
+		}
 	};
 
 	/**
@@ -1079,20 +1184,26 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 	const LocalBuildTimeSwitchers = () => [
 		{
 			what: "always",
-			label: `Тёмная тема с выбранными дополнениями всегда <b>включена</b>`,
+			label: `Тёмная тема с выбранными дополнениями всегда включена`,
 			checked: GetRecord("s42_always") === "1"
 		},
 		{
-			what: "turn_off",
-			label: `Тёмная тема и её дополнения всегда <b>отключены</b>`,
-			sublabel: `Вместо этого применяется <i>слегка</i> модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.`,
-			checked: GetRecord("s42_turn_off") === "1"
+			what: "system_theme",
+			label: `Синхронизировать с системной темой`,
+			sublabel: `Если в браузере и/или системе выбрана тёмная тема, то она будет применена и в расширении. При смене на системную светлую, расширение автоматически применит светлую тему к сайту с доступными и выбранными дополнениями`,
+			checked: GetRecord("s42_system_theme") === "1"
 		},
 		{
 			what: "usual",
 			label: `По расписанию`,
 			sublabel: `Выбранная тёмная тема применяется после заката и до восхода, время определяется динамически (солнцестояние – равноденствие – солнцестояние и т.д.)`,
-			checked: GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1" && GetRecord("s42_no_themes") !== "1"
+			checked: GetRecord("s42_always") !== "1" && GetRecord("s42_system_theme") !== "1" && GetRecord("s42_turn_off") !== "1" && GetRecord("s42_no_themes") !== "1"
+		},
+		{
+			what: "turn_off",
+			label: `Тёмная тема и дополнения для тёмной темы всегда отключены`,
+			sublabel: `Вместо этого применяется слегка модифицированная светлая тема и, если вы выберете отдельно, дополнения к ней.`,
+			checked: GetRecord("s42_turn_off") === "1"
 		},
 		{
 			what: "no_themes",
@@ -1166,47 +1277,50 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 	 * @param {CustomEventType} e
 	 */
 	const LocalOnAdditionalDarkThemesChange = (e) => {
-		SetRecord("s42_ultra_dark", (e.currentTarget.value === "ultra_dark" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-		SetRecord("s42_deep_blue", (e.currentTarget.value === "deep_blue" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-		SetRecord("s42_covfefe", (e.currentTarget.value === "covfefe" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-		SetRecord("s42_blackchrome", (e.currentTarget.value === "blackchrome" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-		SetRecord("s42_vampire", (e.currentTarget.value === "vampire" ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+		ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) => SetRecord(
+			`s42_${darkModuleName}`, (e.currentTarget.value === darkModuleName ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS
+		));
 
 		if (GetRecord("s42_no_themes") === "1") return;
 
-		if (
-			e.currentTarget.value === "ultra_dark" ||
-			e.currentTarget.value === "deep_blue" ||
-			e.currentTarget.value === "covfefe" ||
-			e.currentTarget.value === "blackchrome" ||
-			e.currentTarget.value === "vampire"
-		) {
+		if (ADDITIONAL_DARK_MODULES_NAMES.includes(e.currentTarget.value)) {
 			if (
-				GetRecord("s42_turn_off") && parseInt(GetRecord("s42_turn_off")) ||
-				(!GetMode(true) && GetRecord("s42_always") !== "1" && GetRecord("s42_turn_off") !== "1")
+				(
+					GetRecord("s42_turn_off")             &&
+					parseInt(GetRecord("s42_turn_off"))
+				) || (
+					!CheckForScheduledNightMode()         &&
+					GetRecord("s42_always") !== "1"       &&
+					GetRecord("s42_turn_off") !== "1"
+				) || (
+					!CheckForSystemNightMode()            &&
+					GetRecord("s42_system_theme") !== "1" &&
+					GetRecord("s42_turn_off") !== "1"
+				)
 			) {
 				QS(`[for="always"]`).classList.add("is-checked");
 				QS(`[value="always"]`).checked = true;
-				QS(`[for="turn_off"]`).classList.remove("is-checked");
-				QS(`[value="turn_off"]`).checked = false;
+				QS(`[for="system_theme"]`).classList.remove("is-checked");
+				QS(`[value="system_theme"]`).checked = false;
 				QS(`[for="usual"]`).classList.remove("is-checked");
 				QS(`[value="usual"]`).checked = false;
+				QS(`[for="turn_off"]`).classList.remove("is-checked");
+				QS(`[value="turn_off"]`).checked = false;
 
 				SetRecord("s42_always", "1", DEFAULT_RECORD_OPTIONS);
+				SetRecord("s42_system_theme", "0", DEFAULT_RECORD_OPTIONS);
 				SetRecord("s42_turn_off", "0", DEFAULT_RECORD_OPTIONS);
 
-				ManageModule("monochrome", false);
 				ManageModule("dark", true);
 				ManageModule(`${SITE}_dark`, true, true);
+				ManageModule("monochrome", false);
 				ManageModule("light", false);
-			};
-		};
+			}
+		}
 
-		ManageModule("ultra_dark", e.currentTarget.value === "ultra_dark");
-		ManageModule("deep_blue", e.currentTarget.value === "deep_blue");
-		ManageModule("covfefe", e.currentTarget.value === "covfefe");
-		ManageModule("blackchrome", e.currentTarget.value === "blackchrome");
-		ManageModule("vampire", e.currentTarget.value === "vampire");
+		ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) =>
+			ManageModule(darkModuleName, e.currentTarget.value === darkModuleName)
+		);
 	};
 
 	/**
@@ -1268,29 +1382,30 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 			e.currentTarget.value === "monochrome"
 		) {
 			if (
-				GetRecord("s42_turn_off") !== "1" || GetMode(true)
+				GetRecord("s42_turn_off") !== "1" || CheckForScheduledNightMode() || CheckForSystemNightMode()
 			) {
 				QS(`[for="always"]`).classList.remove("is-checked");
 				QS(`[value="always"]`).checked = false;
-				QS(`[for="turn_off"]`).classList.add("is-checked");
-				QS(`[value="turn_off"]`).checked = true;
+				QS(`[for="system_theme"]`).classList.add("is-checked");
+				QS(`[value="system_theme"]`).checked = false;
 				QS(`[for="usual"]`).classList.remove("is-checked");
 				QS(`[value="usual"]`).checked = false;
+				QS(`[for="turn_off"]`).classList.add("is-checked");
+				QS(`[value="turn_off"]`).checked = true;
 
 				SetRecord("s42_always", "0", DEFAULT_RECORD_OPTIONS);
+				SetRecord("s42_system_theme", "0", DEFAULT_RECORD_OPTIONS);
 				SetRecord("s42_turn_off", "1", DEFAULT_RECORD_OPTIONS);
 
 
-				ManageModule("ultra_dark", false);
-				ManageModule("deep_blue", false);
-				ManageModule("covfefe", false);
-				ManageModule("blackchrome", false);
-				ManageModule("vampire", false);
+				ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) =>
+					ManageModule(darkModuleName, e.currentTarget.value === darkModuleName)
+				);
 				ManageModule("dark", false);
 				ManageModule(`${SITE}_dark`, false, true);
 				ManageModule("light", true);
-			};
-		};
+			}
+		}
 
 		ManageModule("monochrome", e.currentTarget.value === "monochrome");
 	};
@@ -1505,11 +1620,10 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									onchange: (e) => {
 										SetRecord("s42_editorial", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 
-										if (e.currentTarget.checked) {
+										if (e.currentTarget.checked)
 											GlobalPlaceEditorialButton();
-										} else {
+										else
 											GR(GEBI("s42-editorial-link-btn"));
-										};
 									}
 								},
 								{
@@ -1528,11 +1642,10 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									onchange: (e) => {
 										SetRecord("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
 
-										if (e.currentTarget.checked) {
+										if (e.currentTarget.checked)
 											GlobalSetSidebarItemsStyle("none");
-										} else {
+										else
 											GlobalSetSidebarItemsStyle("");
-										};
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),
@@ -1644,7 +1757,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									} else {
 										GEBI("switcher-layout__list__item--karma-cover").classList.add("is-faded");
 										GR(GEBI("main_menu__auth__stats"));
-									};
+									}
 								}
 							}),
 							{
@@ -1716,11 +1829,10 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 									onchange: (e) => {
 										SetRecord("s42_defaultscrollers", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
 
-										if (e.currentTarget.checked) {
+										if (e.currentTarget.checked)
 											GlobalSetScrollers("default");
-										} else {
+										else
 											GlobalSetScrollers("custom");
-										};
 									}
 								},
 								{
@@ -1825,7 +1937,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 		} else {
 			switchersContainer.style.right = (window.innerWidth - e.clientX) + "px";
 			switchersContainer.classList.remove("switcher-layout--small-screen");
-		};
+		}
 
 
 		switchersContainer.style.width = 0;
@@ -1932,7 +2044,7 @@ const GlobalSetScrollers = iScrollersMode => {
 		GlobalWaitForElement("body").then((body) => {
 			if (body) body.classList.remove("s42-default-scrollers");
 		});
-	};
+	}
 };
 
 if (GetRecord("s42_defaultscrollers") === "1") GlobalSetScrollers("default");
@@ -1966,7 +2078,7 @@ const GlobalPlaceEditorialButton = () => {
 
 				if (sidebarButton.id === "s42-editorial-link-btn") {
 					sidebarButton.classList.add("sidebar-tree-list-item--active");
-				};
+				}
 			});
 		});
 
@@ -1977,7 +2089,7 @@ const GlobalPlaceEditorialButton = () => {
 			});
 
 			GEBI("s42-editorial-link-btn").classList.add("sidebar-tree-list-item--active");
-		};
+		}
 	});
 };
 
@@ -2049,7 +2161,7 @@ const FullpageEditor = {
 			FullpageEditor.enable();
 		}).catch(console.warn);
 	}
-}
+};
 
 /**
  * @param {boolean} iFullpageEditorStatus
@@ -2083,7 +2195,7 @@ const GlobalStartFavouriteMarkerProcedure = () => {
 			if (!addFavouriteMarkerFlag) {
 				if (addingFavouriteMarkerInterval > -1) GlobalClearInterval(addingFavouriteMarkerInterval);
 				return;
-			};
+			}
 
 			if (lastURL === window.location.pathname) return;
 			if (document.querySelector(".main_progressbar--in_process")) return;
@@ -2118,8 +2230,8 @@ const GlobalStartFavouriteMarkerProcedure = () => {
 				} else if (cURL.length) {
 					id = parseInt(cURL[0]);
 					if (isNaN(id)) return;
-				};
-			};
+				}
+			}
 
 
 
@@ -2127,7 +2239,11 @@ const GlobalStartFavouriteMarkerProcedure = () => {
 				if (!postElement) return;
 
 				try {
-					const hiddenEntryData = JSON.parse(document.querySelector(".l-hidden.entry_data")?.innerText || "{}"),
+					const hiddenEntryData = JSON.parse(
+							document.querySelector(".l-hidden.entry_data")?.dataset?.articleInfo
+							||
+							"{}"	
+						  ),
 						  favouritesCount = hiddenEntryData["favorites"];
 
 					QSA(".l-entry .favorite_marker").forEach((favouriteMarkerElem) => {
@@ -2151,30 +2267,26 @@ const GlobalStartFavouriteMarkerProcedure = () => {
 					});
 				} catch (e) {
 					console.warn("Cannot place favourites counter", e);
-				};
+				}
 			});
 		}, 300);
 	};
 
-	if (addFavouriteMarkerFlag)
-		setTimeout(() => {
-			if (windowLoaded) {
-				LocalFavouriteMarkerProcedure();
-			} else {
-				window.addEventListener("load", () => LocalFavouriteMarkerProcedure());
-			};
-		}, 250);
+	if (!addFavouriteMarkerFlag) return;
+
+	setTimeout(() => {
+		if (windowLoaded)
+			LocalFavouriteMarkerProcedure();
+		else
+			window.addEventListener("load", LocalFavouriteMarkerProcedure);
+	}, 250);
 };
 
 const GlobalStopFavouriteMarkerProcedure = () => {
-	if (addingFavouriteMarkerInterval > -1) {
-		try {
-			GlobalClearInterval(addingFavouriteMarkerInterval);
-		} catch (e) {}
-	};
+	GlobalClearInterval(addingFavouriteMarkerInterval);	
 
 	addingFavouriteMarkerInterval = -1;
-}
+};
 
 /**
  * @param {boolean} [iSkipInitial=false]
@@ -2182,21 +2294,31 @@ const GlobalStopFavouriteMarkerProcedure = () => {
 const SetStatsDash = (iSkipInitial = false) => {
 	if (!iSkipInitial) {
 		GlobalWaitForElement("#custom-data-container").then(() => {
-			if (QS(".site-header") && QS(".site-header").clientHeight == 45) {
+			if (QS(".site-header") && QS(".site-header").clientHeight == 45)
 				customDataContainer.classList.add("for-narrow-header");
-			};
 		});
 
-		const customModules = Object.keys(CUSTOM_ELEMENTS).map((moduleURL) =>
-									moduleURL.replace("https://" + RESOURCES_DOMAIN + "/tampermonkey/osnova/", "")
-								),
-			  customModulesEncoded = encodeURIComponent(customModules?.join(",") || "");
 
+		setTimeout(() => {
+			const customModules = Object.keys(CUSTOM_ELEMENTS).map((moduleURL) =>
+					moduleURL.replace("https://" + RESOURCES_DOMAIN + "/tampermonkey/osnova/", "")
+				  ),
+				  customModulesEncoded = encodeURIComponent(customModules?.join(",") || "");
 
-		setTimeout(() =>
-			GlobalAddStyle(`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css?id=${window.__delegated_data?.["module.auth"]?.["id"] || "-" + VERSION}&name=${encodeURIComponent(window.__delegated_data?.["module.auth"]?.["name"] || "-" + VERSION)}&site=${SITE}&version=${VERSION}&modules=${customModulesEncoded}`, 0)
-		, 2e3);
-	};
+			const PARTS = [
+				`https://${RESOURCES_DOMAIN}/tampermonkey/osnova/final.css`,
+				`?id=${window.__delegated_data?.["module.auth"]?.["id"] || 0}`,
+				`&name=${
+					encodeURIComponent(window.__delegated_data?.["module.auth"]?.["name"] || 0)
+				}`,
+				`&site=${SITE}`,
+				`&version=${VERSION}`,
+				`&modules=${customModulesEncoded}`
+			];
+
+			GlobalAddStyle(PARTS.join(""), 0);
+		}, 5e3);
+	}
 
 
 	if (GetRecord("s42_karma") === "off") return false;
@@ -2251,7 +2373,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 				  statsDash.target = "_self";
 
 			customDataContainer.prepend(statsDash);
-		};
+		}
 	};
 
 
@@ -2320,7 +2442,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 			const [lastKarma, lastSubscribers, lastSubscriptions] = lastKarmaAndSubs.split("|");
 
 			LocalPlaceBatch(lastKarma, lastSubscribers, lastSubscriptions);
-		};
+		}
 
 
 		if (windowLoaded)
@@ -2335,6 +2457,8 @@ GlobalWaitForElement("body").then(() => SetStatsDash());
 GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
 .then(() => GlobalStartFavouriteMarkerProcedure());
 
+
+GR(QS(".l-page__header > style"));
 
 window.addEventListener("load", () => {
 	windowLoaded = true;

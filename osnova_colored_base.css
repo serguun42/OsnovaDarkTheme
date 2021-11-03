@@ -1071,7 +1071,8 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	background: var(--tc6) !important;
 }
 
-.ce-block .media-item-zoomed__inner {
+.ce-block .media-item-zoomed__inner,
+.media-item-zoomed__inner {
 	background-color: var(--tc5) !important;
 }
 
@@ -1509,16 +1510,16 @@ html body .ce-redactor a.andropov_link {
 
 
 
+.form-text-input,
+.media-item-zoomed__inner-inputs .input,
 .tab__content .path__input,
 .tab__content .style__input,
 .tab__content .push__title,
 .tab__content .push__text,
-.tab__content .announcements__input .form-text-input,
 .editor-cp-tab__content .path__input,
 .editor-cp-tab__content .style__input,
 .editor-cp-tab__content .push__title,
-.editor-cp-tab__content .push__text,
-.editor-cp-tab__content .announcements__input .form-text-input {
+.editor-cp-tab__content .push__text {
 	border-color: var(--tc6) !important;
 }
 
