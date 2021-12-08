@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      10.0.0-A (2021-11-04)
+// @version      10.0.1-A (2021-12-06)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "10.0.0",
+	VERSION = "10.0.1",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -1637,7 +1637,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 								},
 								{
 									name: "messageslinkdisabled",
-									title: "Скрыть кнопки «Сообщения», «Вакансии», «Компании», «Мероприятия», «Хакатоны» и «Трансляции» в левом меню",
+									title: "Скрыть кнопки «Закладки», «Вакансии», «Кабинет», «Мероприятия» и прочее в левом меню",
 									checked: GetRecord("s42_messageslinkdisabled") !== "0",
 									onchange: (e) => {
 										SetRecord("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
@@ -2007,6 +2007,7 @@ let windowLoaded = false;
 const GlobalSetSidebarItemsStyle = iStyle => {
 	[
 		"/m",
+		"/bookmarks",
 		"/job",
 		"/companies_new",
 		"/companies/new",
@@ -2050,21 +2051,21 @@ const GlobalSetScrollers = iScrollersMode => {
 if (GetRecord("s42_defaultscrollers") === "1") GlobalSetScrollers("default");
 
 const GlobalPlaceEditorialButton = () => {
-	GlobalWaitForElement(`.sidebar-tree-list-item[href="/m"]`).then((messengerButton) => {
-		if (!messengerButton) return console.warn("No messenger button!");
+	GlobalWaitForElement(`.sidebar-tree-list-item[href="/new"], .sidebar-tree-list-item[href="/all/new"]`).then((newFeedButton) => {
+		if (!newFeedButton) return console.warn("No newFeedButton button!");
 
 
 		const editorialButton = document.createElement("div");
-		messengerButton.after(editorialButton);
+		newFeedButton.after(editorialButton);
 
 
-		editorialButton.outerHTML = messengerButton.outerHTML
+		editorialButton.outerHTML = newFeedButton.outerHTML
 															.replace(/sidebar-tree-list-item"/gi, `sidebar-tree-list-item" id="s42-editorial-link-btn"`)
-															.replace(/href="\/m"/gi, `href="/editorial"`)
+															.replace(/href="(\/all)?\/new"/gi, `href="/editorial"`)
 															.replace(/style="[^"]+"/gi, "")
-															.replace(/Сообщения/gi, "От редакции")
-															.replace(/icon icon--v_messenger/gi, "icon icon--v_tick")
-															.replace(/xlink:href="#v_messenger"/gi, `xlink:href="#v_tick"`)
+															.replace(/Свежее/gi, "От редакции")
+															.replace(/icon icon--ui_sidebar_recent_big/gi, "icon icon--v_tick")
+															.replace(/xlink:href="#ui_sidebar_recent_big"/gi, `xlink:href="#v_tick"`)
 															.replace(/sidebar-tree-list-item--active/gi, "");
 
 

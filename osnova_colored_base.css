@@ -561,6 +561,10 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
     color: var(--lighter-color) !important;
 }
 
+.content.content--embed {
+    border: 2px solid var(--tc5);
+}
+
 .andropov_link:hover {
     background: var(--tc5);
 	border-color: var(--lighter-color) !important;
@@ -580,7 +584,7 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 
 .vote--comment .vote__value {
-	background-color: var(--tc4);
+	--color-background: var(--tc4);
 }
 
 .vote--comment .vote__users,
@@ -1831,6 +1835,7 @@ html body .ce-redactor a.andropov_link {
 	box-shadow: calc(var(--offset-branch)*-1 - 1px) 0 0 0 var(--tc1);
 }
 
+.comment,
 .comments {
 	--color-branch: var(--tc5);
 }
@@ -1838,7 +1843,15 @@ html body .ce-redactor a.andropov_link {
 .comment__space--highlighted::before,
 .comment__space--new::before,
 .comment__space--with-donate::before,
-.comment__space--pinned::before {
+.comment__space--pinned::before,
+.comment--highlighted .comment__branches::before,
+.comment--highlighted .comment__content::before,
+.comment--new .comment__branches::before,
+.comment--new .comment__content::before,
+.comment--pinned .comment__branches::before,
+.comment--pinned .comment__content::before,
+.comment--with-donate .comment__branches::before,
+.comment--with-donate .comment__content::before {
 	background-color: var(--tc4);
 }
 
@@ -1849,4 +1862,12 @@ html body .ce-redactor a.andropov_link {
 .ce-block-settings__item--active,
 .ce-toolbar__content {
 	background-color: var(--tc5);
+}
+
+
+
+
+
+.comment {
+	--color-branch-hover: var(--tc1);
 }

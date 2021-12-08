@@ -11,3 +11,14 @@
 	background-color: transparent;
 	display: none;
 }
+
+.vote--content .vote__button:hover {
+	--color-background: transparent;
+}
+
+.vote--content.vote--voted-positive .vote__button--plus:hover,
+.vote--content.vote--voted-negative .vote__button--minus:hover,
+.vote--content.vote--voted-positive .vote__button--plus,
+.vote--content.vote--voted-negative .vote__button--minus {
+	background-color: transparent;
+}

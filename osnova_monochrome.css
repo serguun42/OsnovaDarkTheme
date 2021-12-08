@@ -79,7 +79,8 @@
 
 .comments__item__self--author .comments__item__user__name .user_name,
 .comments__item__user__status,
-.comment__self--author .comment-user__name {
+.comment__self--author .comment-user__name,
+.comment__author--highlighted {
 	background-color: var(--lighter-color) !important;
 }
 

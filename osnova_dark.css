@@ -90,7 +90,9 @@ body:not(.s42-default-scrollers) .v-field--scroll .v-text-area__input::-webkit-s
 a.content-header-author:hover,
 a.content-header-author:hover time,
 a.content-header-number:hover,
-a.content-header-number:hover time {
+a.content-header-number:hover time,
+.comment__detail:hover,
+.comment__detail:hover time {
 	color: var(--lighter-color);
 }
 
@@ -969,8 +971,17 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 }
 
 .andropov_link {
-	border: 1px solid #606060!important;
-	color: var(--lighter-color)!important;
+	border: 1px solid #606060 !important;
+	color: var(--lighter-color) !important;
+}
+
+.content.content--embed {
+	box-shadow: none;
+	border: 1px solid #606060;
+}
+
+.content--embed.content--empty {
+	color: #DDD;
 }
 
 .andropov_link:hover {
@@ -1367,20 +1378,17 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 }
 
 .comments__item__self--author .comments__item__user__name .user_name,
-.comment__self--author .comment-user__name {
+.comment__self--author .comment-user__name,
+.comment__author--highlighted {
 	color: #1C1C1C;
 	background-color: var(--lighter-color) !important;
 }
 
 .comments__item__self--author .comments__item__user__name .user_name,
-.comment__self--author .comment-user__name {
+.comment__self--author .comment-user__name,
+.comment__author--highlighted {
 	padding-right: 5px;
 	padding-left: 5px;
-}
-
-.comments {
-	--color-branch: #444;
-	--color-branch-hover: var(--lighter-color);
 }
 
 .comment__children > .comment:not(.comment--level-last):last-child {
@@ -1412,7 +1420,15 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 .comment__space--highlighted::before,
 .comment__space--new::before,
 .comment__space--with-donate::before,
-.comment__space--pinned::before {
+.comment__space--pinned::before,
+.comment--highlighted .comment__branches::before,
+.comment--highlighted .comment__content::before,
+.comment--new .comment__branches::before,
+.comment--new .comment__content::before,
+.comment--pinned .comment__branches::before,
+.comment--pinned .comment__content::before,
+.comment--with-donate .comment__branches::before,
+.comment--with-donate .comment__content::before {
 	background-color: #444;
 	box-shadow: none;
 }
@@ -1421,6 +1437,7 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 .comment__text__edited,
 .comment__self--ignored .comment__text,
 .comment__self--removed .comment__text,
+.comment--removed .comment__text,
 .comment__ico {
 	color: #888;
 }
@@ -3459,7 +3476,7 @@ body:not(.s42-default-scrollers) .inline-dropdown::-webkit-scrollbar {
 }
 
 .vote--comment .vote__value {
-	background-color: #242424;
+	--color-background: #242424;
 }
 
 .vote_fly__button {
@@ -6305,6 +6322,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .comments_counter__count__icon,
 .repost_button__button,
 .v-repost__button,
+.v-repost,
 .content-header-number,
 .content__updating,
 [air-module="module.date"] {
@@ -6830,7 +6848,10 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .repost_button__button--active,
 .repost_button__button:hover,
 .v-shares__button:hover,
-.v-repost__button:hover {
+.v-repost__button:hover,
+.v-repost:hover,
+.v-repost:hover .v-repost__button,
+.v-repost--active .v-repost__button {
 	color: var(--lighter-color);
 }
 
@@ -8212,4 +8233,27 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .commercial-list__price {
 	color: #DDD !important;
+}
+
+
+
+
+
+
+
+
+.comment__icon,
+.comment__action {
+	color: #888;
+}
+
+.comment,
+.comments {
+	--color-inline-action: var(--lighter-color);
+	--color-branch: #555;
+	--color-branch-hover: var(--lighter-color);
+}
+
+a.comment__author:hover {
+	color: #888;
 }
