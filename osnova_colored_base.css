@@ -512,6 +512,10 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 	border-top: 1px solid var(--tc6);
 }
 
+.notifications__header {
+	border-bottom-color: var(--tc6);
+}
+
 .u-notification--border {
 	border-bottom: 1px solid var(--tc6);
 }
@@ -1307,6 +1311,10 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc2) !important;
 }
 
+.mobile-bar {
+	background-color: var(--tc2) !important;
+}
+
 .v-create-button__dropdown,
 .v-split-button__dropdown {
 	background-color: var(--tc2) !important;
@@ -1870,4 +1878,10 @@ html body .ce-redactor a.andropov_link {
 
 .comment {
 	--color-branch-hover: var(--tc1);
+}
+
+
+
+:root {
+	--editorial-and-league-card-color: var(--tc17);
 }

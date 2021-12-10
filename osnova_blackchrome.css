@@ -27,10 +27,6 @@
 	--switcher-layout-text: #e1e1e1;
 }
 
-.site-header {
-	background-color: #232323;
-}
-
 @media (max-width: 719px) {
 	.search__field {
 		background-color: #232323;

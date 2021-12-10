@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      10.0.1-A (2021-12-06)
+// @version      10.0.6-A (2021-12-10)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "10.0.1",
+	VERSION = "10.0.6",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -259,15 +259,16 @@ const GR = elem => elem?.remove?.();
 
 
 /**
- * @typedef {Object} ObserverQueueType
+ * @typedef {Object} ObserverQueueItem
  * @property {string} [tag]
  * @property {string} [id]
  * @property {string} [className]
  * @property {{name: string, value: string}} [attribute]
- * @property {ObserverQueueType} [parent]
+ * @property {ObserverQueueItem} [parent]
+ * @property {ObserverQueueItem} [not]
  * @property {(foundElem: HTMLElement) => void} resolver
  */
-/** @type {ObserverQueueType[]} */
+/** @type {ObserverQueueItem[]} */
 const observerQueue = [];
 
 const mainObserber = new MutationObserver((mutations) => {
@@ -277,11 +278,11 @@ const mainObserber = new MutationObserver((mutations) => {
 
 
 		/**
-		 * @param {ObserverQueueType} waitingElemSelector
+		 * @param {ObserverQueueItem} waitingElemSelector
 		 * @param {HTMLElement} addedNode
 		 * @returns {boolean}
 		 */
-		const LocalCheckNode = (waitingElemSelector, addedNode, iParent) => {
+		const LocalCheckNode = (waitingElemSelector, addedNode) => {
 			if (!(addedNode instanceof HTMLElement)) return false;
 
 			let atLeastOneMatch = false;
@@ -318,8 +319,13 @@ const mainObserber = new MutationObserver((mutations) => {
 
 			if (!atLeastOneMatch) return false;
 
+			if (waitingElemSelector.not) {
+				const notCheck = LocalCheckNode(waitingElemSelector.not, addedNode);
+				if (notCheck) return false;
+			}
+
 			if (waitingElemSelector.parent) {
-				const parentCheck = LocalCheckNode(waitingElemSelector.parent, addedNode.parentElement || addedNode.parentNode, 1);
+				const parentCheck = LocalCheckNode(waitingElemSelector.parent, addedNode.parentElement || addedNode.parentNode);
 				return parentCheck;
 			} else
 				return true;
@@ -329,10 +335,12 @@ const mainObserber = new MutationObserver((mutations) => {
 		observerQueue.forEach((waitingElemSelector, waitingElemIndex, waitingElemsArr) => {
 			const foundNode = Array.from(mutatedNodes).find((addedNode) => LocalCheckNode(waitingElemSelector, addedNode));
 
-			if (foundNode && waitingElemSelector.resolver) {
+			if (!foundNode) return;
+
+			if (waitingElemSelector.resolver)
 				waitingElemSelector.resolver(foundNode);
-				waitingElemsArr.splice(waitingElemIndex, 1);
-			}
+
+			waitingElemsArr.splice(waitingElemIndex, 1);
 		});
 	});
 });
@@ -374,20 +382,11 @@ const GlobalClearInterval = iIntervalID => {
 }
 
 /**
- * @param {string | ObserverQueueType} iKey
+ * @param {string | ObserverQueueItem} iKey
  * @param {false | Promise} [iWaitAlways=false]
  * @returns {Promise<HTMLElement>}
  */
 const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
-	if (typeof iKey == "object" && iKey.parent)
-		return new Promise((resolve) => {
-			observerQueue.push({
-				...iKey,
-				resolver: resolve
-			});
-		});
-
-
 	if (typeof iKey !== "string") return Promise.resolve(null);
 
 	const existing = QS(iKey);
@@ -395,21 +394,42 @@ const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
 
 
 	/**
-	 * @param {string} iQuery
+	 * @param {string} fullSingleQuery
 	 * @returns {Promise<HTMLElement>}
 	 */
-	const LocalWaitUntilSignleElem = (iQuery) => {
-		const tagName = iQuery.split(/#|\.|\[/)[0],
-			  id = iQuery.match(/#([\w\-]+)/i)?.[1],
-			  className = iQuery.match(/\.([\w\-]+(\.[\w\-]+)*)/)?.[1],
-			  attributeMatch = iQuery.match(/\[([\w\-]+)\=\"([^\"]+)\"\]/i) || [];5
+	const LocalWaitUntilSignleElem = (fullSingleQuery) => {
+		/**
+		 * @param {string} subSingleQuery
+		 * @returns {ObserverQueueItem | null}
+		 */
+		const LocalBuildObserverQueueItem = (subSingleQuery) => {
+			if (!subSingleQuery) return null;
 
-		/** @type {ObserverQueueType} */
-		const selectorForQueue = {};
-		if (tagName) selectorForQueue.tag = tagName;
-		if (id) selectorForQueue.id = id;
-		if (className) selectorForQueue.className = className;
-		if (attributeMatch[1] && attributeMatch[2]) selectorForQueue.attribute = { name: attributeMatch[1], value: attributeMatch[2] };
+			const tagName = subSingleQuery.split(/#|\.|\[/)[0],
+				  id = subSingleQuery.match(/#([\w\-]+)/i)?.[1],
+				  className = subSingleQuery.match(/\.([\w\-]+(\.[\w\-]+)*)/)?.[1],
+				  attributeMatch = subSingleQuery.match(/\[(?<attributeName>[\w\-]+)=(["'])(?<attributeValue>[^"']+)\2\]/i) || [];
+
+			/** @type {ObserverQueueItem} */
+			const observerQueueSubItem = {};
+			if (tagName) observerQueueSubItem.tag = tagName;
+			if (id) observerQueueSubItem.id = id;
+			if (className) observerQueueSubItem.className = className;
+			if (attributeMatch[1] && attributeMatch[2])
+				observerQueueSubItem.attribute = {
+					name: attributeMatch?.groups?.["attributeName"],
+					value: attributeMatch?.groups?.["attributeValue"]
+				};
+
+			return observerQueueSubItem;
+		}
+
+
+		const selectorMainPart = fullSingleQuery.split(":not(")[0],
+			  selectorNotPart = fullSingleQuery.split(":not(")[1]?.slice(0, -1),
+			  selectorForQueue = LocalBuildObserverQueueItem(selectorMainPart);
+
+		selectorForQueue.not = LocalBuildObserverQueueItem(selectorNotPart);
 
 
 		return new Promise((resolve) => {
@@ -428,7 +448,7 @@ const GlobalWaitForElement = (iKey, iWaitAlways = false) => {
 
 				let intervalCounter = 0;
 				const backupInterval = GlobalSetInterval(() => {
-					const found = QS(iQuery);
+					const found = QS(fullSingleQuery);
 
 					if (found) {
 						GlobalClearInterval(backupInterval);
@@ -701,8 +721,8 @@ const SetMode = iNightMode => {
 	});
 };
 
-/** @type {Object.<string, HTMLElement>} */
-const CUSTOM_ELEMENTS = new Object();
+/** @type {{ [customElementName: string]: HTMLElement }} */
+const CUSTOM_ELEMENTS = {};
 
 /**
  * @param {string} iModuleName
@@ -1066,12 +1086,15 @@ else
 
 
 
-const customDataContainer = document.createElement("div");
-	  customDataContainer.id = "custom-data-container";
-	  customDataContainer.className = "custom-data-container--for-big-header";
+const navigationUserThemes = document.createElement("div");
+	  navigationUserThemes.id = "navigation-user-themes";
+	  navigationUserThemes.className = "for-big-header";
 
-GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
-	siteHeaderUser.after(customDataContainer);
+GlobalWaitForElement(window.innerWidth <= 719 ?
+	".navigation-user.navigation-user--top-position" :
+	".navigation-user:not(.navigation-user--top-position)"
+).then((navigationUser) => {
+	(navigationUser.parentElement || navigationUser).after(navigationUserThemes);
 
 
 	/**
@@ -1756,7 +1779,7 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 										SetStatsDash(true);
 									} else {
 										GEBI("switcher-layout__list__item--karma-cover").classList.add("is-faded");
-										GR(GEBI("main_menu__auth__stats"));
+										GR(GEBI("navigation-user-themes__stats"));
 									}
 								}
 							}),
@@ -1985,18 +2008,18 @@ GlobalWaitForElement(".site-header-user").then((siteHeaderUser) => {
 	};
 
 
-	const switchersBtn = document.createElement("div");
-		  switchersBtn.innerHTML = `<svg width="20" height="20" class="icon icon--v_gear" ><use xlink:href="#v_gear"></use></svg>`;
-		  switchersBtn.id = "switchers-btn";
-		  switchersBtn.className = "mdl-js-button mdl-js-ripple-effect";
-		  switchersBtn.addEventListener("click", (e) => {
+	const navigationUserThemesSwitcherButton = document.createElement("div");
+		  navigationUserThemesSwitcherButton.innerHTML = `<svg width="20" height="20" class="icon icon--v_gear"><use xlink:href="#v_gear"></use></svg>`;
+		  navigationUserThemesSwitcherButton.id = "navigation-user-themes__switcher-button";
+		  navigationUserThemesSwitcherButton.className = "mdl-js-button mdl-js-ripple-effect";
+		  navigationUserThemesSwitcherButton.addEventListener("click", (e) => {
 				LocalBuildPanel();
 				requestAnimationFrame(() => LocalShowPanel(e));
 				requestAnimationFrame(() => componentHandler?.upgradeElements(QSA("[data-mdl-upgrade]")));
 		  });
 
-	customDataContainer.appendChild(switchersBtn);
-	componentHandler?.upgradeElement(switchersBtn);
+	navigationUserThemes.appendChild(navigationUserThemesSwitcherButton);
+	componentHandler?.upgradeElement(navigationUserThemesSwitcherButton);
 });
 
 
@@ -2036,22 +2059,24 @@ const GlobalSetSidebarItemsStyle = iStyle => {
 if (GetRecord("s42_messageslinkdisabled") !== "0")
 	GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalSetSidebarItemsStyle("none"));
 
-const GlobalSetScrollers = iScrollersMode => {
-	if (iScrollersMode === "default") {
-		GlobalWaitForElement("body").then((body) => {
-			if (body) body.classList.add("s42-default-scrollers");
-		});
-	} else {
-		GlobalWaitForElement("body").then((body) => {
-			if (body) body.classList.remove("s42-default-scrollers");
-		});
-	}
-};
+/**
+ * @param {"default" | "custom"} iScrollersMode
+ * @returns {void}
+ */
+const GlobalSetScrollers = iScrollersMode => GlobalWaitForElement("body").then((body) => {
+	if (!body) return;
+
+	if (iScrollersMode === "default")
+		body.classList.add("s42-default-scrollers");
+	else
+		body.classList.remove("s42-default-scrollers");
+});
 
 if (GetRecord("s42_defaultscrollers") === "1") GlobalSetScrollers("default");
 
 const GlobalPlaceEditorialButton = () => {
-	GlobalWaitForElement(`.sidebar-tree-list-item[href="/new"], .sidebar-tree-list-item[href="/all/new"]`).then((newFeedButton) => {
+	GlobalWaitForElement(`.sidebar-tree-list-item[href="/new"], .sidebar-tree-list-item[href="/all/new"]`)
+	.then((newFeedButton) => {
 		if (!newFeedButton) return console.warn("No newFeedButton button!");
 
 
@@ -2060,14 +2085,15 @@ const GlobalPlaceEditorialButton = () => {
 
 
 		editorialButton.outerHTML = newFeedButton.outerHTML
-															.replace(/sidebar-tree-list-item"/gi, `sidebar-tree-list-item" id="s42-editorial-link-btn"`)
-															.replace(/href="(\/all)?\/new"/gi, `href="/editorial"`)
-															.replace(/style="[^"]+"/gi, "")
-															.replace(/Свежее/gi, "От редакции")
-															.replace(/icon icon--ui_sidebar_recent_big/gi, "icon icon--v_tick")
-															.replace(/xlink:href="#ui_sidebar_recent_big"/gi, `xlink:href="#v_tick"`)
-															.replace(/sidebar-tree-list-item--active/gi, "");
+			.replace(/sidebar-tree-list-item"/gi, `sidebar-tree-list-item" id="s42editorial-link-btn"`)
+			.replace(/href="(\/all)?\/new"/gi, `href="/editorial"`)
+			.replace(/style="[^"]+"/gi, "")
+			.replace(/Свежее/gi, "От редакции")
+			.replace(/icon icon--ui_sidebar_recent_big/gi, "icon icon--v_tick")
+			.replace(/xlink:href="#ui_sidebar_recent_big"/gi,`xlink:href="#v_tick"`)
+			.replace(/sidebar-tree-list-item--active/gi, "");
 
+		GR(editorialButton.querySelector(".sidebar-tree-list-item__badge"));
 
 		const sidebarButtons = QSA(".sidebar-tree-list-item");
 		sidebarButtons.forEach((sidebarButton) => {
@@ -2236,7 +2262,8 @@ const GlobalStartFavouriteMarkerProcedure = () => {
 
 
 
-			GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`).then((postElement) => {
+			GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
+			.then((postElement) => {
 				if (!postElement) return;
 
 				try {
@@ -2250,7 +2277,8 @@ const GlobalStartFavouriteMarkerProcedure = () => {
 					QSA(".l-entry .favorite_marker").forEach((favouriteMarkerElem) => {
 						favouriteMarkerElem.classList.remove("favorite_marker--zero");
 
-						const favouriteMarkerCountElem = favouriteMarkerElem.querySelector(".favorite_marker__count") || document.createElement("div");
+						const favouriteMarkerCountElem = favouriteMarkerElem.querySelector(".favorite_marker__count")
+														 || document.createElement("div");
 							  favouriteMarkerCountElem.className = "favorite_marker__count";
 							  favouriteMarkerCountElem.innerText = favouritesCount || "";
 
@@ -2294,9 +2322,9 @@ const GlobalStopFavouriteMarkerProcedure = () => {
  */
 const SetStatsDash = (iSkipInitial = false) => {
 	if (!iSkipInitial) {
-		GlobalWaitForElement("#custom-data-container").then(() => {
+		GlobalWaitForElement("#navigation-user-themes").then(() => {
 			if (QS(".site-header") && QS(".site-header").clientHeight == 45)
-				customDataContainer.classList.add("for-narrow-header");
+				navigationUserThemes.classList.add("for-narrow-header");
 		});
 
 
@@ -2338,9 +2366,6 @@ const SetStatsDash = (iSkipInitial = false) => {
 	 * @returns {void}
 	 */
 	const LocalPlaceBatch = (karma, subscribers, subscriptions) => {
-		additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: ${(customDataContainer.scrollWidth).toFixed(2)}px; }`;
-
-
 		const relativeRecordName = ["karma_rating", "karma_subscribers", "karma_subscriptions"],
 			  wrapper = [
 				`__NUM__`,
@@ -2361,25 +2386,27 @@ const SetStatsDash = (iSkipInitial = false) => {
 		}).filter((value) => value !== null).join("&nbsp;|&nbsp;");
 
 
-		if (!htmlForBatch) return GR(GEBI("main_menu__auth__stats"));
+		if (!htmlForBatch) return GR(GEBI("navigation-user-themes__stats"));
 
 
-		if (GEBI("main_menu__auth__stats"))
-			GEBI("main_menu__auth__stats").innerHTML = htmlForBatch;
+		if (GEBI("navigation-user-themes__stats"))
+			GEBI("navigation-user-themes__stats").innerHTML = htmlForBatch;
 		else {
 			const statsDash = document.createElement("a");
-				  statsDash.id = "main_menu__auth__stats";
+				  statsDash.id = "navigation-user-themes__stats";
 				  statsDash.innerHTML = htmlForBatch;
 				  statsDash.href = "/u/me";
 				  statsDash.target = "_self";
 
-			customDataContainer.prepend(statsDash);
+			navigationUserThemes.prepend(statsDash);
 		}
+
+		additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: ${(navigationUserThemes.scrollWidth).toFixed(2)}px; }`;
 	};
 
 
-	GlobalWaitForElement("#custom-data-container").then(() => {
-		customDataContainer.parentNode.classList.add("s42-karma-shown");
+	GlobalWaitForElement("#navigation-user-themes").then(() => {
+		navigationUserThemes.parentNode.classList.add("s42-karma-shown");
 
 		const userID = window.__delegated_data?.["module.auth"]?.["id"];
 		if (!userID) return console.warn("No user id!");

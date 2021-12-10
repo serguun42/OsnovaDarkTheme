@@ -258,7 +258,7 @@ body:not(.s42-is-dark) .comments_counter__count__value,
 
 
 
-.site-header {
+body:not(.s42-is-dark) .site-header {
 	background-color: #E0E0E0;
 }
 

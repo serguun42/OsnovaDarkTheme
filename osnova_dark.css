@@ -4884,6 +4884,10 @@ html body .ce-redactor a.andropov_link {
 	border-top: 1px solid #444;
 }
 
+.notifications__header {
+	border-bottom-color: #444;
+}
+
 .u-notification--border {
 	border-bottom: 1px solid #444;
 }
@@ -5828,6 +5832,10 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 
 .site-header {
 	background-color: #232323;
+}
+
+.mobile-bar {
+	background-color: #232323 !important;
 }
 
 .site-header-burger svg {
@@ -7099,7 +7107,12 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	overflow: hidden;
 }
 
-.site-header-user-profile__toggle:hover {
+.navigation-user-profile__toggle {
+	color: #E1E1E1;
+}
+
+.site-header-user-profile__toggle:hover,
+.navigation-user-profile__toggle:hover {
 	opacity: 1;
 	color: var(--primary-color);
 }
@@ -7395,7 +7408,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	left: -30px;
 }
 
-#custom-data-container + #dataheadBlock {
+#custom-data-container + #dataheadBlock,
+#navigation-user-themes + #dataheadBlock {
 	left: -64px;
 }
 
@@ -8081,7 +8095,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .search__field .v-field:not(.v-field--focused) .v-field__wrapper:hover,
 .search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover),
 .search__field .v-field--focused .v-field__wrapper,
-.search__field,
 .search--active .search__input,
 .search--filled .search__input {
 	background-color: transparent;
@@ -8256,4 +8269,69 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 a.comment__author:hover {
 	color: #888;
+}
+
+
+
+
+
+
+:root {
+	--editorial-and-league-card-color: rgba(50, 50, 50, 0.9);
+}
+
+.content-editorial-tick span {
+	background-color: var(--editorial-and-league-card-color);
+}
+
+.content-editorial-tick span:after {
+	border-top-color: var(--editorial-and-league-card-color);
+}
+
+.league-block-card {
+	background-color: var(--editorial-and-league-card-color) !important;
+}
+
+.border-top {
+	border-top-color: var(--editorial-and-league-card-color) !important;
+}
+
+.league-block-card a {
+	color: var(--lighter-color) !important;
+	border-bottom: 1px solid #555 !important;
+}
+
+.league-block-card a:hover {
+	color: #FFFFFF !important;
+	border-bottom: 1px solid #888 !important;
+}
+
+.v-repost .popover-item__slot {
+	color: var(--lighter-color);
+}
+
+
+
+
+.mobile-bar__feed--is-active,
+.mobile-bar__vacancies--is-active,
+.mobile-bar__messenger--is-active,
+.mobile-bar__notifications--is-active {
+	color: var(--primary-color) !important;
+}
+
+.mobile-bar__link:hover .mobile-bar__icon {
+	color: var(--lighter-color) !important;
+}
+
+.search__button:hover {
+	color: var(--primary-color);
+}
+
+.search__field .v-field--focused .v-field__wrapper {
+	border-color: var(--primary-color);
+}
+
+.mobile-bar__profile--is-active .navigation-user-profile__avatar-image {
+	border-color: var(--primary-color) !important;
 }

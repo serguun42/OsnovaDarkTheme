@@ -769,7 +769,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	left: -30px;
 }
 
-#custom-data-container + #dataheadBlock {
+#custom-data-container + #dataheadBlock,
+#navigation-user-themes + #dataheadBlock {
 	left: -64px;
 }
 
@@ -856,4 +857,15 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .comment__other:hover .comment__children > .comment:not(.comment--level-last):last-child::before {
 	bottom: auto !important;
+}
+
+
+
+
+.league-block-card a {
+	color: var(--primary-color) !important;
+}
+
+.league-block-card a:hover {
+	color: #cd192e !important;
 }
