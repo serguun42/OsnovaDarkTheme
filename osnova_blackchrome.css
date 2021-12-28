@@ -33,7 +33,7 @@
 	}
 }
 
-.widget_wrapper--type-yellow, .widget_wrapper--type-pink, .widget_wrapper--type-red, .widget_wrapper--type-best_comments, .widget_wrapper--type-popular_3_entries, .widget_wrapper--type-top_commented_entries, .widget_wrapper--type-blue, .block-warning, .island.island--blogs_entrie, .content-image--with_background, .block-quote--centered, .block-quote--default, .block-incut, .block-number, .block-code {
+.widget_wrapper--type-yellow, .widget_wrapper--type-pink, .widget_wrapper--type-red, .widget_wrapper--type-best_comments, .widget_wrapper--type-popular_3_entries, .widget_wrapper--type-top_commented_entries, .widget_wrapper--type-blue, .block-warning, .island.island--blogs_entrie, .content-image--with_background, .block-quote--centered, .block-quote--default, .block-incut, .block-number, .block-code, .league-block {
 	background-color: var(--blocks-background) !important;
 }
 

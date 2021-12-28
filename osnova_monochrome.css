@@ -135,7 +135,7 @@ body:not(.s42-is-dark) .comments_counter__count__value,
 .block-warning,
 .island.island--blogs_entrie,
 .content-image--with_background,
-.block-quote--centered, .block-quote--default, .block-incut, .block-number, .block-code {
+.block-quote--centered, .block-quote--default, .block-incut, .block-number, .block-code, .league-block {
 	background-color: var(--lighter-color) !important;
 }
 
@@ -621,4 +621,8 @@ svg[aria-labelledby="verified"],
 
 .comments_updates .comments_updates__counter {
 	background-color: var(--primary-color);
+}
+
+.league-block {
+	background-color: var(--lighter-color) !important;
 }

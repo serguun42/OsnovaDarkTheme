@@ -557,7 +557,7 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 .block-quote--centered, .block-quote--default, .block-incut, .block-number, .block-code, .twitter-tweet,
 .content--legacy .block-html blockquote {
-	background-color: var(--tc2) !important;
+	background-color: var(--tc2);
 }
 
 .andropov_link {
@@ -1296,8 +1296,13 @@ html body .ce-redactor a.andropov_link {
 
 
 
-.v-popup-window__content {
+.v-popup-window__content,
+.v-popup-header {
 	background-color: var(--tc4);
+}
+
+.v-popup-header--with-divider {
+	border-bottom-color: var(--tc6);
 }
 
 .comments__item__space--with-donate {
@@ -1874,14 +1879,17 @@ html body .ce-redactor a.andropov_link {
 
 
 
+:root {
+	--editorial-and-league-card-color: var(--tc17);
+}
 
-
-.comment {
-	--color-branch-hover: var(--tc1);
+.league-block {
+	background-color: var(--tc2) !important;
 }
 
 
 
-:root {
-	--editorial-and-league-card-color: var(--tc17);
+
+.services-sidebar__filters {
+	background-color: var(--tc4) !important;
 }

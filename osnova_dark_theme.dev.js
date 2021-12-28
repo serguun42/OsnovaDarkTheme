@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      10.0.6-A (2021-12-10)
+// @version      10.1.0-A (2021-12-28)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "10.0.6",
+	VERSION = "10.1.0",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -130,6 +130,12 @@ const
 			name: "favouritesicon",
 			title: "Красная иконка закладок",
 			default: true,
+			priority: 5
+		},
+		{
+			name: "snow_by_neko",
+			title: "Добавить снег на фоне",
+			default: false,
 			priority: 5
 		},
 		{
@@ -1538,7 +1544,7 @@ GlobalWaitForElement(window.innerWidth <= 719 ?
 				checkboxRule.subtitle ? {
 					tag: "span",
 					class: "mdl-checkbox__sub-label",
-					text: checkboxRule.subtitle
+					html: checkboxRule.subtitle
 				} : null
 			]
 		}
@@ -1827,12 +1833,33 @@ GlobalWaitForElement(window.innerWidth <= 719 ?
 							},
 							...([
 								{
-									name: "gray_signs",
-									title: "Серые оценки у постов и комментариев",
-									checked: GetRecord("s42_gray_signs") === "1",
+									name: "snow_by_neko",
+									title: "Добавить снег на фоне",
+									subtitle: `Designed by <a href="https://dtf.ru/u/2819-neko-natum" target="_blank" style="text-decoration: underline;">Neko Natum</a>`,
+									checked: GetRecord("s42_snow_by_neko") === "1",
 									onchange: (e) => {
-										SetRecord("s42_gray_signs", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
-										ManageModule("gray_signs", e.currentTarget.checked);
+										SetRecord("s42_snow_by_neko", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("snow_by_neko", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "com_rules",
+									title: "Отключить рекламу",
+									subtitle: "Фильтр регулярно обновляется",
+									checked: GetRecord("s42_com_rules") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_com_rules", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("com_rules", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "add_possession_choice",
+									title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария",
+									subtitle: "β-версия",
+									checked: GetRecord("s42_add_possession_choice") === "1",
+									onchange: (e) => {
+										SetRecord("s42_add_possession_choice", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
+										ManageModule("add_possession_choice", e.currentTarget.checked);
 									}
 								},
 								{
@@ -1878,6 +1905,15 @@ GlobalWaitForElement(window.innerWidth <= 719 ?
 									}
 								},
 								{
+									name: "gray_signs",
+									title: "Серые оценки у постов и комментариев",
+									checked: GetRecord("s42_gray_signs") === "1",
+									onchange: (e) => {
+										SetRecord("s42_gray_signs", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+										ManageModule("gray_signs", e.currentTarget.checked);
+									}
+								},
+								{
 									name: "hide_likes",
 									title: "Спрятать все оценки и поля ввода",
 									subtitle: "Например, в комментариях под записями",
@@ -1885,26 +1921,6 @@ GlobalWaitForElement(window.innerWidth <= 719 ?
 									onchange: (e) => {
 										SetRecord("s42_hide_likes", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
 										ManageModule("hide_likes", e.currentTarget.checked);
-									}
-								},
-								{
-									name: "com_rules",
-									title: "Отключить рекламу",
-									subtitle: "Фильтр регулярно обновляется",
-									checked: GetRecord("s42_com_rules") !== "0",
-									onchange: (e) => {
-										SetRecord("s42_com_rules", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-										ManageModule("com_rules", e.currentTarget.checked);
-									}
-								},
-								{
-									name: "add_possession_choice",
-									title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария",
-									subtitle: "β-версия",
-									checked: GetRecord("s42_add_possession_choice") === "1",
-									onchange: (e) => {
-										SetRecord("s42_add_possession_choice", e.currentTarget.checked ? "1" : "0", DEFAULT_RECORD_OPTIONS);
-										ManageModule("add_possession_choice", e.currentTarget.checked);
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),
