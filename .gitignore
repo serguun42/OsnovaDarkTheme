@@ -1,0 +1,8 @@
+.vscode
+*.html
+*.bat
+*.sh
+node_modules/
+build/
+out/
+package-lock.json

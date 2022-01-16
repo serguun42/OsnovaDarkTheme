@@ -1,13 +1,13 @@
-const path = require("path");
+const { join } = require("path");
 
 
 module.exports = {
-	entry: path.join(__dirname, "osnova_dark_theme.dev.js"),
+	entry: join(__dirname, "core.js"),
 	filename: "osnova_dark_theme.js",
-	path: __dirname,
+	path: join(__dirname, "..", "build"),
 	headers: {
 		"name":         "Osnova Dark Theme",
-		"version":      "10.1.1-R (2022-01-16)",
+		"version":      "10.2.0 (2022-01-17)",
 		"author":       "serguun42",
 		"icon":         "https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png",
 		"icon64":       "https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png",
