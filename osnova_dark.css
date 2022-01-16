@@ -578,7 +578,7 @@ body, .main.layout {
 }
 
 .ui_select:hover {
-    border-color: var(--lighter-color);
+	border-color: var(--lighter-color);
 }
 
 .ui_form input[type=email],
@@ -2847,7 +2847,7 @@ textarea[name="misprint_comment"] {
 
 .subsite_subscribe_button__inner--active .icon, .subsite_subscribe_button__inner--deactivate .icon, .subsite_subscribe_button__inner--inactive .icon {
 	fill: currentColor !important;
-    color: inherit;
+	color: inherit;
 }
 
 .page--subsite .subsite__user {
@@ -4338,7 +4338,7 @@ html body .ce-redactor a.andropov_link {
 }
 
 .creation_button__subitem:hover {
-    background-color: #555;
+	background-color: #555;
 }
 
 .creation_button__subitem__icon svg {
@@ -4468,7 +4468,7 @@ html body .ce-redactor a.andropov_link {
 	border: 1px solid var(--primary-color);
 	color: var(--primary-color);
 	line-height: 1em;
-    padding: 4px;
+	padding: 4px;
 	user-select: none;
 }
 
@@ -5146,7 +5146,7 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 
 .message--selected .message__actions-select {
 	border-color: var(--primary-color);
-    background-color: var(--primary-color);
+	background-color: var(--primary-color);
 }
 
 .chat-bottom-actions__right-button {
@@ -5262,21 +5262,21 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 .subsite_settings__form .form2__field--text .text,
 .subsite_settings__form .form2__field--advanced_list .text__input {
 	color: #E1E1E1;
-    background: #1C1C1C;
-    border: 1px solid #606060;
+	background: #1C1C1C;
+	border: 1px solid #606060;
 }
 
 .subsite_settings__form .form2__field--text .text input {
 	color: inherit !important;
-    background: transparent !important;
+	background: transparent !important;
 	border: none;
 }
 
 .subsite_settings__form .form2__inline-editor,
 .subsite_settings__form .advanced_list__list {
 	color: #E1E1E1;
-    background: #1C1C1C;
-    border: 1px solid #606060;
+	background: #1C1C1C;
+	border: 1px solid #606060;
 }
 
 .subsite_settings__form .form2__field--advanced_list .advanced_list__list .adv_list_item__remove:after,
@@ -5360,7 +5360,7 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 	TJ Plus Jan 2020
  */
 .plus-features.layout--c, .page--plus .plus-features {
-    background-color: #242424;
+	background-color: #242424;
 }
 
 .page.page--plus .ui-button.ui-button--large {
@@ -5843,8 +5843,8 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 .v-create-button,
 .v-split-button {
 	background: transparent !important;
-    border: var(--lighter-color) 1px solid !important;
-    color: var(--primary-color) !important;
+	border: var(--lighter-color) 1px solid !important;
+	color: var(--primary-color) !important;
 }
 
 .messenger-panel__down {
@@ -6301,8 +6301,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .sidebar__button .ui-button.ui-button--12 {
 	background: transparent !important;
-    border: var(--lighter-color) 1px solid !important;
-    color: var(--primary-color) !important;
+	border: var(--lighter-color) 1px solid !important;
+	color: var(--primary-color) !important;
 }
 
 
@@ -6670,7 +6670,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 }
 
 .ui-rounded-button--has-active-child .ui-rounded-button__link {
-    color: #DDD !important;
+	color: #DDD !important;
 }
 
 .gallery-image--with-background .gallery-image__media {
@@ -6844,7 +6844,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 }
 
 .editor-distribution-button:hover {
-  color: var(--lighter-color);
+	color: var(--lighter-color);
 }
 
 
@@ -7102,12 +7102,13 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	color: var(--lighter-color);
 }
 
+.search_results__horizon,
 .page--search .search_results__horizon {
 	background-color: transparent;
 }
 
 .header__content::before {
-  background-color: transparent !important;
+	background-color: transparent !important;
 }
 
 .v-split-button__select::before,
@@ -7629,7 +7630,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 }
 
 .v-field__wrapper:hover {
-    background-color: var(--primary-color--faded26);
+	background-color: var(--primary-color--faded26);
 	border-color: var(--primary-color--faded50);
 	box-shadow: 0 0 0 3px var(--primary-color--faded26);
 }
@@ -7902,15 +7903,15 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .v-etc__item:hover,
 .v-etc__item:first-child:hover::before {
-  background-color: #555;
+	background-color: #555;
 }
 
 .v-etc__item:first-child {
-  border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
 }
 
 .v-etc__item:only-child {
-  border-radius: 6px;
+	border-radius: 6px;
 }
 
 .vote .vote__users__country {

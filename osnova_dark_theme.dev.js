@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Osnova Dark Theme
 // @website      https://tjournal.ru/tag/darktheme
-// @version      10.1.0-A (2021-12-28)
+// @version      10.1.1-A (2022-01-16)
 // @author       serguun42
 // @icon         https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png
 // @icon64       https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png
@@ -24,7 +24,7 @@
 const
 	SITE = (window.location.hostname.search("k8s.osnova.io") > -1 && window.location.hostname.split(".")[0] === "tj") ? "tjournal" : window.location.hostname.split(".")[0],
 	RESOURCES_DOMAIN = "serguun42.ru",
-	VERSION = "10.1.0",
+	VERSION = "10.1.1",
 	ALL_ADDITIONAL_MODULES = [
 		{
 			name: "ultra_dark",
@@ -952,6 +952,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_gray_signs",
 	"s42_snow_by_neko",
 	"s42_messageslinkdisabled",
+	"s42_bookmarkslinkdisabled",
 	"s42_defaultscrollers",
 	"s42_monochrome",
 	"s42_qrcode",
@@ -1656,6 +1657,19 @@ GlobalWaitForElement(window.innerWidth <= 719 ?
 									}
 								},
 								{
+									name: "bookmarkslinkdisabled",
+									title: "Скрыть кнопку «Закладки» в левом меню",
+									checked: GetRecord("s42_bookmarkslinkdisabled") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_bookmarkslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
+
+										if (e.currentTarget.checked)
+											GlobalSwitchLeftMenuBookmarks("none");
+										else
+											GlobalSwitchLeftMenuBookmarks("");
+									}
+								},
+								{
 									name: "hidesubscriptions",
 									title: "Скрыть кнопку подписок",
 									checked: GetRecord("s42_hidesubscriptions") === "1",
@@ -1666,15 +1680,15 @@ GlobalWaitForElement(window.innerWidth <= 719 ?
 								},
 								{
 									name: "messageslinkdisabled",
-									title: "Скрыть кнопки «Закладки», «Вакансии», «Кабинет», «Мероприятия» и прочее в левом меню",
+									title: "Скрыть кнопки «Вакансии», «Кабинет», «Мероприятия» и прочее в левом меню",
 									checked: GetRecord("s42_messageslinkdisabled") !== "0",
 									onchange: (e) => {
 										SetRecord("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString(), DEFAULT_RECORD_OPTIONS);
 
 										if (e.currentTarget.checked)
-											GlobalSetSidebarItemsStyle("none");
+											GlobalSwitchLeftMenuMiscItems("none");
 										else
-											GlobalSetSidebarItemsStyle("");
+											GlobalSwitchLeftMenuMiscItems("");
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),
@@ -2040,40 +2054,61 @@ GlobalWaitForElement(window.innerWidth <= 719 ?
 
 
 
+/**
+ * Generic/core function to turn on/off left menu links/items
+ * 
+ * @param {"block" | "none"} settingDisplayStyle 
+ * @param {string[]} [linksHrefs] Array of links by their href to be switched to `settingDisplayStyle`
+ * @param {string[]} [linksClasses] Array of links by part of their class to be switched to `settingDisplayStyle`
+ * @returns {void}
+ */
+const GlobalSwitchLeftMenuGeneric = (settingDisplayStyle, linksHrefs = [], linksClasses = []) => {
+	if (typeof settingDisplayStyle !== "string") return;
 
-let windowLoaded = false;
+	if (linksHrefs instanceof Array)
+		linksHrefs.forEach((sidebarLink) =>
+			QSA(`.sidebar-tree-list-item[href="${sidebarLink}"]`).forEach((treeButton) =>
+				treeButton.style.display = settingDisplayStyle
+			)
+		);
 
-const GlobalSetSidebarItemsStyle = iStyle => {
-	[
-		"/m",
-		"/bookmarks",
-		"/job",
-		"/companies_new",
-		"/companies/new",
-		"/companies",
-		"/events",
-		"/events",
-		"/cabinet"
-	].forEach((sidebarLink) => {
-		const treeButton = QS(`.sidebar-tree-list-item[href="${sidebarLink}"]`);
-
-		if (treeButton)
-			treeButton.style.display = iStyle;
-	});
-
-
-	[
-		"custom-html",
-		"colored"
-	].forEach((sidebarLink) => {
-		QSA(`.sidebar-tree-list-item--${sidebarLink}`).forEach((treeButton) => {
-			treeButton.style.display = iStyle;
-		});
-	});
+	if (linksClasses instanceof Array)
+		linksClasses.forEach((sidebarLink) =>
+			QSA(`.sidebar-tree-list-item--${sidebarLink}`).forEach((treeButton) =>
+				treeButton.style.display = settingDisplayStyle
+			)
+		);
 };
 
+/**
+ * @param {"block" | "none"} settingDisplayStyle
+ */
+const GlobalSwitchLeftMenuBookmarks = (settingDisplayStyle) => GlobalSwitchLeftMenuGeneric(settingDisplayStyle, [
+	"/bookmarks",
+], []);
+
+/**
+ * @param {"block" | "none"} settingDisplayStyle
+ */
+const GlobalSwitchLeftMenuMiscItems = (settingDisplayStyle) => GlobalSwitchLeftMenuGeneric(settingDisplayStyle, [
+	"/m",
+	"/job",
+	"/companies_new",
+	"/companies/new",
+	"/companies",
+	"/events",
+	"/events",
+	"/cabinet"
+], [
+	"custom-html",
+	"colored"
+]);
+
+if (GetRecord("s42_bookmarkslinkdisabled") !== "0")
+	GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalSwitchLeftMenuBookmarks("none"));
+
 if (GetRecord("s42_messageslinkdisabled") !== "0")
-	GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalSetSidebarItemsStyle("none"));
+	GlobalWaitForElement(".sidebar-tree-list-item").then(() => GlobalSwitchLeftMenuMiscItems("none"));
 
 /**
  * @param {"default" | "custom"} iScrollersMode
@@ -2101,7 +2136,7 @@ const GlobalPlaceEditorialButton = () => {
 
 
 		editorialButton.outerHTML = newFeedButton.outerHTML
-			.replace(/sidebar-tree-list-item"/gi, `sidebar-tree-list-item" id="s42editorial-link-btn"`)
+			.replace(/sidebar-tree-list-item"/gi, `sidebar-tree-list-item" id="s42-editorial-link-btn"`)
 			.replace(/href="(\/all)?\/new"/gi, `href="/editorial"`)
 			.replace(/style="[^"]+"/gi, "")
 			.replace(/Свежее/gi, "От редакции")
@@ -2119,9 +2154,8 @@ const GlobalPlaceEditorialButton = () => {
 						sidebarButtonToChangeClass.classList.remove("sidebar-tree-list-item--active");
 				});
 
-				if (sidebarButton.id === "s42-editorial-link-btn") {
+				if (sidebarButton.id === "s42-editorial-link-btn")
 					sidebarButton.classList.add("sidebar-tree-list-item--active");
-				}
 			});
 		});
 
@@ -2320,7 +2354,7 @@ const GlobalStartFavouriteMarkerProcedure = () => {
 	if (!addFavouriteMarkerFlag) return;
 
 	setTimeout(() => {
-		if (windowLoaded)
+		if (document.readyState === "complete")
 			LocalFavouriteMarkerProcedure();
 		else
 			window.addEventListener("load", LocalFavouriteMarkerProcedure);
@@ -2489,7 +2523,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 		}
 
 
-		if (windowLoaded)
+		if (document.readyState === "complete")
 			setTimeout(LocalFetchUserForStats, 2e3);
 		else
 			window.addEventListener("load", () => setTimeout(LocalFetchUserForStats, 2e3));
@@ -2499,12 +2533,8 @@ const SetStatsDash = (iSkipInitial = false) => {
 
 GlobalWaitForElement("body").then(() => SetStatsDash());
 GlobalWaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
-.then(() => GlobalStartFavouriteMarkerProcedure());
+.then(GlobalStartFavouriteMarkerProcedure);
 
 
 GR(QS(".l-page__header > style"));
-
-window.addEventListener("load", () => {
-	windowLoaded = true;
-	GR(QS(".l-page__header > style"));
-});
+window.addEventListener("load", () => GR(QS(".l-page__header > style")));
