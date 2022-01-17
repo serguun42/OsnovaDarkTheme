@@ -1,13 +1,13 @@
 const { SITE_COLOR, SITE } = require("../config/sites");
 const { WaitForElement, ManageModule, QS, QSA, GEBI, GlobalBuildLayout, Animate, GR } = require("../util/dom");
-const { ADDITIONAL_DARK_MODULES_NAMES, ADDITIONAL_LIGHT_MODULES_NAMES, ALL_ADDITIONAL_MODULES } = require("../util/modules-list");
+const { ADDITIONAL_DARK_MODULES_NAMES, ADDITIONAL_LIGHT_MODULES_NAMES, ADDITIONAL_MODULES } = require("../util/modules-list");
 const { SetRecord, GetRecord } = require("../util/storage");
 const { CheckForSystemDarkMode, CheckForScheduledNightMode } = require("../util/theme-handlers");
 const { StartFavouriteMarkerProcedure, StopFavouriteMarkerProcedure } = require("./favourites-marker");
 const { SetFullpageEditor } = require("./fullpage-editor");
 const { SwitchLeftMenuMiscItems, SwitchLeftMenuBookmarks, PlaceEditorialButton } = require("./left-menu");
 const { SetScrollers } = require("./scrollers");
-const { SetStatsDash } = require("./stats-dash");
+const { SetStatsDash, RemoveStatsDash } = require("./stats-dash");
 
 
 const navigationUserThemes = document.createElement("div");
@@ -22,7 +22,7 @@ WaitForElement(window.innerWidth <= 719 ?
 
 
 	/**
-	 * @param {CustomEventType} e
+	 * @param {import("../util/dom").GenericEventType} e
 	 */
 	const LocalOnTimeChange = (e) => {
 		[
@@ -159,7 +159,6 @@ WaitForElement(window.innerWidth <= 719 ?
 			checked: GetRecord("s42_no_themes") === "1"
 		}
 	].map((timeSwitcher) => ({
-		tag: "li",
 		class: "switcher-layout__list__item",
 		child: {
 			tag: "label",
@@ -204,8 +203,9 @@ WaitForElement(window.innerWidth <= 719 ?
 
 		QSA(".switcher-layout__list__donate").forEach((donatePromoteElemToHide, donatePromoteElemToHideIndex) => {
 			donatePromoteElemToHide.style.overflow = "hidden";
-			let initHeight = donatePromoteElemToHide.scrollHeight,
-				initMargin = 12;
+
+			const initHeight = donatePromoteElemToHide.scrollHeight,
+				  initMargin = parseInt(getComputedStyle(donatePromoteElemToHide).marginTop) || 0;
 
 			Animate(4e2, (iProgress) => {
 				donatePromoteElemToHide.style.height = initHeight * (1 - iProgress) + "px";
@@ -218,7 +218,7 @@ WaitForElement(window.innerWidth <= 719 ?
 	};
 
 	/**
-	 * @param {CustomEventType} e
+	 * @param {import("../util/dom").GenericEventType} e
 	 */
 	const LocalOnAdditionalDarkThemesChange = (e) => {
 		ADDITIONAL_DARK_MODULES_NAMES.forEach((darkModuleName) => SetRecord(
@@ -270,8 +270,7 @@ WaitForElement(window.innerWidth <= 719 ?
 	/**
 	 * @returns {ElementDescriptorType[]}
 	 */
-	const LocalBuildAdditionalDarkThemes = () => ALL_ADDITIONAL_MODULES.filter((addModule) => addModule.dark).concat({ name: "nothing" }).map((addDarkModule) => ({
-		tag: "li",
+	const LocalBuildAdditionalDarkThemes = () => ADDITIONAL_MODULES.filter((addModule) => addModule.dark).concat({ name: "nothing" }).map((addDarkModule) => ({
 		class: "switcher-layout__list__item",
 		child: {
 			tag: "label",
@@ -293,7 +292,7 @@ WaitForElement(window.innerWidth <= 719 ?
 						value: addDarkModule.name,
 						...((
 							addDarkModule.name === "nothing"
-								? ALL_ADDITIONAL_MODULES.filter((addModuleChecking) => addModuleChecking.dark).every(
+								? ADDITIONAL_MODULES.filter((addModuleChecking) => addModuleChecking.dark).every(
 										(addModuleChecking) => GetRecord(`s42_${addModuleChecking.name}`) !== "1"
 									)
 								: GetRecord(`s42_${addDarkModule.name}`) === "1"
@@ -315,7 +314,7 @@ WaitForElement(window.innerWidth <= 719 ?
 	}));
 
 	/**
-	 * @param {CustomEventType} e
+	 * @param {import("../util/dom").GenericEventType} e
 	 */
 	const LocalOnAdditionalLightThemesChange = (e) => {
 		SetRecord("s42_monochrome", (e.currentTarget.value === "monochrome" ? 1 : 0).toString());
@@ -357,8 +356,7 @@ WaitForElement(window.innerWidth <= 719 ?
 	/**
 	 * @returns {ElementDescriptorType[]}
 	 */
-	const LocalBuildAdditionalLightThemes = () => ALL_ADDITIONAL_MODULES.filter((addModule) => addModule.light).concat({ name: "nothing-light" }).map((addLightModule) => ({
-		tag: "li",
+	const LocalBuildAdditionalLightThemes = () => ADDITIONAL_MODULES.filter((addModule) => addModule.light).concat({ name: "nothing-light" }).map((addLightModule) => ({
 		class: "switcher-layout__list__item",
 		child: {
 			tag: "label",
@@ -383,7 +381,7 @@ WaitForElement(window.innerWidth <= 719 ?
 						value: addLightModule.name,
 						...((
 							addLightModule.name === "nothing-light"
-								? ALL_ADDITIONAL_MODULES.filter((addModuleChecking) => addModuleChecking.light).every(
+								? ADDITIONAL_MODULES.filter((addModuleChecking) => addModuleChecking.light).every(
 										(addModuleChecking) => GetRecord(`s42_${addModuleChecking.name}`) !== "1"
 									)
 								: GetRecord(`s42_${addLightModule.name}`) === "1"
@@ -405,11 +403,10 @@ WaitForElement(window.innerWidth <= 719 ?
 	}));
 
 	/**
-	 * @param {{name: string, title: string, subtitle?: string, checked: boolean, onchange: (e: CustomEventType) => void}} checkboxRule
+	 * @param {{name: string, title: string, subtitle?: string, checked: boolean, onchange: (e: import("../util/dom").GenericEventType) => void}} checkboxRule
 	 * @returns {ElementDescriptorType}
 	 */
 	const LocalBuildCheckboxByCommonRule = (checkboxRule) => ({
-		tag: "li",
 		class: "switcher-layout__list__item",
 		child: {
 			tag: "label",
@@ -492,8 +489,7 @@ WaitForElement(window.innerWidth <= 719 ?
 						]
 					},
 					{
-						tag: "ul",
-						id: "switcher-layout__list",
+						class: "switcher-layout__list",
 						children: [
 							{
 								class: "switcher-layout__list__subheader",
@@ -517,7 +513,6 @@ WaitForElement(window.innerWidth <= 719 ?
 									onclick: LocalHideDonate
 								},
 								{
-									tag: "li",
 									class: "switcher-layout__list__subheader switcher-layout__list__donate",
 									text: "Можете просто скрыть это сообщение, нажав на него или сюда 👆🏻",
 									onclick: LocalHideDonate
@@ -534,15 +529,20 @@ WaitForElement(window.innerWidth <= 719 ?
 								class: "switcher-layout__list__subheader",
 								text: "Выбор дополнений к светлой теме"
 							},
-							...LocalBuildAdditionalLightThemes(),
-							{
-								class: "switcher-layout__list__separator",
-								id: "switcher-layout__choosing-modules-part"
-							},
-							{
-								class: "switcher-layout__header",
-								text: "Выбор модулей"
-							},
+							...LocalBuildAdditionalLightThemes()
+						],
+					},
+					{
+						class: "switcher-layout__list__separator",
+						id: "switcher-layout__choosing-modules-part"
+					},
+					{
+						class: "switcher-layout__header",
+						text: "Выбор модулей"
+					},
+					{
+						class: "switcher-layout__list",
+						children: [
 							{
 								class: "switcher-layout__list__subheader",
 								text: "Кнопки в левом меню"
@@ -573,7 +573,7 @@ WaitForElement(window.innerWidth <= 719 ?
 								{
 									name: "bookmarkslinkdisabled",
 									title: "Скрыть кнопку «Закладки»",
-									checked: GetRecord("s42_bookmarkslinkdisabled") !== "0",
+									checked: GetRecord("s42_bookmarkslinkdisabled") === "1",
 									onchange: (e) => {
 										SetRecord("s42_bookmarkslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString());
 
@@ -586,7 +586,7 @@ WaitForElement(window.innerWidth <= 719 ?
 								{
 									name: "hidesubscriptions",
 									title: "Скрыть кнопку «Подписки»",
-									checked: GetRecord("s42_hidesubscriptions") === "1",
+									checked: GetRecord("s42_hidesubscriptions") !== "0",
 									onchange: (e) => {
 										SetRecord("s42_hidesubscriptions", e.currentTarget.checked ? "1" : "0");
 										ManageModule("hidesubscriptions", e.currentTarget.checked);
@@ -701,7 +701,7 @@ WaitForElement(window.innerWidth <= 719 ?
 							},
 							LocalBuildCheckboxByCommonRule({
 								name: "karma",
-								title: "Блок с кармой, подписчиками и подписками в шапке включён",
+								title: "Блок с вашими кармой, подписчиками и подписками в шапке",
 								checked: GetRecord("s42_karma") !== "off",
 								onchange: (e) => {
 									SetRecord("s42_karma", e.currentTarget.checked ? "on" : "off");
@@ -711,7 +711,7 @@ WaitForElement(window.innerWidth <= 719 ?
 										SetStatsDash(true);
 									} else {
 										GEBI("switcher-layout__list__item--karma-cover").classList.add("is-faded");
-										GR(GEBI("navigation-user-themes__stats"));
+										RemoveStatsDash();
 									}
 								}
 							}),
@@ -769,16 +769,6 @@ WaitForElement(window.innerWidth <= 719 ?
 									}
 								},
 								{
-									name: "com_rules",
-									title: "Отключить рекламу",
-									subtitle: "Фильтр регулярно обновляется",
-									checked: GetRecord("s42_com_rules") !== "0",
-									onchange: (e) => {
-										SetRecord("s42_com_rules", e.currentTarget.checked ? "1" : "0");
-										ManageModule("com_rules", e.currentTarget.checked);
-									}
-								},
-								{
 									name: "add_possession_choice",
 									title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария",
 									subtitle: "β-версия",
@@ -786,6 +776,15 @@ WaitForElement(window.innerWidth <= 719 ?
 									onchange: (e) => {
 										SetRecord("s42_add_possession_choice", e.currentTarget.checked ? "1" : "0");
 										ManageModule("add_possession_choice", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "softer_black",
+									title: "Более мягкий фон в подтемах «Ultra Dark», «Кроваво-чёрное ничто» и «Black Monochrome»",
+									checked: GetRecord("s42_softer_black") === "1",
+									onchange: (e) => {
+										SetRecord("s42_softer_black", (e.currentTarget.checked ? 1 : 0).toString());
+										ManageModule("softer_black", e.currentTarget.checked);
 									}
 								},
 								{
@@ -809,6 +808,16 @@ WaitForElement(window.innerWidth <= 719 ?
 									onchange: (e) => {
 										SetRecord("s42_columns_narrow", (e.currentTarget.checked ? 1 : 0).toString());
 										ManageModule("columns_narrow", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "com_rules",
+									title: "Отключить рекламу",
+									subtitle: "Фильтр регулярно обновляется",
+									checked: GetRecord("s42_com_rules") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_com_rules", e.currentTarget.checked ? "1" : "0");
+										ManageModule("com_rules", e.currentTarget.checked);
 									}
 								},
 								{
@@ -862,22 +871,23 @@ WaitForElement(window.innerWidth <= 719 ?
 	], document.body, false);
 
 	/**
-	 * @param {CustomEventType} e
+	 * @param {MouseEvent} e
 	 */
 	const LocalShowPanel = (e) => {
-		let smallScreenFlag = false;
-		if ((window.innerWidth - e.clientX) * 2 + 500 > window.innerWidth) smallScreenFlag = true;
-		if (window.innerHeight <= 660) smallScreenFlag = true;
+		const isScreenSmall = (
+			((window.innerWidth - e.clientX) * 2 + 500 > window.innerWidth) ||
+			(window.innerHeight <= 660)
+		);
 
 
-		const switchersContainerMaxHeight = smallScreenFlag ? window.innerHeight - 60 : 600,
-			  switchersContainerMaxWidth = smallScreenFlag ? window.innerWidth : 500,
+		const switchersContainerMaxHeight = isScreenSmall ? window.innerHeight - 60 : 600,
+			  switchersContainerMaxWidth = isScreenSmall ? window.innerWidth : 500,
 			  switchersContainer = GEBI("switcher-layout"),
 			  switchersScroller = GEBI("switcher-layout--scroller"),
 			  switchersObfuscator = GEBI("switcher-layout--obfuscator");
 
 
-		if (smallScreenFlag) {
+		if (isScreenSmall) {
 			switchersContainer.classList.add("switcher-layout--small-screen");
 			switchersContainer.style.removeProperty("right");
 		} else {
@@ -894,7 +904,7 @@ WaitForElement(window.innerWidth <= 719 ?
 		switchersObfuscator.style.display = "block";
 
 
-		Animate(4e2, (iProgress) => {
+		Animate(5e2, (iProgress) => {
 			switchersContainer.style.width = iProgress * switchersContainerMaxWidth + "px";
 			switchersContainer.style.height = iProgress * switchersContainerMaxHeight + "px";
 

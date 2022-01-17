@@ -233,9 +233,11 @@ body:not(.s42-default-scrollers) #switcher-layout--scroller::-webkit-scrollbar-t
 	-webkit-tap-highlight-color: transparent;
 
 	text-transform: none;
+	text-decoration: underline;
 }
 
-#switcher-layout__list {
+#switcher-layout__list,
+.switcher-layout__list {
 	display: block;
 	padding: 0 16px 0 20px;
 	margin: 0;

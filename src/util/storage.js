@@ -18,6 +18,7 @@ const ALL_RECORDS_NAMES = [
 	"s42_material",
 	"s42_gray_signs",
 	"s42_snow_by_neko",
+	"s42_softer_black",
 	"s42_messageslinkdisabled",
 	"s42_bookmarkslinkdisabled",
 	"s42_defaultscrollers",
@@ -121,8 +122,8 @@ const GetRecord = iName => {
 window.S42_UNLOAD_COOKIES = () => ALL_RECORDS_NAMES.forEach((recordName) => SetCookie(recordName, "1", { erase: true, Path: "/", Domain: window.location.hostname }));
 window.S42_UNLOAD_STORAGE = () => ALL_RECORDS_NAMES.forEach((recordName) => localStorage.removeItem(recordName));
 window.S42_UNLOAD_ALL = () => {
-	window.UNLOAD_COOKIES();
-	window.UNLOAD_STORAGE();
+	window.S42_UNLOAD_COOKIES();
+	window.S42_UNLOAD_STORAGE();
 }
 
 

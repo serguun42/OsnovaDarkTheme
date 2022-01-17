@@ -11,10 +11,10 @@ export type ObserverQueueItem = {
     resolver: (foundElem: HTMLElement) => void;
 };
 export type AnimationStyleSettingFunc = (iProgress: number) => any;
-export type CustomEventType = Event & MouseEvent & TouchEvent & {
+export type GenericEventType = Event & MouseEvent & TouchEvent & KeyboardEvent & {
     currentTarget: HTMLElement;
 };
-export type GlobalBuildLayoutListenerCallback = (e: CustomEventType) => any;
+export type GlobalBuildLayoutListenerCallback = (e: GenericEventType) => any;
 export type ElementDescriptorType = {
     tag?: string;
     class?: string;
@@ -23,6 +23,7 @@ export type ElementDescriptorType = {
     html?: string;
     ripple?: boolean;
     mdlUpgrade?: boolean;
+    mounted?: (thisElem: HTMLElement) => void;
     onclick?: GlobalBuildLayoutListenerCallback;
     /**
      * - `contextmenu` listener does the same thing as usual `click`
@@ -78,10 +79,6 @@ export function GEBI(query: string): HTMLElement;
  * @returns {void}
  */
 export function GR(elem: HTMLElement): void;
-export namespace INTERVALS_COUNTERS {
-    const created: number;
-    const deleted: number;
-}
 /**
  * @param {() => void} iCallback
  * @param {number} iDelay
@@ -132,14 +129,14 @@ export function AddStyle(iLink: string, iPriority: number, iModuleName?: string)
  */
 export function AddScript(iLink: string, iPriority: number): void;
 /**
- * @typedef {Event & MouseEvent & TouchEvent & {currentTarget: HTMLElement}} CustomEventType
+ * @typedef {Event & MouseEvent & TouchEvent & KeyboardEvent & { currentTarget: HTMLElement }} GenericEventType
  */
 /**
  * @callback GlobalBuildLayoutListenerCallback
- * @param {CustomEventType} e
+ * @param {GenericEventType} e
  */
 /**
- * @typedef {Object} ElementDescriptorType
+ * @typedef {object} ElementDescriptorType
  * @property {string} [tag]
  * @property {string} [class]
  * @property {string} [id]
@@ -147,6 +144,7 @@ export function AddScript(iLink: string, iPriority: number): void;
  * @property {string} [html]
  * @property {boolean} [ripple]
  * @property {boolean} [mdlUpgrade]
+ * @property {(thisElem: HTMLElement) => void} [mounted]
  * @property {GlobalBuildLayoutListenerCallback} [onclick]
  * @property {boolean} [contextSameAsClick] - `contextmenu` listener does the same thing as usual `click`
  * @property {{[dataPropName: string]: string | number}} [data]
@@ -159,12 +157,13 @@ export function AddScript(iLink: string, iPriority: number): void;
  */
 /**
  * @callback AdditionalHandlingPropertyHandler
- * @param {string | number | function} iAdditionalHandlingPropertyValue
+ * @param {string | number | Function} iAdditionalHandlingPropertyValue
  * @param {ElementDescriptorType} iElemDesc
  * @param {HTMLElement} iDocElem
  * @param {HTMLElement} iParentElem
  * @returns {void}
- *
+ */
+/**
  * @typedef {{[propertyName: string]: AdditionalHandlingPropertyHandler}} AdditionalHandlingProperties
  */
 /**

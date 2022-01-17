@@ -76,17 +76,15 @@ const mainObserber = new MutationObserver((mutations) => {
 					return false;
 			}
 
-			if (waitingElemSelector.className && waitingElemSelector.className) {
+			if (waitingElemSelector.className) {
 				if (addedNode.classList.contains(waitingElemSelector.className))
 					atLeastOneMatch = true;
 				else
 					return false;
 			}
 
-			if (waitingElemSelector.attribute && waitingElemSelector.attribute.name) {
-				const gotAttribute = addedNode.getAttribute(waitingElemSelector.attribute.name);
-
-				if (gotAttribute === waitingElemSelector.attribute.value)
+			if (waitingElemSelector.attribute?.name) {
+				if (addedNode.getAttribute(waitingElemSelector.attribute.name) === waitingElemSelector.attribute.value)
 					atLeastOneMatch = true;
 				else
 					return false;
@@ -132,7 +130,8 @@ const INTERVALS_COUNTERS = {
 	deleted: 0
 }
 
-window.S42_INTERVALS_COUNTERS = () => console.log(`INTERVALS_COUNTERS: ${JSON.stringify(INTERVALS_COUNTERS, false, "\t")}`);
+if (process.env.NODE_ENV === "development")
+	window.S42_INTERVALS_COUNTERS = () => console.warn(`INTERVALS_COUNTERS: ${JSON.stringify(INTERVALS_COUNTERS, false, "\t")}`);
 
 /**
  * @param {() => void} iCallback
@@ -166,8 +165,6 @@ const ClearCustomInterval = iIntervalID => {
  * @returns {Promise<HTMLElement>}
  */
 const WaitForElement = (iKey, iWaitAlways = false) => {
-	if (typeof iKey !== "string") return Promise.resolve(null);
-
 	const existing = QS(iKey);
 	if (existing) return Promise.resolve(existing);
 
@@ -183,6 +180,10 @@ const WaitForElement = (iKey, iWaitAlways = false) => {
 		 */
 		const LocalBuildObserverQueueItem = (subSingleQuery) => {
 			if (!subSingleQuery) return null;
+
+			const parentMatch = subSingleQuery.match(/^(?<parent>.*)(?:\s\>\s)(?<child>[^\>]+)$/);
+			if (parentMatch)
+				subSingleQuery = parentMatch.groups?.["child"];
 
 			const tagName = subSingleQuery.split(/#|\.|\[/)[0],
 				  id = subSingleQuery.match(/#([\w\-]+)/i)?.[1],
@@ -200,6 +201,9 @@ const WaitForElement = (iKey, iWaitAlways = false) => {
 					value: attributeMatch?.groups?.["attributeValue"]
 				};
 
+			if (parentMatch)
+				observerQueueSubItem.parent = LocalBuildObserverQueueItem(parentMatch.groups?.["parent"]);
+
 			return observerQueueSubItem;
 		}
 
@@ -208,7 +212,8 @@ const WaitForElement = (iKey, iWaitAlways = false) => {
 			  selectorNotPart = fullSingleQuery.split(":not(")[1]?.slice(0, -1),
 			  selectorForQueue = LocalBuildObserverQueueItem(selectorMainPart);
 
-		selectorForQueue.not = LocalBuildObserverQueueItem(selectorNotPart);
+		if (selectorNotPart)
+			selectorForQueue.not = LocalBuildObserverQueueItem(selectorNotPart);
 
 
 		return new Promise((resolve) => {
@@ -392,14 +397,14 @@ const AddScript = (iLink, iPriority) => {
 };
 
 /**
- * @typedef {Event & MouseEvent & TouchEvent & {currentTarget: HTMLElement}} CustomEventType
+ * @typedef {Event & MouseEvent & TouchEvent & KeyboardEvent & { currentTarget: HTMLElement }} GenericEventType
  */
 /**
  * @callback GlobalBuildLayoutListenerCallback
- * @param {CustomEventType} e
+ * @param {GenericEventType} e
  */
 /**
- * @typedef {Object} ElementDescriptorType
+ * @typedef {object} ElementDescriptorType
  * @property {string} [tag]
  * @property {string} [class]
  * @property {string} [id]
@@ -407,6 +412,7 @@ const AddScript = (iLink, iPriority) => {
  * @property {string} [html]
  * @property {boolean} [ripple]
  * @property {boolean} [mdlUpgrade]
+ * @property {(thisElem: HTMLElement) => void} [mounted]
  * @property {GlobalBuildLayoutListenerCallback} [onclick]
  * @property {boolean} [contextSameAsClick] - `contextmenu` listener does the same thing as usual `click`
  * @property {{[dataPropName: string]: string | number}} [data]
@@ -419,12 +425,13 @@ const AddScript = (iLink, iPriority) => {
  */
 /**
  * @callback AdditionalHandlingPropertyHandler
- * @param {string | number | function} iAdditionalHandlingPropertyValue
+ * @param {string | number | Function} iAdditionalHandlingPropertyValue
  * @param {ElementDescriptorType} iElemDesc
  * @param {HTMLElement} iDocElem
  * @param {HTMLElement} iParentElem
  * @returns {void}
- *
+ */
+/**
  * @typedef {{[propertyName: string]: AdditionalHandlingPropertyHandler}} AdditionalHandlingProperties
  */
 /**
@@ -441,7 +448,7 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 	/**
 	 * @param {ElementDescriptorType} element
 	 */
-	const LocalBuildElement = element => {
+	const LocalBuildElement = (element) => {
 		if (!element) return;
 
 		const docElem = document.createElement(element.tag || "div");
@@ -449,7 +456,12 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 		if (element.id) docElem.id = element.id;
 		if (element.data)
 			for (const dataPropName in element.data)
-				docElem.dataset[dataPropName] = typeof element.data[dataPropName] == "object" ? JSON.stringify(element.data[dataPropName]) : (element.data[dataPropName] === true ? "" : element.data[dataPropName]);
+				docElem.dataset[dataPropName] = (
+					typeof element.data[dataPropName] == "object" ?
+						JSON.stringify(element.data[dataPropName])
+					:
+						(element.data[dataPropName] === true ? "" : element.data[dataPropName])
+				);
 		if (element.tags)
 			for (const attributeName in element.tags)
 				docElem.setAttribute(attributeName, element.tags[attributeName]);
@@ -473,13 +485,12 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 		if (element.onclick) {
 			docElem.addEventListener("click", element.onclick);
 
-			if (element.contextSameAsClick) {
+			if (element.contextSameAsClick)
 				docElem.addEventListener("contextmenu", (e) => {
 					e.preventDefault();
 					element.onclick(e);
 					return false;
 				});
-			}
 		}
 
 		if (element.listener)
@@ -490,7 +501,6 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 			for (const listenerName in element.listeners)
 				docElem.addEventListener(listenerName, element.listeners[listenerName]);
 
-
 		if (additionalHandlingProperties)
 			Object.keys(additionalHandlingProperties).forEach((AdditionalHandlingProperty) => {
 				if (element[AdditionalHandlingProperty])
@@ -499,6 +509,10 @@ const GlobalBuildLayout = (elements, container, clearContainer = true, additiona
 
 
 		container.appendChild(docElem);
+
+
+		if (typeof element.mounted == "function")
+			element.mounted(docElem);
 	};
 
 

@@ -1,4 +1,4 @@
-export const ALL_ADDITIONAL_MODULES: ({
+export const ADDITIONAL_MODULES: ({
     name: string;
     title: string;
     default: boolean;

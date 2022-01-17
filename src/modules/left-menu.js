@@ -51,7 +51,7 @@ const SwitchLeftMenuMiscItems = (settingDisplayStyle) => SwitchMenuGeneric(setti
 	"colored"
 ]);
 
-if (GetRecord("s42_bookmarkslinkdisabled") !== "0")
+if (GetRecord("s42_bookmarkslinkdisabled") === "1")
 	WaitForElement(".sidebar-tree-list-item").then(() => SwitchLeftMenuBookmarks("none"));
 
 if (GetRecord("s42_messageslinkdisabled") !== "0")

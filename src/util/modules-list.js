@@ -1,4 +1,4 @@
-const ALL_ADDITIONAL_MODULES = [
+const ADDITIONAL_MODULES = [
 	{
 		name: "ultra_dark",
 		title: "Ultra Dark",
@@ -61,12 +61,10 @@ const ALL_ADDITIONAL_MODULES = [
 		default: false,
 		priority: 5
 	},
-
-
 	{
 		name: "hidesubscriptions",
 		title: "Скрыть кнопку подписок",
-		default: false,
+		default: true,
 		priority: 5
 	},
 	{
@@ -112,13 +110,17 @@ const ALL_ADDITIONAL_MODULES = [
 		priority: 5
 	},
 	{
+		name: "softer_black",
+		title: "Более мягкий фон в подтемах «Ultra Dark», «Кроваво-чёрное ничто» и «Black Monochrome»",
+		default: false,
+		priority: 5
+	},
+	{
 		name: "columns_narrow",
 		title: "Прижать боковые колонки к центру экрана",
 		default: false,
 		priority: 5
 	},
-
-
 	{
 		name: "no_themes",
 		title: "Не применять никакие темы никогда",
@@ -182,15 +184,15 @@ const ALL_MODULES = [
 		dark: true,
 		priority: 3
 	},
-	...ALL_ADDITIONAL_MODULES
+	...ADDITIONAL_MODULES
 ];
 
-const ADDITIONAL_DARK_MODULES_NAMES = ALL_ADDITIONAL_MODULES.filter((module) => !!module.dark).map((module) => module.name);
+const ADDITIONAL_DARK_MODULES_NAMES = ADDITIONAL_MODULES.filter((module) => !!module.dark).map((module) => module.name);
 
-const ADDITIONAL_LIGHT_MODULES_NAMES = ALL_ADDITIONAL_MODULES.filter((module) => !!module.light).map((module) => module.name);
+const ADDITIONAL_LIGHT_MODULES_NAMES = ADDITIONAL_MODULES.filter((module) => !!module.light).map((module) => module.name);
 
 module.exports = {
-	ALL_ADDITIONAL_MODULES,
+	ADDITIONAL_MODULES,
 	ALL_MODULES,
 	ADDITIONAL_DARK_MODULES_NAMES,
 	ADDITIONAL_LIGHT_MODULES_NAMES

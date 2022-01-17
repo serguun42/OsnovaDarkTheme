@@ -1,6 +1,6 @@
 const { RESOURCES_ROOT, SITE, SITE_COLOR } = require("../config/sites");
 const { ManageModule, QS, GEBI, AddStyle, WaitForElement, AddScript } = require("./dom");
-const { ADDITIONAL_DARK_MODULES_NAMES, ADDITIONAL_LIGHT_MODULES_NAMES, ALL_ADDITIONAL_MODULES, ALL_MODULES } = require("./modules-list");
+const { ADDITIONAL_DARK_MODULES_NAMES, ADDITIONAL_LIGHT_MODULES_NAMES, ADDITIONAL_MODULES, ALL_MODULES } = require("./modules-list");
 const { GetRecord } = require("./storage");
 
 
@@ -173,7 +173,7 @@ const SetMode = iNightMode => {
 	}
 
 
-	ALL_ADDITIONAL_MODULES.forEach((addon) => {
+	ADDITIONAL_MODULES.forEach((addon) => {
 		if (GetRecord("s42_" + addon.name)) {
 			if (!parseInt(GetRecord("s42_" + addon.name))) return false;
 		} else {

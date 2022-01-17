@@ -166,7 +166,12 @@ const SetStatsDash = (iSkipInitial = false) => {
 	});
 };
 
+const RemoveStatsDash = () => GR(GEBI("navigation-user-themes__stats"));
+
 WaitForElement("body").then(() => SetStatsDash(false));
 
 
-module.exports = { SetStatsDash };
+module.exports = {
+	SetStatsDash,
+	RemoveStatsDash
+};

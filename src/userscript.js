@@ -7,7 +7,7 @@ module.exports = {
 	path: join(__dirname, "..", "build"),
 	headers: {
 		"name":         "Osnova Dark Theme",
-		"version":      "10.2.0 (2022-01-17)",
+		"version":      "10.3.1 (2022-01-18)",
 		"author":       "serguun42",
 		"icon":         "https://serguun42.ru/resources/osnova_icons/tj.site.logo_256x256.png",
 		"icon64":       "https://serguun42.ru/resources/osnova_icons/tj.site.logo_64x64.png",
