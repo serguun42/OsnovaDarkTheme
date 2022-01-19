@@ -4,7 +4,6 @@ const ALL_RECORDS_NAMES = [
 	"s42_system_theme",
 	"s42_turn_off",
 	"s42_no_themes",
-	"s42_columns_narrow",
 	"s42_covfefe",
 	"s42_blackchrome",
 	"s42_vampire",

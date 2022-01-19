@@ -1,5 +1,10 @@
-const VERSION = "10.3.1";
-const RESOURCES_ROOT = "https://serguun42.ru/tampermonkey/osnova/";
+const VERSION = "10.3.2";
+const RESOURCES_ROOT = (
+	process.env.NODE_ENV === "development" ?
+		"https://localhost/tampermonkey/osnova/resources/" // whatever
+	:
+		"https://serguun42.ru/tampermonkey/osnova/"
+);
 const SITE = window.location.hostname.match(/(?:^|\.)([^\.]+)\.(?:[^\.]+)$/i)?.[1] || "tjournal";
 /** @type {string} */
 const SITE_COLOR = {

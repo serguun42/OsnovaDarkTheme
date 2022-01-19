@@ -8389,3 +8389,22 @@ a.comment__author:hover {
 .search-filters-footer {
 	background-color: transparent !important;
 }
+
+
+
+
+.notifications__mark-as-read {
+	color: var(--lighter-color) !important;
+}
+
+.notifications__mark-as-read:hover {
+	color: #FFFFFF !important;
+}
+
+.notifications__header {
+	border-bottom-color: #444 !important;
+}
+
+.notifications__footer {
+	border-top-color: #444 !important;
+}

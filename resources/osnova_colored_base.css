@@ -1893,3 +1893,14 @@ html body .ce-redactor a.andropov_link {
 .services-sidebar__filters {
 	background-color: var(--tc4) !important;
 }
+
+
+
+
+.notifications__header {
+	border-bottom-color: var(--tc6) !important;
+}
+
+.notifications__footer {
+	border-top-color: var(--tc6) !important;
+}

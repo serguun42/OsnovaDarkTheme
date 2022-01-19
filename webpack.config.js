@@ -1,14 +1,24 @@
+const { join } = require("path");
 const { DefinePlugin } = require("webpack");
 const WebpackUserscript = require("webpack-userscript");
-const UserscriptOptions = require("./src/userscript");
+
+
 const PRODUCTION = (process.argv[process.argv.indexOf("--env") + 1] !== "development");
+const USERSCRIPT_HEADERS = require("./src/userscript.json");
+
+if (!PRODUCTION) {
+	USERSCRIPT_HEADERS.name += " (DEV)";
+	delete USERSCRIPT_HEADERS.downloadURL;
+	delete USERSCRIPT_HEADERS.updateURL;
+}
+
 
 /** @type {import("webpack").Configuration} */
 module.exports = {
-	entry: UserscriptOptions.entry,
+	entry: join(__dirname, "src", "core.js"),
 	output: {
-		filename: UserscriptOptions.filename,
-		path: UserscriptOptions.path,
+		filename: "osnova_dark_theme.user.js",
+		path: join(__dirname, "build")
 	},
 	plugins: [
 		new DefinePlugin({
@@ -19,7 +29,7 @@ module.exports = {
 			metajs: false,
 			pretty: true,
 			renameExt: false,
-			headers: UserscriptOptions.headers
+			headers: USERSCRIPT_HEADERS
 		})
 	],
 	module: {

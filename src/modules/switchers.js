@@ -811,6 +811,15 @@ WaitForElement(window.innerWidth <= 719 ?
 									}
 								},
 								{
+									name: "verified",
+									title: "Добавить галочки всем пользователям",
+									checked: GetRecord("s42_verified") === "1",
+									onchange: (e) => {
+										SetRecord("s42_verified", (e.currentTarget.checked ? 1 : 0).toString());
+										ManageModule("verified", e.currentTarget.checked);
+									}
+								},
+								{
 									name: "com_rules",
 									title: "Отключить рекламу",
 									subtitle: "Фильтр регулярно обновляется",

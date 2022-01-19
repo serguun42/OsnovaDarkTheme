@@ -122,6 +122,12 @@ const ADDITIONAL_MODULES = [
 		priority: 5
 	},
 	{
+		name: "verified",
+		title: "Добавить галочки всем пользователям",
+		default: false,
+		priority: 6
+	},
+	{
 		name: "no_themes",
 		title: "Не применять никакие темы никогда",
 		default: false,
