@@ -945,8 +945,7 @@ WaitForElement(window.innerWidth <= 719 ?
 
 	const navigationUserThemesSwitcherButton = document.createElement("div");
 		  navigationUserThemesSwitcherButton.innerHTML = `<svg width="20" height="20" class="icon icon--v_gear"><use xlink:href="#v_gear"></use></svg>`;
-		  navigationUserThemesSwitcherButton.id = "navigation-user-themes__switcher-button";
-		  navigationUserThemesSwitcherButton.className = "mdl-js-button mdl-js-ripple-effect";
+		  navigationUserThemesSwitcherButton.className = "navigation-user-themes__switcher-button mdl-js-button mdl-js-ripple-effect";
 		  navigationUserThemesSwitcherButton.addEventListener("click", (e) => {
 				LocalBuildPanel();
 				requestAnimationFrame(() => LocalShowPanel(e));

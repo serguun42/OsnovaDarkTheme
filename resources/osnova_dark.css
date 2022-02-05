@@ -1015,7 +1015,7 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 	background-color: transparent;
 }
 
-.andropov_tweet__user__nickname, .andropov_telegram__user__name {
+.andropov_tweet__user__nickname {
 	color: #888888;
 }
 
@@ -5895,7 +5895,7 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 
 
 
-
+.v-button,
 .v-button.v-button--default,
 .page.page--editor .v-button.v-button--blue,
 .v-button--blue,
@@ -7676,6 +7676,10 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 .v-field--select.v-field--focused .v-field__icon--right {
 	color: #E1E1E1;
+}
+
+.v-field--invalid .v-field__wrapper {
+	background-color: unset !important;
 }
 
 .v-datepicker__date {

@@ -85,7 +85,8 @@
 }
 
 #switchers-btn,
-#navigation-user-themes__switcher-button {
+#navigation-user-themes__switcher-button,
+.navigation-user-themes__switcher-button {
 	display: block;
 	position: relative;
 	width: 36px;
@@ -112,21 +113,24 @@
 }
 
 #switchers-btn .material-icons,
-#navigation-user-themes__switcher-button .material-icons {
+#navigation-user-themes__switcher-button .material-icons,
+.navigation-user-themes__switcher-button .material-icons {
 	font-size: 20px;
 	line-height: 20px;
 	vertical-align: -0.1em;
 }
 
 #switchers-btn .icon,
-#navigation-user-themes__switcher-button .icon {
+#navigation-user-themes__switcher-button .icon,
+.navigation-user-themes__switcher-button .icon {
 	width: 20px;
 	height: 20px;
 	vertical-align: 0;
 }
 
 #switchers-btn .mdl-ripple,
-#navigation-user-themes__switcher-button .mdl-ripple {
+#navigation-user-themes__switcher-button .mdl-ripple,
+.navigation-user-themes__switcher-button .mdl-ripple {
 	background-color: var(--primary-color);
 }
 
@@ -136,7 +140,8 @@
 }
 
 .mobile-bar #switchers-btn,
-.mobile-bar #navigation-user-themes__switcher-button {
+.mobile-bar #navigation-user-themes__switcher-button,
+.mobile-bar .navigation-user-themes__switcher-button {
 	margin-left: -7px;
 	margin-right: -7px;
 }

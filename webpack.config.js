@@ -4,7 +4,7 @@ const WebpackUserscript = require("webpack-userscript");
 
 
 const PRODUCTION = (process.argv[process.argv.indexOf("--env") + 1] !== "development");
-const USERSCRIPT_HEADERS = require("./src/userscript.json");
+const USERSCRIPT_HEADERS = require("./src/config/userscript.json");
 
 if (!PRODUCTION) {
 	USERSCRIPT_HEADERS.name += " (DEV)";
