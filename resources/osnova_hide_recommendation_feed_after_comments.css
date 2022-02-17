@@ -1,0 +1,10 @@
+/**
+ * Hide Recommendation feed after comments in post
+ * @serguun42
+ * Feb 2022
+ */
+
+.l-entry ~ .recommendation-feed {
+	display: none !important;
+	visibility: hidden !important;
+}

@@ -379,8 +379,9 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 
 
-#notify .notify__item {
-	background-color: var(--tc2);
+.notify__item,
+.notify-item {
+	background-color: var(--tc2) !important;
 }
 
 .bubble {

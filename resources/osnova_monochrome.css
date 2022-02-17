@@ -298,13 +298,10 @@ body:not(.s42-is-dark) .profile_comment_self__text a,
 body:not(.s42-is-dark) .sitemap a,
 body:not(.s42-is-dark) .subsite_card_simple__description a,
 body:not(.s42-is-dark) .subsite_head__description a,
-body:not(.s42-is-dark) .t-link-classic {
-	color: #333;
-	border-bottom-color: #888;
-}
-
+body:not(.s42-is-dark) .t-link-classic,
 body:not(.s42-is-dark) .content p a,
-body:not(.s42-is-dark) #notify .notify__item p a,
+body:not(.s42-is-dark) .notify__item p a,
+body:not(.s42-is-dark) .notify-item p a,
 body:not(.s42-is-dark) .advice__caption a,
 body:not(.s42-is-dark) .advice__list a,
 body:not(.s42-is-dark) .andropov_telegram__text a,

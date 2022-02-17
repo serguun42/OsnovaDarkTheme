@@ -5,7 +5,8 @@ const { SetRecord, GetRecord } = require("../util/storage");
 const { CheckForSystemDarkMode, CheckForScheduledNightMode } = require("../util/theme-handlers");
 const { StartFavouriteMarkerProcedure, StopFavouriteMarkerProcedure } = require("./favourites-marker");
 const { SetFullpageEditor } = require("./fullpage-editor");
-const { SwitchLeftMenuMiscItems, SwitchLeftMenuBookmarks, PlaceEditorialButton } = require("./left-menu");
+const { SwitchLeftMenuRating } = require("./left-menu");
+const { SwitchLeftMenuBusiness, SwitchLeftMenuBookmarks, PlaceEditorialButton, SwitchLeftMenuFeedPopular, SwitchLeftMenuFeedNew, SwitchLeftMenuFeedMine } = require("./left-menu");
 const { SetScrollers } = require("./scrollers");
 const { SetStatsDash, RemoveStatsDash } = require("./stats-dash");
 
@@ -549,25 +550,42 @@ WaitForElement(window.innerWidth <= 719 ?
 							},
 							...([
 								{
-									name: "hideentriesbadge",
-									title: "Скрыть индикатор новых записей",
-									checked: GetRecord("s42_hideentriesbadge") === "1",
+									name: "hide_menu_item_feed_popular",
+									title: "Скрыть кнопку ленты «Популярное»",
+									checked: GetRecord("s42_hide_menu_item_feed_popular") === "1",
 									onchange: (e) => {
-										SetRecord("s42_hideentriesbadge", e.currentTarget.checked ? "1" : "0");
-										ManageModule("hideentriesbadge", e.currentTarget.checked);
+										SetRecord("s42_hide_menu_item_feed_popular", (e.currentTarget.checked ? 1 : 0).toString());
+
+										if (e.currentTarget.checked)
+											SwitchLeftMenuFeedPopular("none");
+										else
+											SwitchLeftMenuFeedPopular("");
 									}
 								},
 								{
-									name: "editorial",
-									title: "Добавить кнопку «От редакции»",
-									checked: GetRecord("s42_editorial") === "1",
+									name: "hide_menu_item_feed_new",
+									title: "Скрыть кнопку ленты «Свежее»",
+									checked: GetRecord("s42_hide_menu_item_feed_new") === "1",
 									onchange: (e) => {
-										SetRecord("s42_editorial", e.currentTarget.checked ? "1" : "0");
+										SetRecord("s42_hide_menu_item_feed_new", (e.currentTarget.checked ? 1 : 0).toString());
 
 										if (e.currentTarget.checked)
-											PlaceEditorialButton();
+											SwitchLeftMenuFeedNew("none");
 										else
-											GR(GEBI("s42-editorial-link-btn"));
+											SwitchLeftMenuFeedNew("");
+									}
+								},
+								{
+									name: "hide_menu_item_feed_mine",
+									title: "Скрыть кнопку ленты «Моя лента»",
+									checked: GetRecord("s42_hide_menu_item_feed_mine") === "1",
+									onchange: (e) => {
+										SetRecord("s42_hide_menu_item_feed_mine", (e.currentTarget.checked ? 1 : 0).toString());
+
+										if (e.currentTarget.checked)
+											SwitchLeftMenuFeedMine("none");
+										else
+											SwitchLeftMenuFeedMine("");
 									}
 								},
 								{
@@ -593,6 +611,19 @@ WaitForElement(window.innerWidth <= 719 ?
 									}
 								},
 								{
+									name: "hide_menu_item_rating",
+									title: "Скрыть кнопку «Рейтинг»",
+									checked: GetRecord("s42_hide_menu_item_rating") === "1",
+									onchange: (e) => {
+										SetRecord("s42_hide_menu_item_rating", (e.currentTarget.checked ? 1 : 0).toString());
+
+										if (e.currentTarget.checked)
+											SwitchLeftMenuRating("none");
+										else
+											SwitchLeftMenuRating("");
+									}
+								},
+								{
 									name: "messageslinkdisabled",
 									title: "Скрыть кнопки «Вакансии», «Кабинет», «Мероприятия» и т.п.",
 									checked: GetRecord("s42_messageslinkdisabled") !== "0",
@@ -600,9 +631,31 @@ WaitForElement(window.innerWidth <= 719 ?
 										SetRecord("s42_messageslinkdisabled", (e.currentTarget.checked ? 1 : 0).toString());
 
 										if (e.currentTarget.checked)
-											SwitchLeftMenuMiscItems("none");
+											SwitchLeftMenuBusiness("none");
 										else
-											SwitchLeftMenuMiscItems("");
+											SwitchLeftMenuBusiness("");
+									}
+								},
+								{
+									name: "editorial",
+									title: "Добавить кнопку «От редакции»",
+									checked: GetRecord("s42_editorial") === "1",
+									onchange: (e) => {
+										SetRecord("s42_editorial", e.currentTarget.checked ? "1" : "0");
+
+										if (e.currentTarget.checked)
+											PlaceEditorialButton();
+										else
+											GR(GEBI("s42-editorial-link-btn"));
+									}
+								},
+								{
+									name: "hideentriesbadge",
+									title: "Скрыть индикатор новых записей",
+									checked: GetRecord("s42_hideentriesbadge") === "1",
+									onchange: (e) => {
+										SetRecord("s42_hideentriesbadge", e.currentTarget.checked ? "1" : "0");
+										ManageModule("hideentriesbadge", e.currentTarget.checked);
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),
@@ -630,6 +683,15 @@ WaitForElement(window.innerWidth <= 719 ?
 									onchange: (e) => {
 										SetRecord("s42_favouritesicon", e.currentTarget.checked ? "1" : "0");
 										ManageModule("favouritesicon", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "hide_recommendation_feed_after_comments",
+									title: "Скрыть ленту рекомендуемых постов под комментариями",
+									checked: GetRecord("s42_hide_recommendation_feed_after_comments") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_hide_recommendation_feed_after_comments", e.currentTarget.checked ? "1" : "0");
+										ManageModule("hide_recommendation_feed_after_comments", e.currentTarget.checked);
 									}
 								},
 								{
@@ -766,16 +828,6 @@ WaitForElement(window.innerWidth <= 719 ?
 									onchange: (e) => {
 										SetRecord("s42_snow_by_neko", e.currentTarget.checked ? "1" : "0");
 										ManageModule("snow_by_neko", e.currentTarget.checked);
-									}
-								},
-								{
-									name: "add_possession_choice",
-									title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария",
-									subtitle: "β-версия",
-									checked: GetRecord("s42_add_possession_choice") === "1",
-									onchange: (e) => {
-										SetRecord("s42_add_possession_choice", e.currentTarget.checked ? "1" : "0");
-										ManageModule("add_possession_choice", e.currentTarget.checked);
 									}
 								},
 								{

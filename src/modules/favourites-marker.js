@@ -54,37 +54,36 @@ const StartFavouriteMarkerProcedure = () => {
 			}
 
 
-
 			WaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
 			.then((postElement) => {
 				if (!postElement) return;
 
 				try {
 					const hiddenEntryData = JSON.parse(
-							document.querySelector(".l-hidden.entry_data")?.dataset?.articleInfo
-							||
-							"{}"	
-						  ),
-						  favouritesCount = hiddenEntryData["favorites"];
+						document.querySelector(".l-hidden.entry_data")?.dataset?.articleInfo || "{}"	
+					);
+					const favouritesCount = hiddenEntryData["favorites"];
 
-					QSA(".l-entry .favorite_marker").forEach((favouriteMarkerElem) => {
-						favouriteMarkerElem.classList.remove("favorite_marker--zero");
+					QSA(".l-entry .bookmark").forEach((bookmarkElem) => {
+						const vueDataHashAttribute = bookmarkElem.getAttributeNames()
+													.filter((attributeName) => /^data\-v/i.test(attributeName))?.[0];
+						if (!vueDataHashAttribute) return;
 
-						const favouriteMarkerCountElem = favouriteMarkerElem.querySelector(".favorite_marker__count")
-														 || document.createElement("div");
-							  favouriteMarkerCountElem.className = "favorite_marker__count";
-							  favouriteMarkerCountElem.innerText = favouritesCount || "";
+						const bookmarkTitle = bookmarkElem.querySelector(".bookmark__title") || document.createElement("div");
+						bookmarkTitle.className = "bookmark__title";
+						bookmarkTitle.setAttribute(vueDataHashAttribute, "");
+						bookmarkTitle.innerText = favouritesCount || "";
 
-						favouriteMarkerElem.appendChild(favouriteMarkerCountElem);
+						bookmarkElem.appendChild(bookmarkTitle);
 
-						favouriteMarkerElem.addEventListener("click", (e) => {
-							const active = (e.currentTarget || e.target).classList.contains("favorite_marker--active"),
-								  currentCount = parseInt(favouriteMarkerCountElem.innerText) || 0;
+						bookmarkElem.addEventListener("click", (e) => {
+							const active = (e.currentTarget || e.target).classList.contains("bookmark--active"),
+								  currentCount = parseInt(bookmarkTitle.innerText) || 0;
 
 							if (active)
-								favouriteMarkerCountElem.innerText = (currentCount + 1);
+								bookmarkTitle.innerText = (currentCount + 1);
 							else
-								favouriteMarkerCountElem.innerText = (currentCount - 1);
+								bookmarkTitle.innerText = (currentCount - 1);
 						});
 					});
 				} catch (e) {

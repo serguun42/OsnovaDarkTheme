@@ -26,3 +26,19 @@
 	fill: #E84755;
 	stroke: #E84755;
 }
+
+.bookmark--active .icon {
+	fill: #E84755 !important;
+}
+
+.bookmark--active .bookmark__title {
+	color: #E84755 !important;
+}
+
+.bookmark:hover .bookmark__title {
+	color: #E84755 !important;
+}
+
+.bookmark:hover .icon {
+	fill: #E84755 !important;
+}

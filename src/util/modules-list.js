@@ -92,14 +92,14 @@ const ADDITIONAL_MODULES = [
 		priority: 6
 	},
 	{
-		name: "add_possession_choice",
-		title: "Отображать меню выбора между профилем и модерируемыми подсайтами в поле ввода комментария (β)",
-		default: false,
+		name: "favouritesicon",
+		title: "Красная иконка закладок",
+		default: true,
 		priority: 5
 	},
 	{
-		name: "favouritesicon",
-		title: "Красная иконка закладок",
+		name: "hide_recommendation_feed_after_comments",
+		title: "Скрыть ленту рекомендуемых постов под комментариями",
 		default: true,
 		priority: 5
 	},
