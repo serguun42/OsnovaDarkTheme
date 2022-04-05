@@ -64,7 +64,7 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	background-color: var(--tc2) !important;
 }
 
-.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"], .new_entries, .news_widget, .entry_flash, .entry_stub {
+.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"], .new_entries, .news_widget, .news-widget, .entry_flash, .entry_stub {
 	background-color: var(--tc4) !important;
 }
 
@@ -1904,4 +1904,19 @@ html body .ce-redactor a.andropov_link {
 
 .notifications__footer {
 	border-top-color: var(--tc6) !important;
+}
+
+
+
+
+#ydd-stream, #ydd-stream[data-theme="light"], #ydd-stream[data-theme="dark"] {
+	--ystream-bg: var(--tc4);
+	--ystream-bg-secondary: var(--tc5);
+}
+
+
+
+.page--index .slick-slider .slick-slide > div > div > a,
+.page--index > div:nth-of-type(4) > div:nth-child(2) > div:nth-child(2) > div {
+	background-color: var(--tc4);
 }

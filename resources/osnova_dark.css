@@ -1440,10 +1440,12 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 
 .comment__replied_to,
 .comment__text__edited,
+.comment__text--deleted,
 .comment__self--ignored .comment__text,
 .comment__self--removed .comment__text,
 .comment--removed .comment__text,
-.comment__ico {
+.comment__ico,
+.comment--is-frozen-creator .comment__author, .comment--is-frozen-creator .comment__author:hover, .comment--is-frozen-creator .comment__text, .comment--is-removed-creator .comment__author, .comment--is-removed-creator .comment__author:hover, .comment--is-removed-creator .comment__text {
 	color: #888;
 }
 
@@ -4242,8 +4244,8 @@ html body .ce-redactor a.andropov_link {
 	fill: #DDD;
 }
 
-.news_widget {
-	background-color: #333 !important;
+.news_widget, .news-widget {
+	background-color: #333;
 }
 
 .ui-tab--active .ui-tab__label {
@@ -6710,7 +6712,9 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .andropov_telegram__text--forwarded-from,
 .andropov_telegram__text--unsupported,
 .andropov_tweet__text--forwarded-from,
-.andropov_tweet__text--unsupported {
+.andropov_tweet__text--unsupported,
+.andropov_telegram__text--reply-to,
+.andropov_tweet__text--reply-to {
 	color: #888;
 }
 
@@ -8439,4 +8443,43 @@ a.comment__author:hover {
 
 .feed-navigation .v-tabs .v-tab:not(.v-tab--active) {
 	color: #888 !important;
+}
+
+#ydd-stream, #ydd-stream[data-theme="light"], #ydd-stream[data-theme="dark"] {
+	--ystream-bg: #2A2A2A;
+	--ystream-bg-secondary: #444;
+	--ystream-text: #FFF;
+	--ystream-text-secondary: #BABABA;
+	--ystream-border: #242323;
+	--ystream-accent: #CFD9FB;
+}
+
+
+
+.comment__detail--author, .comments-header__action--active {
+	color: var(--primary-color);
+}
+
+
+.page--index .slick-slider .slick-slide > div > div > a,
+.page--index > div:nth-of-type(4) > div:nth-child(2) > div:nth-child(2) > div {
+	background-color: #333;
+	color: #E1E1E1;
+}
+
+.page--index > div:nth-of-type(4) > div:nth-child(2) > div:nth-child(2) svg > path {
+	fill: #E1E1E1 !important;
+}
+
+
+
+
+
+.qc-cmp2-container, #qc-cmp2-container,
+.qc-cmp2-persistent-link, #qc-cmp2-persistent-link,
+.qc-cmp2-main, #qc-cmp2-main,
+.qc-cmp-cleanslate {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
 }

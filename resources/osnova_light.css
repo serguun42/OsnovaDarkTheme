@@ -869,3 +869,22 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .league-block-card a:hover {
 	color: #cd192e !important;
 }
+
+
+
+
+.comment__detail--author, .comments-header__action--active {
+	color: var(--primary-color);
+}
+
+
+
+
+.qc-cmp2-container, #qc-cmp2-container,
+.qc-cmp2-persistent-link, #qc-cmp2-persistent-link,
+.qc-cmp2-main, #qc-cmp2-main,
+.qc-cmp-cleanslate {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+}

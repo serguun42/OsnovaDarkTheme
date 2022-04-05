@@ -20,7 +20,7 @@ body, .main.layout, .sidebar, .live {
 	background-color: var(--ultra-dark-background) !important;
 }
 
-.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"] {
+.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"], .news_widget, .news-widget {
 	background-color: #333 !important;
 }
 
@@ -540,4 +540,18 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 .services-sidebar__filters {
 	background-color: #333 !important;
+}
+
+
+
+#ydd-stream, #ydd-stream[data-theme="light"], #ydd-stream[data-theme="dark"] {
+	--ystream-bg: #333;
+	--ystream-bg-secondary: #444;
+}
+
+
+
+.page--index .slick-slider .slick-slide > div > div > a,
+.page--index > div:nth-of-type(4) > div:nth-child(2) > div:nth-child(2) > div {
+	background-color: #333;
 }

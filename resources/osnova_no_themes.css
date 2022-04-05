@@ -75,3 +75,13 @@
 .__vcbf__popup-content {
 	padding: 12px 16px;
 }
+
+
+.qc-cmp2-container, #qc-cmp2-container,
+.qc-cmp2-persistent-link, #qc-cmp2-persistent-link,
+.qc-cmp2-main, #qc-cmp2-main,
+.qc-cmp-cleanslate {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+}
