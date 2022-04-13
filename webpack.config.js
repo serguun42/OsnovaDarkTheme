@@ -1,6 +1,6 @@
 const { join } = require("path");
 const { DefinePlugin } = require("webpack");
-const WebpackUserscript = require("webpack-userscript");
+const WebpackUserscript = require("serguun42-webpack-userscript");
 
 
 const PRODUCTION = (process.argv[process.argv.indexOf("--env") + 1] !== "development");
