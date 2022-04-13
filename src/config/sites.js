@@ -1,4 +1,4 @@
-const VERSION = "10.4.1";
+const VERSION = "10.5.0";
 const RESOURCES_ROOT = (
 	process.env.NODE_ENV === "development" ?
 		"https://localhost/tampermonkey/osnova/resources/" // whatever

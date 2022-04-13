@@ -16,9 +16,6 @@ body, .main {
   background-image: url("https://leonardo.osnova.io/5b271ae9-265c-514d-906b-5f41352195df"),
     url("https://leonardo.osnova.io/b88d8f54-7d8d-56c3-8ece-35f39026a92d"),
     url("https://leonardo.osnova.io/da5405da-6951-50d5-926d-b1ba038b55c7") !important;
-  -webkit-animation: snow 20s linear infinite;
-  -moz-animation: snow 20s linear infinite;
-  -ms-animation: snow 20s linear infinite;
   animation: snow 20s linear infinite;
 }
 

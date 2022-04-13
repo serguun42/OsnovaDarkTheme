@@ -62,8 +62,6 @@
 
 	white-space: nowrap;
 	user-select: none;
-	-ms-user-select: none;
-	-moz-user-select: none;
 }
 
 #custom-data-container.for-narrow-header #main_menu__auth__stats,
@@ -103,8 +101,6 @@
 	color: var(--switchers-color);
 
 	user-select: none;
-	-ms-user-select: none;
-	-moz-user-select: none;
 
 	border: none;
 	outline: none;
@@ -338,8 +334,6 @@ label.mdl-checkbox {
 	position: relative;
 	width: 100%;
 
-	-webkit-transition: opacity 500ms ease-in-out 0s;
-	-moz-transition: opacity 500ms ease-in-out 0s;
 	transition: opacity 500ms ease-in-out 0s;
 }
 

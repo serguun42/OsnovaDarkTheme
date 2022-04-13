@@ -80,7 +80,9 @@
 .halloween-web,
 .sidebar-tree-list-item__badge--halloween::before,
 .halloween-web-comments,
-.vk-pay-sticker-toggle
+.vk-pay-sticker-toggle,
+.entry-native-branding,
+.entry-article-footer
 {
 	display: none !important;
 	visibility: hidden !important;

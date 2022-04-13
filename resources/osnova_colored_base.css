@@ -983,7 +983,6 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 }
 
 .editor__feedback-textarea {
-	-webkit-box-shadow: 0 2px 8px 0 var(--tc16);
 	box-shadow: 0 2px 8px 0 var(--tc3);
 	display: none;
 }
@@ -1002,17 +1001,9 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	color: var(--tc7);
 }
 
-.writing-settings .link-input input::-webkit-input-placeholder {
-	color: var(--tc7);
-}
-
-.writing-settings .link-input input::-moz-placeholder {
+.writing-settings .link-input input::placeholder {
 	color: var(--tc7);
 	opacity: 1;
-}
-
-.writing-settings .link-input input:-ms-input-placeholder {
-	color: var(--tc7);
 }
 
 .writing-settings .link-input__button--protected {
@@ -1919,4 +1910,13 @@ html body .ce-redactor a.andropov_link {
 .page--index .slick-slider .slick-slide > div > div > a,
 .page--index > div:nth-of-type(4) > div:nth-child(2) > div:nth-child(2) > div {
 	background-color: var(--tc4);
+}
+
+
+
+
+
+
+.v-button.notifications__new-notifications-button {
+	background-color: var(--tc2);
 }

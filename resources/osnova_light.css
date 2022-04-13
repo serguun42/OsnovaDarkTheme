@@ -394,8 +394,6 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	transition: opacity .2s ease-in-out 0s;
 
 	user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 
 	border: none;
 	outline: none;
@@ -432,15 +430,6 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 
 
 
-@-moz-document url-prefix() {
-	.comments__item__content {
-		max-width: 100%;
-	}
-}
-
-#s42-404-error-cached-post-button {
-	z-index: 999;
-}
 
 .ui-splash,
 .donate-display[air-module="module.donateDisplay"] .ui-splash {

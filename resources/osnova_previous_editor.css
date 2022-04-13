@@ -20,7 +20,6 @@
 
 @media (min-width: 860px) {
 	.page--editor .wrapper .header__content::before {
-		-webkit-box-shadow: none !important;
 		box-shadow: none !important;
 	}
 }
