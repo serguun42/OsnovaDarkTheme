@@ -27,6 +27,8 @@
 	height: 60px;
 	padding: 5px 12px;
 	box-sizing: border-box;
+	justify-self: end;
+	grid-row: 1;
 }
 
 @media (max-width: 719px) {
@@ -360,4 +362,16 @@ label.mdl-checkbox {
 
 #switcher-layout:not(.switcher-layout--small-screen) .switcher-layout__list--for-small-screen {
 	display: none;
+}
+
+@media (min-width: 1180px) and (max-width: 1700px) {
+	body.s42-stats-dash .site-header__section--search, 
+	body.s42-stats-dash .site-header__section--create {
+		grid-column: unset !important;
+	}
+}
+
+.mobile-bar__profile #navigation-user-themes {
+	height: 46px;
+	padding: 0 0 0 20px;
 }

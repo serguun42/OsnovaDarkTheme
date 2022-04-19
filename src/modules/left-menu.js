@@ -1,4 +1,4 @@
-const { QSA, WaitForElement, GR, GEBI } = require("../util/dom");
+const { QSA, WaitForElement, GR, GEBI, QS } = require("../util/dom");
 const { GetRecord } = require("../util/storage");
 
 /**
@@ -80,6 +80,26 @@ const SwitchLeftMenuRating = (settingDisplayStyle) => SwitchMenuGeneric(settingD
 	"/rating"
 ], []);
 
+/**
+ * @param {"block" | "none"} settingDisplayStyle
+ */
+const SwitchLeftMenuBottomLinks = (settingDisplayStyle) => {
+	const sidebarFooter = QS(".sidebar__footer");
+	if (!sidebarFooter) return;
+
+	sidebarFooter.style.display = settingDisplayStyle;
+};
+
+/**
+ * @param {"block" | "none"} settingDisplayStyle
+ */
+const SwitchLeftMenuSupportLink = (settingDisplayStyle) => {
+	const supportLink = QS(".site-header__section--left .support");
+	if (!supportLink) return;
+
+	supportLink.style.display = settingDisplayStyle;
+};
+
 if (GetRecord("s42_hide_menu_item_feed_popular") === "1")
 	WaitForElement(".sidebar-tree-list-item").then(() => SwitchLeftMenuFeedPopular("none"));
 
@@ -97,6 +117,12 @@ if (GetRecord("s42_messageslinkdisabled") !== "0")
 
 if (GetRecord("s42_hide_menu_item_rating") === "1")
 	WaitForElement(".sidebar-tree-list-item").then(() => SwitchLeftMenuRating("none"));
+
+if (GetRecord("s42_hide_menu_bottom_links") === "1")
+	WaitForElement(".sidebar-tree-list-item").then(() => SwitchLeftMenuBottomLinks("none"));
+
+if (GetRecord("s42_hide_menu_support_link") === "1")
+	WaitForElement(".site-header").then(() => SwitchLeftMenuSupportLink("none"));
 
 
 
@@ -155,5 +181,7 @@ module.exports = {
 	SwitchLeftMenuBookmarks,
 	SwitchLeftMenuBusiness,
 	SwitchLeftMenuRating,
+	SwitchLeftMenuBottomLinks,
+	SwitchLeftMenuSupportLink,
 	PlaceEditorialButton
 }

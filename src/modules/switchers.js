@@ -5,8 +5,7 @@ const { SetRecord, GetRecord } = require("../util/storage");
 const { CheckForSystemDarkMode, CheckForScheduledNightMode } = require("../util/theme-handlers");
 const { StartFavouriteMarkerProcedure, StopFavouriteMarkerProcedure } = require("./favourites-marker");
 const { SetFullpageEditor } = require("./fullpage-editor");
-const { SwitchLeftMenuRating } = require("./left-menu");
-const { SwitchLeftMenuBusiness, SwitchLeftMenuBookmarks, PlaceEditorialButton, SwitchLeftMenuFeedPopular, SwitchLeftMenuFeedNew, SwitchLeftMenuFeedMine } = require("./left-menu");
+const { SwitchLeftMenuBusiness, SwitchLeftMenuBookmarks, PlaceEditorialButton, SwitchLeftMenuFeedPopular, SwitchLeftMenuFeedNew, SwitchLeftMenuFeedMine, SwitchLeftMenuRating, SwitchLeftMenuBottomLinks, SwitchLeftMenuSupportLink } = require("./left-menu");
 const { SetScrollers } = require("./scrollers");
 const { SetStatsDash, RemoveStatsDash } = require("./stats-dash");
 
@@ -19,7 +18,10 @@ WaitForElement(window.innerWidth <= 719 ?
 	".navigation-user.navigation-user--top-position" :
 	".navigation-user:not(.navigation-user--top-position)"
 ).then((navigationUser) => {
-	(navigationUser.parentElement || navigationUser).after(navigationUserThemes);
+	if (window.innerWidth <= 719)
+		(navigationUser.parentElement || navigationUser).after(navigationUserThemes);
+	else
+		(navigationUser.parentElement || navigationUser).appendChild(navigationUserThemes);
 
 
 	/**
@@ -656,6 +658,32 @@ WaitForElement(window.innerWidth <= 719 ?
 									onchange: (e) => {
 										SetRecord("s42_hideentriesbadge", e.currentTarget.checked ? "1" : "0");
 										ManageModule("hideentriesbadge", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "hide_menu_bottom_links",
+									title: "Скрыть ссылки внизу левого меню",
+									checked: GetRecord("s42_hide_menu_bottom_links") === "1",
+									onchange: (e) => {
+										SetRecord("s42_hide_menu_bottom_links", (e.currentTarget.checked ? 1 : 0).toString());
+
+										if (e.currentTarget.checked)
+											SwitchLeftMenuBottomLinks("none");
+										else
+											SwitchLeftMenuBottomLinks("");
+									}
+								},
+								{
+									name: "hide_menu_support_link",
+									title: "Скрыть кнопку поддержки рядом с логотипом",
+									checked: GetRecord("s42_hide_menu_support_link") === "1",
+									onchange: (e) => {
+										SetRecord("s42_hide_menu_support_link", (e.currentTarget.checked ? 1 : 0).toString());
+
+										if (e.currentTarget.checked)
+											SwitchLeftMenuSupportLink("none");
+										else
+											SwitchLeftMenuSupportLink("");
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),

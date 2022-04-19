@@ -20,7 +20,7 @@ body, .main.layout, .sidebar, .live {
 	background-color: var(--ultra-dark-background) !important;
 }
 
-.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"], .news_widget, .news-widget {
+.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"], .news_widget, .news-widget, .donates-page__island-header, .donates-page__island-content {
 	background-color: #333 !important;
 }
 

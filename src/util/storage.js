@@ -24,6 +24,8 @@ const ALL_RECORDS_NAMES = [
 	"s42_hide_menu_item_feed_new",
 	"s42_hide_menu_item_feed_mine",
 	"s42_hide_menu_item_rating",
+	"s42_hide_menu_bottom_links",
+	"s42_hide_menu_support_link",
 	"s42_defaultscrollers",
 	"s42_monochrome",
 	"s42_qrcode",

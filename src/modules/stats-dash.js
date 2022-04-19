@@ -42,6 +42,7 @@ const SetStatsDash = (iSkipInitial = false) => {
 		  additionalStyleForAccountsBubble.innerHTML = `:root { --switchers-additional-spacing: 120px; }`;
 
 	document.body.appendChild(additionalStyleForAccountsBubble);
+	document.body.classList.add("s42-stats-dash");
 
 
 	/**
@@ -166,7 +167,10 @@ const SetStatsDash = (iSkipInitial = false) => {
 	});
 };
 
-const RemoveStatsDash = () => GR(GEBI("navigation-user-themes__stats"));
+const RemoveStatsDash = () => {
+	document.body.classList.remove("s42-stats-dash");
+	GR(GEBI("navigation-user-themes__stats"));
+};
 
 WaitForElement("body").then(() => SetStatsDash(false));
 

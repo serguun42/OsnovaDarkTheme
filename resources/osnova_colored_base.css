@@ -64,7 +64,7 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 	background-color: var(--tc2) !important;
 }
 
-.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"], .new_entries, .news_widget, .news-widget, .entry_flash, .entry_stub {
+.subsite_head, #page_wrapper>.ui-tabs, .miniEditor__dummy, .miniEditor__main, .mini-editor, .content-feed[air-module="module.entry"], .new_entries, .news_widget, .news-widget, .entry_flash, .entry_stub, .donates-page__island-header, .donates-page__island-content {
 	background-color: var(--tc4) !important;
 }
 

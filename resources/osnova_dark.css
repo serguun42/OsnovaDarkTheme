@@ -7684,7 +7684,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 
 
 
-.content-feed[air-module="module.entry"] {
+.content-feed[air-module="module.entry"],
+.donates-page__island-header, .donates-page__island-content {
 	background-color: #2A2A2A;
 }
 
@@ -8022,7 +8023,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	color: #E1E1E1;
 }
 
-.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-text-input__input::placeholder {
+.search__field .v-field:not(.v-field--focused) .v-field__wrapper:not(:hover) .v-text-input__input::placeholder,
+.search__field .v-field__wrapper .v-text-input__input::placeholder {
 	color: #888 !important;
 }
 
@@ -8303,6 +8305,14 @@ a.comment__author:hover {
 	color: #888 !important;
 }
 
+.v-tab {
+	color: #888;
+}
+
+.v-tab--active {
+	color: var(--primary-color);
+}
+
 #ydd-stream, #ydd-stream[data-theme="light"], #ydd-stream[data-theme="dark"] {
 	--ystream-bg: #2A2A2A;
 	--ystream-bg-secondary: #444;
@@ -8356,4 +8366,26 @@ a.comment__author:hover {
 
 .subsite-settings {
 	background-color: transparent !important;
+}
+
+
+
+
+.navigation-user .popover-item[style^="--color"] .popover-item__icon,
+.navigation-user .popover-item[style^="--color"] .popover-item__label {
+	color: #AAA;
+}
+
+.amount-select {
+	--item-active-color: var(--primary-color) !important;
+    --item-active-background: transparent !important;
+}
+
+.amount-select__button:hover {
+	border-color: var(--primary-color--faded26) !important;
+	box-shadow: 0 0 0 3px var(--primary-color--faded26) !important;
+}
+
+.payment-form__note {
+	color: #888 !important;
 }
