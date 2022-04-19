@@ -21,7 +21,7 @@ All [CSS and other resources](./resources) could be deployed to production serve
 
 <h4 align="center">Options available for end-user</h4>
 <p align="center">
-	<img src="https://leonardo.osnova.io/63bd882f-2503-5e7d-a5ed-70eabd0d5936/" alt="Available options" width="500"/>
+	<img src="https://leonardo.osnova.io/0437de25-2925-53f1-9854-2e161ee6fdf6/" alt="Available options" width="500"/>
 </p>
 
 #### [License – GNU GPL v3](./LICENSE)
