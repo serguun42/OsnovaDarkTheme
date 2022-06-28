@@ -76,11 +76,6 @@
 	background-color: var(--blocks-background) !important;
 }
 
-.vote--comment.vote--sum-positive .vote__value,
-.vote--comment.vote--sum-negative .vote__value {
-	background-color: var(--blocks-background) !important;
-}
-
 .vote--comment.vote--sum-positive .vote__value .vote__value__v,
 .vote--comment.vote--sum-negative .vote__value .vote__value__v {
 	color: #AAA;

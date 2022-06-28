@@ -145,7 +145,7 @@ const PlaceEditorialButton = () => {
 			.replace(/v_bookmark/gi, "v_tick")
 			.replace(/sidebar-tree-list-item--active/gi, "");
 
-		GR(editorialButton.querySelector(".sidebar-tree-list-item__badge"));
+		GR(QS(".sidebar-tree-list-item__badge", editorialButton));
 
 		const sidebarButtons = QSA(".sidebar-tree-list-item");
 		sidebarButtons.forEach((sidebarButton) => {

@@ -72,11 +72,6 @@
 	color: #818181 !important;
 }
 
-.vote--comment.vote--sum-positive .vote__value,
-.vote--comment.vote--sum-negative .vote__value {
-	background-color: #EEEEEE !important;
-}
-
 .comments__item__self--author .comments__item__user__name .user_name,
 .comments__item__user__status,
 .comment__self--author .comment-user__name,
@@ -489,14 +484,6 @@ body:not(.s42-is-dark) .v-list-tab:hover {
 
 
 
-@media (max-width: 859px) {
-	.vote__value,
-	.vote--comment.vote--sum-positive .vote__value,
-	.vote--comment.vote--sum-negative .vote__value {
-		background-color: transparent !important;
-	}
-}
-
 body:not(.s42-is-dark) .content-stats,
 body:not(.s42-is-dark) .content-stats__list__show {
 	background-color: var(--lighter-color);
@@ -612,7 +599,10 @@ svg[aria-labelledby="verified"],
 .content ol li, .content ul li,
 .content .content-image-caption__title,
 .content .content-image-caption__author,
-.__vcbf__popup {
+.__vcbf__popup,
+.navigation-user-profile__avatar-image,
+.popover-item__image,
+.comment__avatar {
 	filter: grayscale(1);
 }
 

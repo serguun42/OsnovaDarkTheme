@@ -8,7 +8,8 @@
 .vote--comment,
 .site-header__item .v-split-button,
 .comments_form,
-.comments_pseudo_form {
+.comments_pseudo_form,
+.comment-form {
 	display: none;
 	opacity: 0;
 	visibility: hidden;

@@ -276,12 +276,12 @@ body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
 }
 
 .page.page--editor .header .tab__content,
-.editor .editor-cp-tab__content {
+.editor-cp-tab__content {
 	background-color: var(--tc5);
 }
 
 .page.page--editor .header .tab__content .history .item,
-.editor .editor-cp-tab__content .editor-history-item {
+.editor-cp-tab__content .editor-history-item {
 	background-color: var(--tc13);
 }
 
@@ -1555,13 +1555,16 @@ html body .ce-redactor a.andropov_link {
 
 
 .comments_form,
+.comment-form,
 .comments_pseudo_form {
 	background-color: var(--tc1);
 	border-color: var(--tc5);
 }
 
 .comments_form:hover,
+.comment-form:hover,
 .comments_pseudo_form:hover {
+	background-color: var(--tc4);
 	border-color: var(--tc6);
 }
 
@@ -1919,4 +1922,24 @@ html body .ce-redactor a.andropov_link {
 
 .v-button.notifications__new-notifications-button {
 	background-color: var(--tc2);
+}
+
+
+
+
+
+
+.instagram-placeholder {
+	background-color: var(--tc2);
+}
+
+.instagram-placeholder__sub-title {
+	color: var(--tc7);
+}
+
+
+
+
+.account-menu-root {
+	background-color: var(--tc4) !important;
 }

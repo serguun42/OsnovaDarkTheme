@@ -52,22 +52,18 @@ export type AdditionalHandlingProperties = {
     [propertyName: string]: AdditionalHandlingPropertyHandler;
 };
 /**
- * Query selector
- *
- * @param {string} query
+ * @param {String} query
+ * @param {HTMLElement} [parent]
  * @returns {HTMLElement}
  */
-export function QS(query: string): HTMLElement;
+export function QS(query: string, parent?: HTMLElement): HTMLElement;
 /**
- * Query selector all
- *
- * @param {string} query
+ * @param {String} query
+ * @param {HTMLElement} [parent]
  * @returns {HTMLElement[]}
  */
-export function QSA(query: string): HTMLElement[];
+export function QSA(query: string, parent?: HTMLElement): HTMLElement[];
 /**
- * Get element by ID
- *
  * @param {string} query
  * @returns {HTMLElement}
  */

@@ -1,4 +1,4 @@
-const { SetCustomInterval, ClearCustomInterval, WaitForElement, QSA } = require("../util/dom");
+const { SetCustomInterval, ClearCustomInterval, WaitForElement, QSA, QS } = require("../util/dom");
 const { GetRecord } = require("../util/storage");
 
 let addFavouriteMarkerFlag = (GetRecord("s42_favouritemarker") !== "0"),
@@ -18,7 +18,7 @@ const StartFavouriteMarkerProcedure = () => {
 			}
 
 			if (lastURL === window.location.pathname) return;
-			if (document.querySelector(".main_progressbar--in_process")) return;
+			if (QS(".main_progressbar--in_process")) return;
 
 			lastURL = window.location.pathname;
 
@@ -60,7 +60,7 @@ const StartFavouriteMarkerProcedure = () => {
 
 				try {
 					const hiddenEntryData = JSON.parse(
-						document.querySelector(".l-hidden.entry_data")?.dataset?.articleInfo || "{}"	
+						QS(".l-hidden.entry_data")?.dataset?.articleInfo || "{}"	
 					);
 					const favouritesCount = hiddenEntryData["favorites"];
 
@@ -69,7 +69,7 @@ const StartFavouriteMarkerProcedure = () => {
 													.filter((attributeName) => /^data\-v/i.test(attributeName))?.[0];
 						if (!vueDataHashAttribute) return;
 
-						const bookmarkTitle = bookmarkElem.querySelector(".bookmark__title") || document.createElement("div");
+						const bookmarkTitle = QS(".bookmark__title", bookmarkElem) || document.createElement("div");
 						bookmarkTitle.className = "bookmark__title";
 						bookmarkTitle.setAttribute(vueDataHashAttribute, "");
 						bookmarkTitle.innerText = favouritesCount || "";

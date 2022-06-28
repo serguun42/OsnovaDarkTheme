@@ -2,24 +2,20 @@ const { RESOURCES_ROOT } = require("../config/sites");
 const { ALL_MODULES } = require("./modules-list");
 
 /**
- * Query selector
- * 
- * @param {string} query
+ * @param {String} query
+ * @param {HTMLElement} [parent]
  * @returns {HTMLElement}
  */
-const QS = query => document.querySelector(query);
+const QS = (query, parent) => (parent || document).querySelector(query);
 
 /**
- * Query selector all
- * 
- * @param {string} query
+ * @param {String} query
+ * @param {HTMLElement} [parent]
  * @returns {HTMLElement[]}
  */
-const QSA = query => Array.from(document.querySelectorAll(query));
+const QSA = (query, parent) => Array.from((parent || document).querySelectorAll(query));
 
 /**
- * Get element by ID
- * 
  * @param {string} query
  * @returns {HTMLElement}
  */

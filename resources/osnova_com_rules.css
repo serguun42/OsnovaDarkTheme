@@ -82,7 +82,8 @@
 .halloween-web-comments,
 .vk-pay-sticker-toggle,
 .entry-native-branding,
-.entry-article-footer
+.entry-article-footer,
+.mobile-app-redirect
 {
 	display: none !important;
 	visibility: hidden !important;

@@ -508,7 +508,9 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 
 
-.comments_form, .comments_pseudo_form {
+.comments_form,
+.comment-form,
+.comments_pseudo_form {
 	background-color: #1A1A1A;
 }
 
@@ -554,4 +556,11 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 .page--index .slick-slider .slick-slide > div > div > a,
 .page--index > div:nth-of-type(4) > div:nth-child(2) > div:nth-child(2) > div {
 	background-color: #333;
+}
+
+
+
+
+.account-menu-root {
+	background-color: #333 !important;
 }

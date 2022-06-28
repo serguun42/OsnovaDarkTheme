@@ -2,97 +2,32 @@
  * Old layout for editor
  * @serguun42
  * Mar 2021
+ * Completely (like, from 0) rebuilt Apr 2022
  */
 
-.page--editor .wrapper {
-	padding-top: 0 !important;
-}
-
-.page--editor .wrapper .header {
-	margin-top: 10px;
-	top: 59px;
-	order: 0;
-}
-
-.page--editor .wrapper .header__content {
-	height: 50px;
-}
-
-@media (min-width: 860px) {
-	.page--editor .wrapper .header__content::before {
-		box-shadow: none !important;
-	}
-}
-
-.header__content .tab__label {
-	height: 50px !important;
-}
-
-.page--editor .wrapper > .l-editor {
-	margin-top: 32px !important;
-}
-
-.page--editor .wrapper .header__content,
-.page--editor .wrapper .header__left {
-	flex-direction: row-reverse;
-}
-
-.page--editor .wrapper .header__left {
-	margin-right: unset !important;
-	margin-left: auto !important;
-}
-
-.page--editor .wrapper .header__right {
-	margin-right: auto !important;
-	margin-left: unset !important;
-}
-
-.page--editor .wrapper .header__content .header__left .v-button:not(:last-child) {
-	margin-right: unset;
-	margin-left: 12px;
-}
-
-.page--editor .wrapper .header__content .header__left .v-button.v-button--blue:first-of-type {
-	margin-right: 36px;
-	order: 2;
-}
-
-.page--editor .wrapper .header__content .header__right .tab:last-child {
-	margin: 0 !important;
-}
-
-.page--editor .wrapper .header__content .header__right .tab__content {
-	top: 50px !important;
-	bottom: unset !important;
-}
-
-
-
-
-
-
-/* New Editor 2021-05-12 */
-
-.editor__actions {
-	-ms-flex-order: 0 !important;
-	order: 0 !important;
-
-	top: 0;
-	bottom: unset;
-}
-
-.editor__authors {
-	margin-top: 0 !important;
-}
-
-.editor-cp-tab__content {
-	top: var(--height) !important;
-	bottom: unset !important;
-}
-
 @media (min-width: 1025px) {
-	.editor-cp__left .v-button.v-button--blue:first-of-type {
-		margin-right: 96px;
+	.writing {
+		--footer-height: 
+	}
+	
+	.writing__actions,
+	.writing__footer {
+		height: 50px;
+		padding-top: 20px;
+		order: 0 !important;
+	}
+
+	.writing__actions .editor-cp,
+	.writing__footer .editor-cp {
+		height: unset !important;
+	}
+
+	.editor-cp-tab__content {
+		top: unset !important;
+		bottom: unset !important;
+	}
+
+	.writing__authors {
+		margin-top: 0 !important;
 	}
 }
-
