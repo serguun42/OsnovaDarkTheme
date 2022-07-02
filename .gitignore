@@ -4,5 +4,6 @@
 *.sh
 node_modules/
 build/
+dev/
 out/
 package-lock.json

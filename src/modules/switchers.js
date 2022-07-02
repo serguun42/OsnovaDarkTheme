@@ -12,16 +12,18 @@ const { SetStatsDash, RemoveStatsDash } = require("./stats-dash");
 
 const navigationUserThemes = document.createElement("div");
 	  navigationUserThemes.id = "navigation-user-themes";
-	  navigationUserThemes.className = "for-big-header";
 
 WaitForElement(window.innerWidth <= 719 ?
-	".navigation-user.navigation-user--top-position" :
-	".navigation-user:not(.navigation-user--top-position)"
-).then((navigationUser) => {
-	if (window.innerWidth <= 719)
-		(navigationUser.parentElement || navigationUser).after(navigationUserThemes);
-	else
-		(navigationUser.parentElement || navigationUser).appendChild(navigationUserThemes);
+	".site-header__section--create" :
+	".navigation-user"
+).then((navigationContainer) => {
+	if (!navigationContainer) return;	
+
+	if (window.innerWidth <= 719) {
+		navigationContainer.prepend(navigationUserThemes);
+		navigationUserThemes.classList.add("for-mobile-screen");
+	} else
+		(navigationContainer.parentElement || navigationContainer).append(navigationUserThemes);
 
 
 	/**
@@ -1032,7 +1034,7 @@ WaitForElement(window.innerWidth <= 719 ?
 				requestAnimationFrame(() => componentHandler?.upgradeElements(QSA("[data-mdl-upgrade]")));
 		  });
 
-	navigationUserThemes.appendChild(navigationUserThemesSwitcherButton);
+	navigationUserThemes.append(navigationUserThemesSwitcherButton);
 	componentHandler?.upgradeElement(navigationUserThemesSwitcherButton);
 });
 

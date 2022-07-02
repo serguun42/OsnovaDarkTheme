@@ -758,7 +758,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	left: -30px;
 }
 
-#custom-data-container + #dataheadBlock,
 #navigation-user-themes + #dataheadBlock {
 	left: -64px;
 }
@@ -876,4 +875,15 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	display: none !important;
 	visibility: hidden !important;
 	opacity: 0 !important;
+}
+
+
+
+
+
+.vote__button {
+	border: none;
+	outline: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
 }

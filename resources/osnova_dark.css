@@ -3417,6 +3417,10 @@ body:not(.s42-default-scrollers) .inline-dropdown::-webkit-scrollbar {
 	opacity: 0.85;
 }
 
+.comment__avatar__image .andropov_image {
+    opacity: 1;
+}
+
 .pswp__img:not(.pswp__img--placeholder) {
 	background: rgba(255, 255, 255, 0.42);
 }
@@ -4238,6 +4242,7 @@ html body .ce-redactor a.andropov_link {
 .notify-item p a,
 .block-quote__author-name a,
 .block-quote__author-job a,
+.block-quote__author a,
 .block-person__title a,
 .block-person__description a,
 .content h2 a,
@@ -4281,6 +4286,7 @@ html body .ce-redactor a.andropov_link {
 .notify-item p a:hover,
 .block-quote__author-name a:hover,
 .block-quote__author-job a:hover,
+.block-quote__author a:hover,
 .block-person__title a:hover,
 .block-person__description a:hover,
 .content h2 a:hover,
@@ -7271,7 +7277,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	left: -30px;
 }
 
-#custom-data-container + #dataheadBlock,
 #navigation-user-themes + #dataheadBlock {
 	left: -64px;
 }
@@ -8398,4 +8403,15 @@ a.comment__author:hover {
 
 .subsites-list__back {
 	color: var(--primary-color) !important;
+}
+
+
+
+
+
+.vote__button {
+	border: none;
+	outline: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
 }

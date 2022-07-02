@@ -18,7 +18,7 @@ module.exports = {
 	entry: join(__dirname, "src", "core.js"),
 	output: {
 		filename: "osnova_dark_theme.user.js",
-		path: join(__dirname, "build")
+		path: join(__dirname, PRODUCTION ? "build" : "dev")
 	},
 	plugins: [
 		new DefinePlugin({
