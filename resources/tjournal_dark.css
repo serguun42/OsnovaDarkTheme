@@ -8,6 +8,17 @@
 	color: var(--primary-color);
 }
 
+.app__header-logo img {
+	opacity: 0 !important;
+}
+
+.app__header-logo {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' fill='none'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1.059 24.353h11.647v8.47H1.059v-8.47Z' fill='%23E8A427'/%3E%3Cpath d='M1.059 10.588h11.647v22.236l8.47-7.412V10.588h11.647v-9.53H1.06v9.53Z' fill='%23E8A427'/%3E%3Cpath opacity='.15' d='M9.53 24.353h3.176v8.47l-3.177-8.47Z' fill='%23E8A427'/%3E%3C/svg%3E");
+	background-position: center center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
 #oldschool_site_logo path {
 	fill: var(--primary-color) !important;
 }

@@ -13,11 +13,17 @@ const { SetStatsDash, RemoveStatsDash } = require("./stats-dash");
 const navigationUserThemes = document.createElement("div");
 	  navigationUserThemes.id = "navigation-user-themes";
 
-WaitForElement(window.innerWidth <= 719 ?
-	".site-header__section--create" :
-	".navigation-user"
-).then((navigationContainer) => {
-	if (!navigationContainer) return;	
+/** RIP TJ 😢. LONG LIVE ALASKA! */
+(
+	SITE === "tjournal"
+	? new Promise((resolve) => setTimeout(resolve, 5000)).then(() => WaitForElement(".app__header-logo"))
+	: WaitForElement(window.innerWidth <= 719
+		? ".site-header__section--create"
+		: ".navigation-user"
+	)
+)
+.then((navigationContainer) => {
+	if (!navigationContainer) return;
 
 	if (window.innerWidth <= 719) {
 		navigationContainer.prepend(navigationUserThemes);
@@ -965,10 +971,7 @@ WaitForElement(window.innerWidth <= 719 ?
 	 * @param {MouseEvent} e
 	 */
 	const LocalShowPanel = (e) => {
-		const isScreenSmall = (
-			((window.innerWidth - e.clientX) * 2 + 500 > window.innerWidth) ||
-			(window.innerHeight <= 660)
-		);
+		const isScreenSmall = (e.clientX < 600 || window.innerHeight <= 660);
 
 
 		const switchersContainerMaxHeight = isScreenSmall ? window.innerHeight - 60 : 600,
@@ -1025,8 +1028,15 @@ WaitForElement(window.innerWidth <= 719 ?
 	};
 
 
+	const pageContainsGearIcon = /v_gear/i.test(document.documentElement.innerHTML);
+
+
 	const navigationUserThemesSwitcherButton = document.createElement("div");
-		  navigationUserThemesSwitcherButton.innerHTML = `<svg width="20" height="20" class="icon icon--v_gear"><use xlink:href="#v_gear"></use></svg>`;
+		  navigationUserThemesSwitcherButton.innerHTML = (
+			pageContainsGearIcon
+				? `<svg width="20" height="20" class="icon icon--v_gear"><use xlink:href="#v_gear"></use></svg>`
+				: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="icon icon--v_gear" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.997 2c-.824 0-1.506.177-2.039.588-.524.404-.772.934-.926 1.336l-.18.491c-.196.543-.269.747-.604.918-.363.186-.596.137-1.129.023a18.62 18.62 0 00-.547-.11c-.427-.078-.99-.135-1.602.085-.614.22-1.14.668-1.617 1.331-.457.636-.66 1.287-.593 1.957.063.624.351 1.138.592 1.518.112.176.208.318.296.446a7 7 0 01.369.587c.162.3.244.558.244.83 0 .26-.08.512-.243.812-.118.216-.23.382-.364.579-.09.13-.188.276-.303.458-.242.383-.529.9-.591 1.524-.067.67.134 1.324.593 1.961.477.663 1.003 1.111 1.616 1.332.611.22 1.174.164 1.602.086.214-.039.394-.077.548-.11.532-.112.766-.161 1.129.025.335.172.408.375.603.918.05.14.108.301.181.49.154.403.402.934.926 1.337.533.41 1.215.588 2.04.588.823 0 1.505-.177 2.038-.588.524-.403.772-.934.926-1.336.073-.19.131-.352.181-.491.195-.543.27-.746.604-.918.363-.186.597-.137 1.13-.024.154.032.333.07.548.11.427.077.99.133 1.6-.087.615-.22 1.14-.67 1.617-1.332.459-.637.66-1.29.593-1.96-.062-.625-.349-1.142-.59-1.525a15.718 15.718 0 00-.304-.459c-.133-.196-.246-.362-.363-.578-.164-.3-.244-.552-.244-.812 0-.272.082-.53.245-.83.117-.217.232-.386.369-.587.087-.128.183-.27.295-.446.241-.38.53-.894.592-1.518.067-.67-.135-1.321-.593-1.957C20.165 6 19.64 5.551 19.025 5.33c-.611-.219-1.175-.162-1.602-.084-.215.04-.394.078-.548.11-.533.114-.766.163-1.128-.022-.336-.172-.409-.376-.604-.919a24.05 24.05 0 00-.18-.49c-.155-.403-.403-.933-.927-1.337-.533-.41-1.215-.588-2.039-.588zm5.529 14.727c-.584-.138-1.628-.385-2.69.16h-.002c-1.114.571-1.468 1.653-1.659 2.237-.03.092-.056.172-.08.235-.113.294-.196.405-.28.469-.073.056-.273.172-.818.172-.545 0-.745-.116-.819-.172-.082-.064-.166-.175-.279-.469a5.33 5.33 0 01-.08-.235c-.19-.584-.544-1.666-1.659-2.237-1.063-.545-2.107-.298-2.69-.16-.1.024-.186.044-.256.057-.294.053-.445.044-.568 0-.12-.043-.347-.17-.67-.618-.23-.32-.236-.497-.226-.594.014-.143.088-.331.292-.654.048-.076.113-.173.187-.284.171-.254.388-.578.545-.866.258-.473.487-1.06.487-1.768 0-.714-.227-1.304-.486-1.782-.16-.296-.38-.622-.552-.877a13.423 13.423 0 01-.182-.276c-.205-.322-.277-.507-.29-.646-.01-.093-.006-.268.226-.589.322-.449.55-.574.668-.617.123-.044.274-.053.567 0 .07.014.156.034.256.058.584.139 1.628.388 2.692-.158 1.115-.571 1.468-1.653 1.659-2.237.03-.092.056-.172.08-.235.113-.294.197-.405.28-.468.073-.057.273-.173.818-.173.545 0 .745.116.819.173.083.063.166.174.279.468.024.063.05.143.08.235.191.584.544 1.666 1.66 2.237 1.063.546 2.108.297 2.692.158.1-.024.185-.044.256-.057.293-.054.444-.045.567 0 .119.042.346.168.669.616.23.321.235.496.226.59-.014.138-.086.323-.29.645-.048.075-.111.169-.183.276l-.552.877c-.259.478-.486 1.068-.486 1.782 0 .709.23 1.295.487 1.768.157.288.374.612.545.866.074.11.14.208.187.284.205.323.278.511.292.654.01.097.004.274-.226.594-.323.449-.55.575-.67.618-.123.044-.274.053-.567 0a6.36 6.36 0 01-.256-.056z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>`
+		  );
 		  navigationUserThemesSwitcherButton.className = "navigation-user-themes__switcher-button mdl-js-button mdl-js-ripple-effect";
 		  navigationUserThemesSwitcherButton.addEventListener("click", (e) => {
 				LocalBuildPanel();

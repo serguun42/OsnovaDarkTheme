@@ -83,7 +83,8 @@
 .vk-pay-sticker-toggle,
 .entry-native-branding,
 .entry-article-footer,
-.mobile-app-redirect
+.mobile-app-redirect,
+.selectel-branding-header
 {
 	display: none !important;
 	visibility: hidden !important;

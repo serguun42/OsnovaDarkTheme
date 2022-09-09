@@ -41,7 +41,7 @@
 
 	width: 14px;
 	height: 14px;
-	margin-left: 6px;
+	margin-left: 4px;
 	vertical-align: -2px;
 
 	background-image: var(--verified-svg-image);
@@ -57,12 +57,12 @@
 }
 
 .subsite-card-title .subsite-card-title__item--name + *:not(.subsite-card-title__item--verified) {
-	margin-left: 20px;
+	margin-left: 24px;
 }
 
 .subsite-card-title .subsite-card-title__item--name + *:not(.subsite-card-title__item--verified)::before {
 	position: absolute;
-	margin-left: -24px;
+	margin-left: -20px;
 	margin-top: 4px;
 }
 

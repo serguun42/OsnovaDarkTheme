@@ -343,6 +343,10 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 	background-color: #121212;
 }
 
+.v-popup-window__content .item {
+	background-color: #121212 !important;
+}
+
 
 .app--content-feed.app--left-column-on.app--right-column-on .subsite_settings__form .l-island-a {
 	background-color: #121212 !important;
@@ -563,4 +567,13 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 .account-menu-root {
 	background-color: #333 !important;
+}
+
+
+
+
+
+
+:root {
+    --color-bg-primary: var(--ultra-dark-background);
 }

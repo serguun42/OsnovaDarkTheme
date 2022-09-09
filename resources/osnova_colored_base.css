@@ -1293,6 +1293,10 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc4);
 }
 
+.v-popup-window__content .item {
+	background-color: var(--tc4) !important;
+}
+
 .v-popup-header--with-divider {
 	border-bottom-color: var(--tc6);
 }
@@ -1305,6 +1309,10 @@ html body .ce-redactor a.andropov_link {
 
 
 .site-header {
+	background-color: var(--tc2) !important;
+}
+
+.app__header {
 	background-color: var(--tc2) !important;
 }
 
@@ -1872,6 +1880,11 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc5);
 }
 
+.ce-toolbox__item--selected,
+.ce-toolbox__item:not(.no-hover):hover {
+	background-color: var(--tc6);
+}
+
 
 
 :root {
@@ -1942,4 +1955,12 @@ html body .ce-redactor a.andropov_link {
 
 .account-menu-root {
 	background-color: var(--tc4) !important;
+}
+
+
+
+
+
+:root {
+    --color-bg-primary: var(--tc1);
 }
