@@ -26,8 +26,4 @@ export function SwitchLeftMenuRating(settingDisplayStyle: "block" | "none"): voi
  * @param {"block" | "none"} settingDisplayStyle
  */
 export function SwitchLeftMenuBottomLinks(settingDisplayStyle: "block" | "none"): void;
-/**
- * @param {"block" | "none"} settingDisplayStyle
- */
-export function SwitchLeftMenuSupportLink(settingDisplayStyle: "block" | "none"): void;
 export function PlaceEditorialButton(): void;

@@ -4,41 +4,50 @@
  * Nov 2020
  */
 
+:root {
+	--bookmark-sign-color: #E84755;
+}
+
 .favorite_marker--active .favorite_marker__count,
 .v-etc-controls-container .popover .icon--v_bookmark_solid {
-	color: #E84755;
+	color: var(--bookmark-sign-color);
 }
 
 .favorite_marker--active .icon {
-	fill: #E84755;
-	stroke: #E84755;
+	fill: var(--bookmark-sign-color);
+	stroke: var(--bookmark-sign-color);
 }
 
 .favorite_marker--active .favorite_marker__title {
-	color: #E84755;
+	color: var(--bookmark-sign-color);
 }
 
-.favorite_marker:hover:not(.favorite_marker--just_clicked) .favorite_marker__count, .favorite_marker:hover:not(.favorite_marker--just_clicked) .favorite_marker__title {
-	color: #E84755;
+.favorite_marker:hover:not(.favorite_marker--just_clicked) .favorite_marker__count,
+.favorite_marker:hover:not(.favorite_marker--just_clicked) .favorite_marker__title {
+	color: var(--bookmark-sign-color);
 }
 
 .favorite_marker:hover:not(.favorite_marker--just_clicked) .icon {
-	fill: #E84755;
-	stroke: #E84755;
+	fill: var(--bookmark-sign-color);
+	stroke: var(--bookmark-sign-color);
 }
 
 .bookmark--active .icon {
-	fill: #E84755 !important;
+	fill: var(--bookmark-sign-color) !important;
 }
 
 .bookmark--active .bookmark__title {
-	color: #E84755 !important;
+	color: var(--bookmark-sign-color) !important;
 }
 
 .bookmark:hover .bookmark__title {
-	color: #E84755 !important;
+	color: var(--bookmark-sign-color) !important;
 }
 
 .bookmark:hover .icon {
-	fill: #E84755 !important;
+	fill: var(--bookmark-sign-color) !important;
+}
+
+.v-popover-container .popover .icon--v_bookmark_solid {
+	color: var(--bookmark-sign-color);
 }

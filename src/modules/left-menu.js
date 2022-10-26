@@ -90,16 +90,6 @@ const SwitchLeftMenuBottomLinks = (settingDisplayStyle) => {
 	sidebarFooter.style.display = settingDisplayStyle;
 };
 
-/**
- * @param {"block" | "none"} settingDisplayStyle
- */
-const SwitchLeftMenuSupportLink = (settingDisplayStyle) => {
-	const supportLink = QS(".site-header__section--left .support");
-	if (!supportLink) return;
-
-	supportLink.style.display = settingDisplayStyle;
-};
-
 if (GetRecord("s42_hide_menu_item_feed_popular") === "1")
 	WaitForElement(".sidebar-tree-list-item").then(() => SwitchLeftMenuFeedPopular("none"));
 
@@ -120,9 +110,6 @@ if (GetRecord("s42_hide_menu_item_rating") === "1")
 
 if (GetRecord("s42_hide_menu_bottom_links") === "1")
 	WaitForElement(".sidebar-tree-list-item").then(() => SwitchLeftMenuBottomLinks("none"));
-
-if (GetRecord("s42_hide_menu_support_link") === "1")
-	WaitForElement(".site-header").then(() => SwitchLeftMenuSupportLink("none"));
 
 
 
@@ -182,6 +169,5 @@ module.exports = {
 	SwitchLeftMenuBusiness,
 	SwitchLeftMenuRating,
 	SwitchLeftMenuBottomLinks,
-	SwitchLeftMenuSupportLink,
 	PlaceEditorialButton
 }

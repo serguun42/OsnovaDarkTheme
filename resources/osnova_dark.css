@@ -663,10 +663,6 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 	color: #E1E1E1 !important;
 }
 
-.site-header-user .bubble .bubble__container .list .item:last-child {
-	color: #E84755 !important;
-}
-
 .bubble .bubble__container .list .item:nth-last-child(5) .item__icon {
 	filter: brightness(1.8);
 }
@@ -8465,4 +8461,14 @@ a.comment__author:hover {
 .archive-item:hover {
 	opacity: 0.9;
 	color: var(--lighter-color);
+}
+
+.ui-select__label img {
+	filter: invert(1);
+}
+
+.ui-select__popover-item.nuxt-link-active,
+.ui-select__popover-item--active,
+.ui-select__popover-item:hover {
+	background-color: #555;
 }

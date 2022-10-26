@@ -79,18 +79,8 @@
 	background-color: var(--lighter-color) !important;
 }
 
-body:not(.s42-is-dark) .comments_counter--has_new .comments_counter__count__ico svg,
-body:not(.s42-is-dark) .comments_counter--has_new .comments_counter__count__value_new svg,
-.favorite_marker--active .icon {
-	fill: #595959;
-}
-
 .comments_counter__count__value_new {
 	color: #818181;
-}
-
-.favorite_marker:hover:not(.favorite_marker--just_clicked) .icon {
-	fill: #999;
 }
 
 body:not(.s42-is-dark) .v-shares__button:hover,
@@ -100,12 +90,12 @@ body:not(.s42-is-dark) .repost_button__button:hover {
 	color: #999;
 }
 
+:root body:not(.s42-is-dark) {
+	--bookmark-sign-color: #595959 !important;
+}
 
-body:not(.s42-is-dark) .comments_counter__count__value,
-.favorite_marker--active .favorite_marker__title,
-.favorite_marker--active .favorite_marker__count,
-.favorite_marker:hover:not(.favorite_marker--just_clicked) .favorite_marker__count, .favorite_marker:hover:not(.favorite_marker--just_clicked) .favorite_marker__title {
-	color: #595959;
+:root body.s42-is-dark {
+	--bookmark-sign-color: #888 !important;
 }
 
 .content-editorial-tick {
@@ -113,7 +103,7 @@ body:not(.s42-is-dark) .comments_counter__count__value,
 }
 
 .entry_flash {
-	border-color: #595959 ;
+	border-color: #595959;
 }
 
 .entry_flash .icon {

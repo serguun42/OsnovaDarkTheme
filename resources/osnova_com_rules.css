@@ -60,6 +60,7 @@
 .hp-tech-footer,
 .layout__right-column [href^="/ad"],
 .layout__right-column [href^="/ad"] + [href^="/plus"],
+.layout__right-column > div > div > div:only-child,
 .dstr-bn, .dstr-bn--top-desktop, .dstr-bn--active,
 .dstr-fl, .dstr-fl__outer,
 .propaganda.propaganda--shown,
@@ -84,7 +85,12 @@
 .entry-native-branding,
 .entry-article-footer,
 .mobile-app-redirect,
-.selectel-branding-header
+.selectel-branding-header,
+.thesis__attach_gif.thesis__attach_something,
+.comments_pseudo_form__button.comments_pseudo_form__button_gif,
+.entry-article-footer-kinopoisk,
+.entry-native-branding-kinopoisk,
+.site-header__section--left .support
 {
 	display: none !important;
 	visibility: hidden !important;

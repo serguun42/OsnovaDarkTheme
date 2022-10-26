@@ -5,7 +5,7 @@ const { SetRecord, GetRecord } = require("../util/storage");
 const { CheckForSystemDarkMode, CheckForScheduledNightMode } = require("../util/theme-handlers");
 const { StartFavouriteMarkerProcedure, StopFavouriteMarkerProcedure } = require("./favourites-marker");
 const { SetFullpageEditor } = require("./fullpage-editor");
-const { SwitchLeftMenuBusiness, SwitchLeftMenuBookmarks, PlaceEditorialButton, SwitchLeftMenuFeedPopular, SwitchLeftMenuFeedNew, SwitchLeftMenuFeedMine, SwitchLeftMenuRating, SwitchLeftMenuBottomLinks, SwitchLeftMenuSupportLink } = require("./left-menu");
+const { SwitchLeftMenuBusiness, SwitchLeftMenuBookmarks, PlaceEditorialButton, SwitchLeftMenuFeedPopular, SwitchLeftMenuFeedNew, SwitchLeftMenuFeedMine, SwitchLeftMenuRating, SwitchLeftMenuBottomLinks } = require("./left-menu");
 const { SetScrollers } = require("./scrollers");
 const { SetStatsDash, RemoveStatsDash } = require("./stats-dash");
 
@@ -25,7 +25,9 @@ const navigationUserThemes = document.createElement("div");
 .then((navigationContainer) => {
 	if (!navigationContainer) return;
 
-	if (window.innerWidth <= 719) {
+	if (SITE === "tjournal")
+		navigationContainer.after(navigationUserThemes);
+	else if (window.innerWidth <= 719) {
 		navigationContainer.prepend(navigationUserThemes);
 		navigationUserThemes.classList.add("for-mobile-screen");
 	} else
@@ -679,19 +681,6 @@ const navigationUserThemes = document.createElement("div");
 											SwitchLeftMenuBottomLinks("none");
 										else
 											SwitchLeftMenuBottomLinks("");
-									}
-								},
-								{
-									name: "hide_menu_support_link",
-									title: "Скрыть кнопку поддержки рядом с логотипом",
-									checked: GetRecord("s42_hide_menu_support_link") === "1",
-									onchange: (e) => {
-										SetRecord("s42_hide_menu_support_link", (e.currentTarget.checked ? 1 : 0).toString());
-
-										if (e.currentTarget.checked)
-											SwitchLeftMenuSupportLink("none");
-										else
-											SwitchLeftMenuSupportLink("");
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),

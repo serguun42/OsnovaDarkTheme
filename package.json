@@ -1,6 +1,6 @@
 {
   "name": "osnovadarktheme",
-  "version": "10.6.0",
+  "version": "10.7.0",
   "description": "Userscript bringing dark theme to Osnova platform. Contains multiple subthemes and modules.",
   "main": "webpack.config.js",
   "type": "commonjs",
@@ -21,17 +21,17 @@
   },
   "homepage": "https://github.com/serguun42/OsnovaDarkTheme#readme",
   "dependencies": {
-    "@babel/preset-env": "7.16.11",
-    "autoprefixer": "10.4.4",
-    "babel-loader": "8.2.4",
-    "cssnano": "5.1.7",
-    "postcss": "8.4.12",
-    "postcss-cli": "9.1.0",
+    "@babel/preset-env": "7.19.4",
+    "autoprefixer": "10.4.12",
+    "babel-loader": "8.2.5",
+    "cssnano": "5.1.13",
+    "postcss": "8.4.18",
+    "postcss-cli": "10.0.0",
     "serguun42-webpack-userscript": "github:serguun42/serguun42-webpack-userscript#v3.0.2",
-    "webpack": "5.72.0",
-    "webpack-cli": "4.9.2"
+    "webpack": "5.74.0",
+    "webpack-cli": "4.10.0"
   },
   "devDependencies": {
-    "typescript": "4.6.3"
+    "typescript": "4.8.4"
   }
 }

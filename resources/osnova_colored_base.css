@@ -1964,3 +1964,9 @@ html body .ce-redactor a.andropov_link {
 :root {
     --color-bg-primary: var(--tc1);
 }
+
+.ui-select__popover-item.nuxt-link-active,
+.ui-select__popover-item--active,
+.ui-select__popover-item:hover {
+	background-color: var(--tc4);
+}
