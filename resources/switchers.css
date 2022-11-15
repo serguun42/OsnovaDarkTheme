@@ -116,7 +116,7 @@
 	display: block;
 	position: fixed;
 	width: 500px;
-	max-height: 600px;
+	max-height: 90vh;
 	top: 40px;
 	margin: 0;
 	padding: 0;

@@ -99,7 +99,7 @@ const ADDITIONAL_MODULES = [
 	},
 	{
 		name: "hide_recommendation_feed_after_comments",
-		title: "Скрыть ленту рекомендуемых постов под комментариями",
+		title: "Скрыть рекомендуемые посты после комментариев",
 		default: true,
 		priority: 5
 	},

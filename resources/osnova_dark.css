@@ -34,25 +34,25 @@
 }
 
 body:not(.s42-default-scrollers),
-body:not(.s42-default-scrollers) * {
+body:not(.s42-default-scrollers) *:not(.writing__scrollable) {
 	scrollbar-color: var(--primary-color) #232323;
 	scrollbar-width: thin;
 }
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar-track,
-body:not(.s42-default-scrollers) *::-webkit-scrollbar-track {
+body:not(.s42-default-scrollers) *:not(.writing__scrollable)::-webkit-scrollbar-track {
 	background-color: #232323 !important;
 }
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar,
-body:not(.s42-default-scrollers) *::-webkit-scrollbar {
+body:not(.s42-default-scrollers) *:not(.writing__scrollable)::-webkit-scrollbar {
 	width: 6px !important;
 	height: 6px !important;
 	background-color: #232323 !important;
 }
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar-thumb,
-body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
+body:not(.s42-default-scrollers) *:not(.writing__scrollable)::-webkit-scrollbar-thumb {
 	background-color: var(--primary-color) !important;
 	border-radius: 3px 0 0 3px !important;
 }
@@ -376,174 +376,6 @@ body, .main.layout {
 
 .island__accordion__counter, .island__accordion__link {
 	color: #888888;
-}
-
-.island__social_links .island__social_links__item--google {
-	border-color: rgba(219, 68, 55, .25);
-	color: #db4437;
-	fill: #db4437;
-}
-
-.island__social_links .island__social_links__item--google:hover {
-	border-color: #db4437;
-	background: #db4437;
-}
-
-.island__social_links .island__social_links__item--facebook {
-	border-color: rgba(66, 103, 178, .25);
-	color: #4267b2;
-	fill: #4267b2;
-}
-
-.island__social_links .island__social_links__item--facebook:hover {
-	border-color: #4267b2;
-	background: #4267b2;
-}
-
-.island__social_links .island__social_links__item--vkontakte {
-	border-color: rgba(74, 118, 168, .25);
-	color: #4a76a8;
-	fill: #4a76a8;
-}
-
-.island__social_links .island__social_links__item--vkontakte:hover {
-	border-color: #4a76a8;
-	background: #4a76a8;
-}
-
-.island__social_links .island__social_links__item--twitter {
-	border-color: rgba(29, 161, 242, .25);
-	color: #1da1f2;
-	fill: #1da1f2;
-}
-
-.island__social_links .island__social_links__item--twitter:hover {
-	border-color: #1da1f2;
-	background: #1da1f2;
-}
-
-.island__social_links .island__social_links__item--instagram {
-	border-color: rgba(217, 49, 116, .25);
-	color: #d93174;
-	fill: #d93174;
-}
-
-.island__social_links .island__social_links__item--instagram:hover {
-	border-color: #d93174;
-	background: #d93174;
-}
-
-.island__social_links .island__social_links__item--youtube {
-	border-color: rgba(255, 0, 0, .25);
-	color: red;
-	fill: red;
-}
-
-.island__social_links .island__social_links__item--youtube:hover {
-	border-color: red;
-	background: red;
-}
-
-.island__social_links .island__social_links__item--behance {
-	border-color: rgba(0, 87, 255, .25);
-	color: #0057ff;
-	fill: #0057ff;
-}
-
-.island__social_links .island__social_links__item--behance:hover {
-	border-color: #0057ff;
-	background: #0057ff;
-}
-
-.island__social_links .island__social_links__item--telegram {
-	border-color: rgba(0, 136, 204, .25);
-	color: #08c;
-	fill: #08c;
-}
-
-.island__social_links .island__social_links__item--telegram:hover {
-	border-color: #08c;
-	background: #08c;
-}
-
-.island__social_links .island__social_links__item--yadzen {
-	border-color: rgba(255, 0, 0, .25);
-	color: red;
-	fill: red;
-}
-
-.island__social_links .island__social_links__item--yadzen:hover {
-	border-color: rgba(255, 0, 0, .85);
-	background: rgba(255, 0, 0, .85);
-}
-
-.island__social_links .island__social_links__item--linkedin {
-	border-color: rgba(0, 119, 183, .25);
-	color: #0077b7;
-	fill: #0077b7;
-}
-
-.island__social_links .island__social_links__item--linkedin:hover {
-	border-color: #0077b7;
-	background: #0077b7;
-}
-
-.island__social_links .island__social_links__item--odnoklassniki {
-	border-color: rgba(239, 130, 14, .25);
-	color: #ef820e;
-	fill: #ef820e;
-}
-
-.island__social_links .island__social_links__item--odnoklassniki:hover {
-	border-color: #ef820e;
-	background: #ef820e;
-}
-
-.island__social_links .island__social_links__item:hover {
-	color: #FFFFFF;
-	fill: #FFFFFF;
-}
-
-.island__social_links--type_1 .island__social_links__item {
-	border-color: #121212;
-	background: #121212;
-	color: #888888;
-}
-
-.island__social_links--type_1 .island__social_links__item__delete {
-	border-left: 1px solid rgba(255, 255, 255, .2);
-}
-
-.island__social_links--type_1 .island__social_links__item__delete .icon {
-	fill: rgba(255, 255, 255, .7);
-}
-
-.island__social_links--type_1 .island__social_links__item__delete:hover .icon {
-	fill: #FFFFFF;
-}
-
-.island__social_links--type_1 .island__social_links__item--active {
-	color: #FFFFFF;
-}
-
-.island__social_links--type_1 .island__social_links__item--active.island__social_links__item--google {
-	background: #db4437;
-	border-color: #db4437;
-}
-
-.island__social_links--type_1 .island__social_links__item--active.island__social_links__item--facebook {
-	background: #4267b2;
-	border-color: #4267b2;
-}
-
-.island__social_links--type_1 .island__social_links__item--active.island__social_links__item--vkontakte {
-	background: #4a76a8;
-	border-color: #4a76a8;
-}
-
-.island__social_links--type_1 .island__social_links__item--active.island__social_links__item--twitter {
-	background: #1da1f2;
-	border-color: #1da1f2;
 }
 
 .island__hashtags__item {
@@ -1876,6 +1708,10 @@ body:not(.s42-default-scrollers) .dropdown__found__list::-webkit-scrollbar {
 .writing .content--embed p:not(.block-embed-link) a {
 	color: var(--lighter-color) !important;
 	border-bottom: 1px solid var(--primary-color--faded26) !important;
+}
+
+.writing__scrollable::-webkit-scrollbar-thumb {
+	background-color: #888;
 }
 
 .editor__title::placeholder, .editor .embed-block__caption:empty::before {
@@ -3319,7 +3155,8 @@ body:not(.s42-default-scrollers) .inline-dropdown::-webkit-scrollbar {
 	color: #1fd31c;
 }
 
-.vote--comment.vote--sum-negative .vote__value {
+.vote--comment.vote--sum-negative .vote__value,
+.vote--content.vote--sum-negative .vote__value {
 	color: #FF0000;
 }
 

@@ -15,13 +15,13 @@ All [CSS and other resources](./resources) could be deployed to production serve
 1. Install all dependencies – `npm i`
 2. Build userscript in [watch mode](https://webpack.js.org/configuration/watch/) – `npm run dev`, output to `dev/osnova_dark_theme.user.js`
 
-## Introduction posts
-* on [TJournal](https://tjournal.ru/137781#darkmode)
-* on [DTF](https://dtf.ru/666655#darkmode)
+## About
+* [Introduction post](https://dtf.ru/666655#darkmode)
+* [Updates posts](https://dtf.ru/tag/darktheme)
 
 <h4 align="center">Options available for end-user</h4>
 <p align="center">
-	<img src="https://leonardo.osnova.io/bbd7bd3d-b75c-55b1-948e-5850846a9d13/" alt="Available options" width="500"/>
+	<img src="https://leonardo.osnova.io/95bdcba1-e4d5-52f2-ad62-569f55f33027/" alt="Available options" width="500"/>
 </p>
 
 #### [License – GNU GPL v3](./LICENSE)

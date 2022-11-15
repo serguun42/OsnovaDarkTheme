@@ -32,25 +32,25 @@
 }
 
 body:not(.s42-default-scrollers),
-body:not(.s42-default-scrollers) * {
+body:not(.s42-default-scrollers) *:not(.writing__scrollable) {
 	scrollbar-color: var(--scroll-color) transparent;
 	scrollbar-width: thin;
 }
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar-track,
-body:not(.s42-default-scrollers) *::-webkit-scrollbar-track {
+body:not(.s42-default-scrollers) *:not(.writing__scrollable)::-webkit-scrollbar-track {
 	background-color: transparent;
 }
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar,
-body:not(.s42-default-scrollers) *::-webkit-scrollbar {
+body:not(.s42-default-scrollers) *:not(.writing__scrollable)::-webkit-scrollbar {
 	width: 6px;
 	height: 6px;
 	background-color: var(--scroll-color);
 }
 
 body:not(.s42-default-scrollers)::-webkit-scrollbar-thumb,
-body:not(.s42-default-scrollers) *::-webkit-scrollbar-thumb {
+body:not(.s42-default-scrollers) *:not(.writing__scrollable)::-webkit-scrollbar-thumb {
 	background-color: var(--primary-color);
 	border-radius: 3px 0 0 3px;
 }

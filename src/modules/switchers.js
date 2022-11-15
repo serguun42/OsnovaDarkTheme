@@ -763,7 +763,8 @@ const navigationUserThemes = document.createElement("div");
 								},
 								{
 									name: "hide_menu_bottom_links",
-									title: "Скрыть ссылки внизу левого меню",
+									title: "Скрыть ссылки в низу левого меню",
+									subtitle: "О проекте, правила, помощь, ссылки на соцсети и приложения",
 									checked: GetRecord("s42_hide_menu_bottom_links") === "1",
 									onchange: (e) => {
 										SetRecord("s42_hide_menu_bottom_links", (e.currentTarget.checked ? 1 : 0).toString());
@@ -785,7 +786,7 @@ const navigationUserThemes = document.createElement("div");
 							...([
 								{
 									name: "beautifulfeedposts",
-									title: "Кнопки оценки постов без теней",
+									title: "Кнопки оценки постов без круглых теней",
 									checked: GetRecord("s42_beautifulfeedposts") !== "0",
 									onchange: (e) => {
 										SetRecord("s42_beautifulfeedposts", e.currentTarget.checked ? "1" : "0");
@@ -802,17 +803,9 @@ const navigationUserThemes = document.createElement("div");
 									}
 								},
 								{
-									name: "hide_recommendation_feed_after_comments",
-									title: "Скрыть ленту рекомендуемых постов под комментариями",
-									checked: GetRecord("s42_hide_recommendation_feed_after_comments") !== "0",
-									onchange: (e) => {
-										SetRecord("s42_hide_recommendation_feed_after_comments", e.currentTarget.checked ? "1" : "0");
-										ManageModule("hide_recommendation_feed_after_comments", e.currentTarget.checked);
-									}
-								},
-								{
 									name: "favouritemarker",
-									title: "Количество закладок в постах",
+									title: "Показывать количество закладок",
+									subtitle: "Работает только для постов на страницах материалов, но не в ленте или профиле",
 									checked: GetRecord("s42_favouritemarker") !== "0",
 									onchange: (e) => {
 										SetRecord("s42_favouritemarker", e.currentTarget.checked ? "1" : "0");
@@ -821,6 +814,15 @@ const navigationUserThemes = document.createElement("div");
 											StartFavouriteMarkerProcedure();
 										else
 											StopFavouriteMarkerProcedure();
+									}
+								},
+								{
+									name: "hide_recommendation_feed_after_comments",
+									title: "Скрыть рекомендуемые посты после комментариев",
+									checked: GetRecord("s42_hide_recommendation_feed_after_comments") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_hide_recommendation_feed_after_comments", e.currentTarget.checked ? "1" : "0");
+										ManageModule("hide_recommendation_feed_after_comments", e.currentTarget.checked);
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),
@@ -834,7 +836,8 @@ const navigationUserThemes = document.createElement("div");
 							...([
 								{
 									name: "fullpage_editor",
-									title: "Автоматически раскрывать редактор на всю страницу при его открытии",
+									title: "Разворачивать редактор на всю страницу",
+									subtitle: "Автоматически растягивает на полный экран маленький блок редактора при его открытии",
 									checked: GetRecord("s42_fullpage_editor") === "1",
 									onchange: (e) => {
 										SetRecord("s42_fullpage_editor", e.currentTarget.checked ? "1" : "0");
@@ -844,7 +847,8 @@ const navigationUserThemes = document.createElement("div");
 								},
 								{
 									name: "stars_in_editor",
-									title: "Вернуть в редактор быстрые действия: вывод в ленту, якоря, скрытие блоков и т.п.",
+									title: "Вернуть в редактор быстрые действия",
+									subtitle: "Кнопки вывода в ленту, якорей и скрытых блоков",
 									checked: GetRecord("s42_stars_in_editor") === "1",
 									onchange: (e) => {
 										SetRecord("s42_stars_in_editor", e.currentTarget.checked ? "1" : "0");
@@ -854,6 +858,7 @@ const navigationUserThemes = document.createElement("div");
 								{
 									name: "previous_editor",
 									title: "Старое оформление редактора",
+									subtitle: "Кнопки сохранения, предпросмотра, автоформатирования и «редакторские+» инструменты будут наверху",
 									checked: GetRecord("s42_previous_editor") === "1",
 									onchange: (e) => {
 										SetRecord("s42_previous_editor", e.currentTarget.checked ? "1" : "0");
@@ -863,6 +868,7 @@ const navigationUserThemes = document.createElement("div");
 								{
 									name: "hide_feed_top_mini_editor",
 									title: "Скрыть мини-редактор в начале ленты",
+									subtitle: "Оставляет редактор в вашем профиле и подсайтах",
 									checked: GetRecord("s42_hide_feed_top_mini_editor") === "1",
 									onchange: (e) => {
 										SetRecord("s42_hide_feed_top_mini_editor", e.currentTarget.checked ? "1" : "0");
@@ -880,6 +886,7 @@ const navigationUserThemes = document.createElement("div");
 							LocalBuildCheckboxByCommonRule({
 								name: "karma",
 								title: "Блок с вашими кармой, подписчиками и подписками в шапке",
+								subtitle: "Не рекомендуется включать на маленьких экранах",
 								checked: GetRecord("s42_karma") !== "off",
 								onchange: (e) => {
 									SetRecord("s42_karma", e.currentTarget.checked ? "on" : "off");
@@ -957,6 +964,7 @@ const navigationUserThemes = document.createElement("div");
 								{
 									name: "softer_black",
 									title: "Более мягкий фон в подтемах «Ultra Dark», «Кроваво-чёрное ничто» и «Black Monochrome»",
+									subtitle: "Заменяет абслютный чёрный (#000) на 7% серый (#121212)",
 									checked: GetRecord("s42_softer_black") === "1",
 									onchange: (e) => {
 										SetRecord("s42_softer_black", (e.currentTarget.checked ? 1 : 0).toString());
@@ -1053,7 +1061,7 @@ const navigationUserThemes = document.createElement("div");
 		const isScreenSmall = (e.clientX < 600 || window.innerHeight <= 660);
 
 
-		const switchersContainerMaxHeight = isScreenSmall ? window.innerHeight - 60 : 600,
+		const switchersContainerMaxHeight = window.innerHeight * 0.9,
 			  switchersContainerMaxWidth = isScreenSmall ? window.innerWidth : 500,
 			  switchersContainer = GEBI("switcher-layout"),
 			  switchersScroller = GEBI("switcher-layout--scroller"),

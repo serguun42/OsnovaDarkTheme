@@ -87,21 +87,14 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 
 
 
-
-
-
-
-
-
 .page.page--editor .header,
 .editor .header {
 	background-color: var(--ultra-dark-background) !important;
 }
 
-
-
-
-
+.writing__scrollable::-webkit-scrollbar-thumb {
+	background-color: #444;
+}
 
 
 
