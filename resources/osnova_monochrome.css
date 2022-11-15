@@ -244,7 +244,8 @@ body:not(.s42-is-dark) .repost_button__button:hover {
 
 
 body:not(.s42-is-dark) .site-header {
-	background-color: #E0E0E0;
+	background: unset !important;
+	background-color: #E0E0E0 !important;
 }
 
 .site-header-logo {

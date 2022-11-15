@@ -4256,7 +4256,8 @@ html body .ce-redactor a.andropov_link {
 .content ul li a,
 .content ol li a,
 .subsite_about__text a,
-.subsite_head__description a {
+.subsite_head__description a,
+.plus-sheet__paid a {
 	color: var(--lighter-color);
 	border-bottom: 1px solid var(--primary-color--faded26);
 }
@@ -4300,7 +4301,8 @@ html body .ce-redactor a.andropov_link {
 .content ul li a:hover,
 .content ol li a:hover,
 .subsite_about__text a:hover,
-.subsite_head__description a:hover {
+.subsite_head__description a:hover,
+.plus-sheet__paid a:hover {
 	color: #FFFFFF;
 	border-bottom: 1px solid var(--primary-color--faded50);
 }
@@ -5695,7 +5697,8 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 }
 
 .site-header {
-	background-color: #232323;
+	background: unset !important;
+	background-color: #232323 !important;
 }
 
 .app__header {
@@ -8471,4 +8474,23 @@ a.comment__author:hover {
 .ui-select__popover-item--active,
 .ui-select__popover-item:hover {
 	background-color: #555;
+}
+
+
+
+.plus-sheet {
+	background: linear-gradient(220deg, #2d3e5c 12.97%, #292b64 34.26%, #2c3476 55.44%, #382d70 86.69%);
+}
+
+.sheet-benefits {
+	--benefits-bg: #333;
+}
+
+.plus-sheet__gradient {
+	background: linear-gradient(180deg, transparent 0%, #2c3476 27.25%);
+}
+
+.plus-sheet__paid {
+	color: #AAA;
+	opacity: 1;
 }

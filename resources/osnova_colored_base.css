@@ -1309,6 +1309,7 @@ html body .ce-redactor a.andropov_link {
 
 
 .site-header {
+	background: unset !important;
 	background-color: var(--tc2) !important;
 }
 
@@ -1969,4 +1970,9 @@ html body .ce-redactor a.andropov_link {
 .ui-select__popover-item--active,
 .ui-select__popover-item:hover {
 	background-color: var(--tc4);
+}
+
+
+.sheet-benefits {
+	--benefits-bg: var(--tc2);
 }

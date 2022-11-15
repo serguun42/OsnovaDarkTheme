@@ -577,3 +577,9 @@ body:not(.s42-default-scrollers) .head-notifies__items-wrapper::-webkit-scrollba
 :root {
     --color-bg-primary: var(--ultra-dark-background);
 }
+
+
+
+.sheet-benefits {
+	--benefits-bg: #121212;
+}

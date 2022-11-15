@@ -45,7 +45,10 @@ const ALL_RECORDS_NAMES = [
 	"s42_hideviewsanddate",
 	"s42_hideentriesbadge",
 	"s42_donate",
-	"s42_com_rules"
+	"s42_com_rules",
+	"s42_hide_all_badges",
+	"s42_hide_plus_badge",
+	"s42_hide_verified_badge"
 ];
 
 /**

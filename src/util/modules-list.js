@@ -128,6 +128,24 @@ const ADDITIONAL_MODULES = [
 		priority: 6
 	},
 	{
+		name: "hide_verified_badge",
+		title: "Убрать галочки у всех пользователей",
+		default: false,
+		priority: 6
+	},
+	{
+		name: "hide_plus_badge",
+		title: "Убрать значки Plus",
+		default: false,
+		priority: 6
+	},
+	{
+		name: "hide_all_badges",
+		title: "Убрать все значки",
+		default: false,
+		priority: 6
+	},
+	{
 		name: "no_themes",
 		title: "Не применять никакие темы никогда",
 		default: false,

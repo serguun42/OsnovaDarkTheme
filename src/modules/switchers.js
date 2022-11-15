@@ -211,6 +211,10 @@ const navigationUserThemes = document.createElement("div");
 		}
 	}));
 
+	const donateIsShown = parseInt(GetRecord("s42_donate"))
+		? (Date.now() - parseInt(GetRecord("s42_donate"))) > (1000 * 60 * 60 * 24 * 7)
+		: true;
+
 	const LocalHideDonate = () => {
 		SetRecord("s42_donate", Date.now().toString());
 
@@ -305,9 +309,9 @@ const navigationUserThemes = document.createElement("div");
 						value: addDarkModule.name,
 						...((
 							addDarkModule.name === "nothing"
-								? ADDITIONAL_MODULES.filter((addModuleChecking) => addModuleChecking.dark).every(
-										(addModuleChecking) => GetRecord(`s42_${addModuleChecking.name}`) !== "1"
-									)
+								? ADDITIONAL_MODULES
+									.filter((additionalModule) => additionalModule.dark)
+									.every((additionalModule) => GetRecord(`s42_${additionalModule.name}`) !== "1")
 								: GetRecord(`s42_${addDarkModule.name}`) === "1"
 						)
 							? { checked: "checked" }
@@ -394,9 +398,9 @@ const navigationUserThemes = document.createElement("div");
 						value: addLightModule.name,
 						...((
 							addLightModule.name === "nothing-light"
-								? ADDITIONAL_MODULES.filter((addModuleChecking) => addModuleChecking.light).every(
-										(addModuleChecking) => GetRecord(`s42_${addModuleChecking.name}`) !== "1"
-									)
+								? ADDITIONAL_MODULES
+									.filter((additionalModule) => additionalModule.light)
+									.every((additionalModule) => GetRecord(`s42_${additionalModule.name}`) !== "1")
 								: GetRecord(`s42_${addLightModule.name}`) === "1"
 						)
 							? { checked: "checked" }
@@ -414,6 +418,93 @@ const navigationUserThemes = document.createElement("div");
 			]
 		}
 	}));
+
+	/**
+	 * @returns {ElementDescriptorType[]}
+	 */
+	const LocalBuildUserBadgesOptions = () => [
+		{
+			name: "verified",
+			title: "Добавить галочки всем пользователям",
+		},
+		{
+			name: "hide_verified_badge",
+			title: "Убрать галочки у всех пользователей",
+		},
+		{
+			name: "hide_plus_badge",
+			title: "Убрать значки Plus",
+		},
+		{
+			name: "hide_all_badges",
+			title: "Убрать все значки",
+		},
+		{
+			name: null,
+			title: "Не изменять отображение значков пользователей",
+		}
+	].map((userBadgeOption, _, allOptions) => ({
+		class: "switcher-layout__list__item",
+		child: {
+			tag: "label",
+			class: "mdl-radio mdl-js-radio mdl-js-ripple-effect",
+			attr: {
+				for: `user-badge-option-${userBadgeOption.name}`
+			},
+			data: {
+				mdlUpgrade: true
+			},
+			children: [
+				{
+					tag: "input",
+					class: "mdl-radio__button",
+					id: `user-badge-option-${userBadgeOption.name}`,
+					data: {
+						mdlEventWating: true
+					},
+					attr: {
+						type: "radio",
+						name: "add-light",
+						value: `user-badge-option-${userBadgeOption.name}`,
+						...((
+							!userBadgeOption.name
+								? ADDITIONAL_MODULES
+									.filter((additionalModule) => {
+										const userBadgeOptionNames = allOptions.map((option) => option.name).filter(Boolean);
+										return userBadgeOptionNames.includes(additionalModule.name);
+									})
+									.every((additionalModule) => GetRecord(`s42_${additionalModule.name}`) !== "1")
+								: GetRecord(`s42_${userBadgeOption.name}`) === "1"
+						)
+							? { checked: "checked" }
+							: {}),
+					},
+					listeners: {
+						change: (e) => {
+							console.log(e);
+
+							allOptions.forEach((option) => {
+								if (!option.name) return;
+
+								SetRecord(`s42_${option.name}`, "0");
+								ManageModule(option.name, false);
+							});
+
+							if (!userBadgeOption.name) return;
+
+							SetRecord(`s42_${userBadgeOption.name}`, "1");
+							ManageModule(userBadgeOption.name, true);
+						}
+					}
+				},
+				{
+					tag: "span",
+					class: "mdl-radio__label",
+					text: userBadgeOption.title
+				}
+			]
+		}
+	}))
 
 	/**
 	 * @param {{name: string, title: string, subtitle?: string, checked: boolean, onchange: (e: import("../util/dom").GenericEventType) => void}} checkboxRule
@@ -509,7 +600,7 @@ const navigationUserThemes = document.createElement("div");
 								text: "Когда включать"
 							},
 							...LocalBuildTimeSwitchers(),
-							...((Date.now() - parseInt(GetRecord("s42_donate")) || 0) > 86400 * 5 * 1e3 ? [
+							...(donateIsShown ? [
 								{
 									class: "switcher-layout__list__separator switcher-layout__list__donate",
 									onclick: LocalHideDonate
@@ -518,7 +609,7 @@ const navigationUserThemes = document.createElement("div");
 									tag: "a",
 									class: "switcher-layout__list__subheader switcher-layout__list__donate",
 									attr: {
-										href: "https://sobe.ru/na/dark_mode",
+										href: "https://dtf.ru/1447609",
 										target: "_blank",
 										style: `color: ${SITE_COLOR}; text-decoration: underline;`
 									},
@@ -527,7 +618,7 @@ const navigationUserThemes = document.createElement("div");
 								},
 								{
 									class: "switcher-layout__list__subheader switcher-layout__list__donate",
-									text: "Можете просто скрыть это сообщение, нажав на него или сюда 👆🏻",
+									text: "Это сообщение можно скрыть, просто нажав на него 👈",
 									onclick: LocalHideDonate
 								}
 							] : []),
@@ -842,7 +933,15 @@ const navigationUserThemes = document.createElement("div");
 							},
 							{
 								class: "switcher-layout__list__subheader",
-								text: "Другие дополнительные модули"
+								text: "Настройки отображения значков"
+							},
+							...LocalBuildUserBadgesOptions(),
+							{
+								class: "switcher-layout__list__separator"
+							},
+							{
+								class: "switcher-layout__list__subheader",
+								text: "Другие модули"
 							},
 							...([
 								{
@@ -888,25 +987,6 @@ const navigationUserThemes = document.createElement("div");
 									}
 								},
 								{
-									name: "verified",
-									title: "Добавить галочки всем пользователям",
-									checked: GetRecord("s42_verified") === "1",
-									onchange: (e) => {
-										SetRecord("s42_verified", (e.currentTarget.checked ? 1 : 0).toString());
-										ManageModule("verified", e.currentTarget.checked);
-									}
-								},
-								{
-									name: "com_rules",
-									title: "Отключить рекламу",
-									subtitle: "Фильтр регулярно обновляется",
-									checked: GetRecord("s42_com_rules") !== "0",
-									onchange: (e) => {
-										SetRecord("s42_com_rules", e.currentTarget.checked ? "1" : "0");
-										ManageModule("com_rules", e.currentTarget.checked);
-									}
-								},
-								{
 									name: "gray_signs",
 									title: "Серые оценки у постов и комментариев",
 									checked: GetRecord("s42_gray_signs") === "1",
@@ -923,6 +1003,16 @@ const navigationUserThemes = document.createElement("div");
 									onchange: (e) => {
 										SetRecord("s42_hide_likes", e.currentTarget.checked ? "1" : "0");
 										ManageModule("hide_likes", e.currentTarget.checked);
+									}
+								},
+								{
+									name: "com_rules",
+									title: "Отключить рекламу",
+									subtitle: "Фильтр регулярно обновляется",
+									checked: GetRecord("s42_com_rules") !== "0",
+									onchange: (e) => {
+										SetRecord("s42_com_rules", e.currentTarget.checked ? "1" : "0");
+										ManageModule("com_rules", e.currentTarget.checked);
 									}
 								}
 							].map(LocalBuildCheckboxByCommonRule)),

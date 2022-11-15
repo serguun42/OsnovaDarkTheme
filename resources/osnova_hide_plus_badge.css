@@ -1,0 +1,11 @@
+/**
+ * Hide Plus badges
+ * @serguun42
+ * Nov 2022
+ */
+
+.subsite-badge--plus,
+.layout-badge--plus {
+	display: none !important;
+	opacity: 0 !important;
+}
