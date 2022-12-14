@@ -480,9 +480,7 @@ const navigationUserThemes = document.createElement("div");
 							: {}),
 					},
 					listeners: {
-						change: (e) => {
-							console.log(e);
-
+						change: () => {
 							allOptions.forEach((option) => {
 								if (!option.name) return;
 
@@ -809,6 +807,7 @@ const navigationUserThemes = document.createElement("div");
 									checked: GetRecord("s42_favouritemarker") !== "0",
 									onchange: (e) => {
 										SetRecord("s42_favouritemarker", e.currentTarget.checked ? "1" : "0");
+										ManageModule("favouritemarker", e.currentTarget.checked);
 
 										if (e.currentTarget.checked)
 											StartFavouriteMarkerProcedure();

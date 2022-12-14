@@ -73,11 +73,6 @@ body:not(.s42-default-scrollers) .v-field--scroll .v-text-area__input::-webkit-s
 .comment__avatar:hover ~ .comment__author a.comment-user,
 .vote .vote__users__item:hover,
 .vote .vote__users__item:hover time,
-.content-header-author:hover,
-.content-header-author:hover time,
-.content-header-number:hover,
-.content-header-number:hover time,
-.content-header__item:hover,
 .profile_comment_favorite__title:hover,
 .profile_comment_favorite__title:hover time,
 .profile_comment_favorite__user:hover,
@@ -87,13 +82,14 @@ body:not(.s42-default-scrollers) .v-field--scroll .v-text-area__input::-webkit-s
 .t-link-hovered,
 .t-link:hover,
 .t-link:hover time,
-a.content-header-author:hover,
-a.content-header-author:hover time,
-a.content-header-number:hover,
-a.content-header-number:hover time,
 .comment__detail:hover,
 .comment__detail:hover time {
 	color: var(--lighter-color);
+}
+
+.content-header__item:hover a,
+.content-header__item:hover time {
+	color: var(--primary-color);
 }
 
 .t-link-site, .t-link-inline {
@@ -1085,7 +1081,10 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 	background-color: #FFF1f1;
 }
 
-.best_comments__item__date, .comments_counter__count__ico svg, .comments_counter__count__unit, .comments_counter__count__value {
+.best_comments__item__date,
+.comments_counter__count__ico svg,
+.comments_counter__count__unit,
+.comments_counter__count__value {
 	color: #888888;
 }
 
@@ -1094,12 +1093,18 @@ body:not(.s42-default-scrollers) .bubble .bubble__container .list::-webkit-scrol
 	margin-right: 5px;
 }
 
-.comments_counter--has_new .comments_counter__count__ico svg, .comments_counter--has_new .comments_counter__count__value_new svg {
-	fill: var(--lighter-color);
+.comments_counter:hover .comments_counter__count__unit,
+.comments_counter:hover .comments_counter__count__value,
+.comments_counter:hover .comments_counter__count__value_new {
+	color: var(--lighter-color);
 }
 
-.comments_counter:hover .comments_counter__count__unit, .comments_counter:hover .comments_counter__count__value, .comments_counter:hover .comments_counter__count__value_new {
-	color: var(--lighter-color);
+.comments_counter--has_new .comments_counter__count__value_new {
+	color: var(--primary-color) !important;
+}
+
+.comments_counter.comments_counter--has_new:hover .comments_counter__count__value_new {
+	color: var(--lighter-color) !important;
 }
 
 .popup__content--popup_attach_service h4 {
@@ -4654,10 +4659,6 @@ html body .ce-redactor a.andropov_link {
 	border-left: 1px solid #333;
 }
 
-.content-header-author.content-header-author--subsite:hover, .content-header-author.content-header-author--user:hover, .content-header-number:hover, .content-header-number:hover time {
-	color: var(--primary-color);
-}
-
 .content-header-note {
 	color: #e1e1e1;
 	border: none;
@@ -6048,6 +6049,8 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .v-repost__button,
 .v-repost,
 .content-header-number,
+.content-header-repost,
+.content-header-promoted,
 .content__updating,
 [air-module="module.date"] {
 	color: #888;
@@ -6593,10 +6596,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	background-color: rgba(255, 255, 255, 0.1);
 }
 
-.content-header-number, .content-header-repost {
-	color: #888;
-}
-
 
 
 
@@ -6755,10 +6754,6 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .ce-block-settings__item:not(.no-hover):hover,
 .remove-tool--confirm {
 	background-color: #666 !important;
-}
-
-.content-header-promoted {
-	color: #818181;
 }
 
 
@@ -8330,4 +8325,13 @@ a.comment__author:hover {
 .plus-sheet__paid {
 	color: #AAA;
 	opacity: 1;
+}
+
+
+.like-button {
+	color: #888;
+}
+
+.like-button--active {
+  color: var(--like-color-active);
 }

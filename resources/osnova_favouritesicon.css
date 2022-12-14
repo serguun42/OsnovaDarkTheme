@@ -5,7 +5,7 @@
  */
 
 :root {
-	--bookmark-sign-color: #E84755;
+	--bookmark-sign-color: #e84755;
 }
 
 .favorite_marker--active .favorite_marker__count,
@@ -50,4 +50,12 @@
 
 .v-popover-container .popover .icon--v_bookmark_solid {
 	color: var(--bookmark-sign-color);
+}
+
+.bookmark {
+	position: relative;
+}
+
+.bookmark:before {
+	--bg-color: var(--bookmark-sign-color) !important;
 }

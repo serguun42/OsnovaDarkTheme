@@ -98,6 +98,12 @@ const ADDITIONAL_MODULES = [
 		priority: 5
 	},
 	{
+		name: "favouritemarker",
+		title: "Показывать количество закладок",
+		default: true,
+		priority: 5
+	},
+	{
 		name: "hide_recommendation_feed_after_comments",
 		title: "Скрыть рекомендуемые посты после комментариев",
 		default: true,

@@ -1,0 +1,13 @@
+/**
+ * Better styles for bookmarks counter
+ * @serguun42
+ * Dec 2022
+ */
+
+.bookmark:before {
+	width: 130% !important;
+	height: 120% !important;
+	top: -10% !important;
+	left: -10% !important;
+	border-radius: calc(var(--size, 14px) / 2) !important;
+}
