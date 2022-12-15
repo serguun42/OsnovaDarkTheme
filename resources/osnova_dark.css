@@ -88,7 +88,8 @@ body:not(.s42-default-scrollers) .v-field--scroll .v-text-area__input::-webkit-s
 }
 
 .content-header__item:hover a,
-.content-header__item:hover time {
+.content-header__item:hover time,
+a.content-header__item:hover time {
 	color: var(--primary-color);
 }
 
@@ -6046,8 +6047,9 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 .comments_counter__count__ico,
 .comments_counter__count__icon,
 .repost_button__button,
-.v-repost__button,
 .v-repost,
+.v-repost__button,
+.v-repost__counter,
 .content-header-number,
 .content-header-repost,
 .content-header-promoted,

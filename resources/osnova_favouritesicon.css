@@ -52,10 +52,6 @@
 	color: var(--bookmark-sign-color);
 }
 
-.bookmark {
-	position: relative;
-}
-
 .bookmark:before {
 	--bg-color: var(--bookmark-sign-color) !important;
 }

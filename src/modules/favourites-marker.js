@@ -75,6 +75,7 @@ const StartFavouriteMarkerProcedure = () => {
 						bookmarkTitle.innerText = favouritesCount || "";
 
 						bookmarkElem.appendChild(bookmarkTitle);
+						bookmarkElem.classList.add("bookmark--s42-with-marker");
 
 						bookmarkElem.addEventListener("click", (e) => {
 							const active = (e.currentTarget || e.target).classList.contains("bookmark--active"),

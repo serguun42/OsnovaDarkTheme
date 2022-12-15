@@ -4,10 +4,17 @@
  * Dec 2022
  */
 
-.bookmark:before {
-	width: 130% !important;
-	height: 120% !important;
-	top: -10% !important;
-	left: -10% !important;
-	border-radius: calc(var(--size, 14px) / 2) !important;
+.bookmark {
+	position: relative;
+}
+
+.bookmark--s42-with-marker:before,
+.l-entry .bookmark:before {
+	top: -4px !important;
+	left: -4px !important;
+	border-radius: 14px !important;
+}
+
+.bookmark .bookmark__title {
+	line-height: 20px;
 }
