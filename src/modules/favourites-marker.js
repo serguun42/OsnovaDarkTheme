@@ -1,121 +1,111 @@
-const { SetCustomInterval, ClearCustomInterval, WaitForElement, QSA, QS } = require("../util/dom");
-const { GetRecord } = require("../util/storage");
+const { SetCustomInterval, ClearCustomInterval, WaitForElement, QSA, QS } = require('../util/dom.js');
+const { GetRecord } = require('../util/storage.js');
 
-let addFavouriteMarkerFlag = (GetRecord("s42_favouritemarker") !== "0"),
-	addingFavouriteMarkerInterval = -1;
+let favouriteMarkerInterval = -1;
 
 const StartFavouriteMarkerProcedure = () => {
-	const LocalFavouriteMarkerProcedure = () => {
-		if (addingFavouriteMarkerInterval > -1) return;
+  const favouriteMarkerEnabled = GetRecord('s42_favouritemarker') !== '0';
 
+  const LocalFavouriteMarkerProcedure = () => {
+    if (favouriteMarkerInterval > -1) return;
 
-		let lastURL = "";
+    let lastURL = '';
 
-		addingFavouriteMarkerInterval = SetCustomInterval(() => {
-			if (!addFavouriteMarkerFlag) {
-				if (addingFavouriteMarkerInterval > -1) ClearCustomInterval(addingFavouriteMarkerInterval);
-				return;
-			}
+    favouriteMarkerInterval = SetCustomInterval(() => {
+      if (!favouriteMarkerEnabled) {
+        if (favouriteMarkerInterval > -1) ClearCustomInterval(favouriteMarkerInterval);
+        return;
+      }
 
-			if (lastURL === window.location.pathname) return;
-			if (QS(".main_progressbar--in_process")) return;
+      if (lastURL === window.location.pathname) return;
+      if (QS('.main_progressbar--in_process')) return;
 
-			lastURL = window.location.pathname;
+      lastURL = window.location.pathname;
 
+      /* Actual Cache Procedure */
+      let cURL = lastURL;
+      let id = -2;
 
-			/* Actual Cache Procedure */
-			let cURL = lastURL,
-				id = -2;
+      if (cURL.slice(0, 3) === '/u/') {
+        cURL = cURL.slice(1).split('/');
+        if (cURL.length < 3) return;
 
-			if (cURL.slice(0, 3) === "/u/") {
-				cURL = cURL.slice(1).split("/");
-				if (cURL.length < 3) return;
+        id = parseInt(cURL[2]);
+        if (Number.isNaN(id)) return;
+      } else {
+        if (cURL.slice(0, 3) === '/m/') return;
 
-				id = parseInt(cURL[2]);
-				if (isNaN(id)) return;
-			} else {
-				if (cURL.slice(0, 3) === "/m/") return;
+        if (cURL.slice(0, 3) === '/s/') cURL = cURL.slice(3);
+        else cURL = cURL.slice(1);
 
-				if (cURL.slice(0, 3) === "/s/")
-					cURL = cURL.slice(3);
-				else
-					cURL = cURL.slice(1);
+        if (!cURL) return;
 
-				if (!cURL) return;
+        cURL = cURL.split('/');
+        if (cURL.length >= 2) {
+          id = parseInt(cURL[1]);
+          if (Number.isNaN(id)) return;
+        } else if (cURL.length) {
+          id = parseInt(cURL[0]);
+          if (Number.isNaN(id)) return;
+        }
+      }
 
-				cURL = cURL.split("/");
-				if (cURL.length >= 2) {
-					id = parseInt(cURL[1]);
-					if (isNaN(id)) return;
-				} else if (cURL.length) {
-					id = parseInt(cURL[0]);
-					if (isNaN(id)) return;
-				}
-			}
+      WaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`).then((postElement) => {
+        if (!postElement) return;
 
+        try {
+          const hiddenEntryData = JSON.parse(QS('.l-hidden.entry_data')?.dataset?.articleInfo || '{}');
+          const favouritesCount = hiddenEntryData.favorites;
 
-			WaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
-			.then((postElement) => {
-				if (!postElement) return;
+          QSA('.l-entry .bookmark').forEach((bookmarkElem) => {
+            const vueDataHashAttribute = bookmarkElem
+              .getAttributeNames()
+              .filter((attributeName) => /^data-v/i.test(attributeName))?.[0];
+            if (!vueDataHashAttribute) return;
 
-				try {
-					const hiddenEntryData = JSON.parse(
-						QS(".l-hidden.entry_data")?.dataset?.articleInfo || "{}"	
-					);
-					const favouritesCount = hiddenEntryData["favorites"];
+            const bookmarkTitle = QS('.bookmark__title', bookmarkElem) || document.createElement('div');
+            bookmarkTitle.className = 'bookmark__title';
+            bookmarkTitle.setAttribute(vueDataHashAttribute, '');
+            bookmarkTitle.innerText = favouritesCount || '';
 
-					QSA(".l-entry .bookmark").forEach((bookmarkElem) => {
-						const vueDataHashAttribute = bookmarkElem.getAttributeNames()
-													.filter((attributeName) => /^data\-v/i.test(attributeName))?.[0];
-						if (!vueDataHashAttribute) return;
+            bookmarkElem.appendChild(bookmarkTitle);
+            bookmarkElem.classList.add('bookmark--s42-with-marker');
 
-						const bookmarkTitle = QS(".bookmark__title", bookmarkElem) || document.createElement("div");
-						bookmarkTitle.className = "bookmark__title";
-						bookmarkTitle.setAttribute(vueDataHashAttribute, "");
-						bookmarkTitle.innerText = favouritesCount || "";
+            bookmarkElem.addEventListener('click', (e) => {
+              const active = (e.currentTarget || e.target).classList.contains('bookmark--active');
+              const currentCount = parseInt(bookmarkTitle.innerText) || 0;
 
-						bookmarkElem.appendChild(bookmarkTitle);
-						bookmarkElem.classList.add("bookmark--s42-with-marker");
+              if (active) bookmarkTitle.innerText = currentCount + 1;
+              else bookmarkTitle.innerText = currentCount - 1;
+            });
+          });
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.warn('Cannot place favourites counter', e);
+        }
+      });
+    }, 300);
+  };
 
-						bookmarkElem.addEventListener("click", (e) => {
-							const active = (e.currentTarget || e.target).classList.contains("bookmark--active"),
-								  currentCount = parseInt(bookmarkTitle.innerText) || 0;
+  if (!favouriteMarkerEnabled) return;
 
-							if (active)
-								bookmarkTitle.innerText = (currentCount + 1);
-							else
-								bookmarkTitle.innerText = (currentCount - 1);
-						});
-					});
-				} catch (e) {
-					console.warn("Cannot place favourites counter", e);
-				}
-			});
-		}, 300);
-	};
-
-	if (!addFavouriteMarkerFlag) return;
-
-	setTimeout(() => {
-		if (document.readyState === "complete")
-			LocalFavouriteMarkerProcedure();
-		else
-			window.addEventListener("load", LocalFavouriteMarkerProcedure);
-	}, 250);
+  setTimeout(() => {
+    if (document.readyState === 'complete') LocalFavouriteMarkerProcedure();
+    else window.addEventListener('load', LocalFavouriteMarkerProcedure);
+  }, 250);
 };
 
 const StopFavouriteMarkerProcedure = () => {
-	ClearCustomInterval(addingFavouriteMarkerInterval);	
+  ClearCustomInterval(favouriteMarkerInterval);
 
-	addingFavouriteMarkerInterval = -1;
+  favouriteMarkerInterval = -1;
 };
 
-
-WaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`)
-.then(StartFavouriteMarkerProcedure);
-
+WaitForElement(`[data-error-code="404"], [data-error-code="403"], .l-entry__header`).then(
+  StartFavouriteMarkerProcedure
+);
 
 module.exports = {
-	StartFavouriteMarkerProcedure,
-	StopFavouriteMarkerProcedure
+  StartFavouriteMarkerProcedure,
+  StopFavouriteMarkerProcedure,
 };
