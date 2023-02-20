@@ -761,7 +761,7 @@ const navigationUserThemes = document.createElement("div");
 								},
 								{
 									name: "hide_menu_bottom_links",
-									title: "Скрыть ссылки в низу левого меню",
+									title: "Скрыть ссылки внизу левого меню",
 									subtitle: "О проекте, правила, помощь, ссылки на соцсети и приложения",
 									checked: GetRecord("s42_hide_menu_bottom_links") === "1",
 									onchange: (e) => {
