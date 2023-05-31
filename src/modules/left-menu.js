@@ -53,7 +53,17 @@ const SwitchLeftMenuBookmarks = (settingDisplayStyle) => SwitchMenuGeneric(setti
 const SwitchLeftMenuBusiness = (settingDisplayStyle) =>
   SwitchMenuGeneric(
     settingDisplayStyle,
-    ['/m', '/job', '/companies_new', '/companies/new', '/companies', '/events', '/events', '/cabinet'],
+    [
+      '/m',
+      'https://vc.ru/job',
+      '/job',
+      '/companies_new',
+      '/companies/new',
+      '/companies',
+      '/events',
+      '/events',
+      '/cabinet',
+    ],
     ['custom-html', 'colored']
   );
 

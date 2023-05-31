@@ -1461,7 +1461,7 @@ html body .ce-redactor a.andropov_link {
 	background-color: var(--tc6) !important;
 }
 
-.v-header-avatar {
+.v-header-avatar__media {
 	box-shadow: 0 0 0 var(--border-width) var(--tc5);
 	background-color: var(--tc5);
 }

@@ -6123,7 +6123,7 @@ body:not(.s42-default-scrollers) .vb-content::-webkit-scrollbar-thumb {
 	padding: 0 5px !important;
 }
 
-.v-header-avatar {
+.v-header-avatar__media {
 	box-shadow: 0 0 0 var(--border-width) #777;
 	background-color: #777;
 }
@@ -8336,4 +8336,10 @@ a.comment__author:hover {
 
 .like-button--active {
   color: var(--like-color-active);
+}
+
+
+
+.plus-info__until {
+	color: #888 !important;
 }
