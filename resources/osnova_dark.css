@@ -11,6 +11,7 @@
 	--material-theme-shadow-color: rgba(0, 0, 0, 0.15);
 	--switcher-layout-background: #333333;
 	--switcher-layout-text: #E1E1E1;
+	color-scheme: dark;
 }
 
 .mdl-checkbox__box-outline {
