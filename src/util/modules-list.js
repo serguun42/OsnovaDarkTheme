@@ -98,6 +98,12 @@ const ADDITIONAL_MODULES = [
     priority: 5,
   },
   {
+    name: 'hide_menu_item_feed_mine_unread',
+    title: 'Скрыть метку непрочитанного у кнопки «Моя лента»',
+    default: true,
+    priority: 5,
+  },
+  {
     name: 'favouritemarker',
     title: 'Показывать количество закладок',
     default: true,

@@ -4,5 +4,6 @@ require('./modules/switchers.js');
 require('./modules/left-menu.js');
 require('./modules/scrollers.js');
 require('./modules/fullpage-editor.js');
+require('./modules/remove-plus-popup.js');
 require('./modules/stats-dash.js');
 require('./modules/remove-custom-styles.js');

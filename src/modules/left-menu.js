@@ -13,15 +13,15 @@ const SwitchMenuGeneric = (settingDisplayStyle, linksHrefs = [], linksClasses = 
   if (typeof settingDisplayStyle !== 'string') return;
 
   if (linksHrefs instanceof Array)
-    linksHrefs.forEach((sidebarLink) =>
-      QSA(`.sidebar-tree-list-item[href="${sidebarLink}"]`).forEach((treeButton) => {
+    linksHrefs.forEach((sidebarLinkHref) =>
+      QSA(`.sidebar-tree-list-item[href="${sidebarLinkHref}"]`).forEach((treeButton) => {
         treeButton.style.display = settingDisplayStyle;
       })
     );
 
   if (linksClasses instanceof Array)
-    linksClasses.forEach((sidebarLink) =>
-      QSA(`.sidebar-tree-list-item--${sidebarLink}`).forEach((treeButton) => {
+    linksClasses.forEach((sidebarLinkClass) =>
+      QSA(`.sidebar-tree-list-item${sidebarLinkClass}`).forEach((treeButton) => {
         treeButton.style.display = settingDisplayStyle;
       })
     );
@@ -64,7 +64,7 @@ const SwitchLeftMenuBusiness = (settingDisplayStyle) =>
       '/events',
       '/cabinet',
     ],
-    ['custom-html', 'colored']
+    ['--custom-html', '--colored']
   );
 
 /**

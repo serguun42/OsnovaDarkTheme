@@ -5591,6 +5591,10 @@ body:not(.s42-default-scrollers) .aside__list::-webkit-scrollbar-track {
 	box-shadow: none;
 }
 
+.v-button--size-tiny {
+	border: none;
+}
+
 .v-subscribe-button--inline .v-button {
 	border: none;
 }
@@ -8242,6 +8246,10 @@ a.comment__author:hover {
 
 .account-menu__user-card {
 	color: #E1E1E1 !important;
+}
+
+.user-card__sub-label {
+	color: #888 !important;
 }
 
 .account-menu__item:hover,

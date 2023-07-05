@@ -19,6 +19,7 @@ const {
   SwitchLeftMenuRating,
   SwitchLeftMenuBottomLinks,
 } = require('./left-menu.js');
+const { SetRemovePlusPopup } = require('./remove-plus-popup.js');
 const { SetScrollers } = require('./scrollers.js');
 const { SetStatsDash, RemoveStatsDash } = require('./scrollers.js');
 
@@ -726,6 +727,15 @@ navigationUserThemes.id = 'navigation-user-themes';
                       },
                     },
                     {
+                      name: 'hide_menu_item_feed_mine_unread',
+                      title: 'Скрыть метку непрочитанного у кнопки «Моя лента»',
+                      checked: GetRecord('s42_hide_menu_item_feed_mine_unread') === '1',
+                      onchange: (e) => {
+                        SetRecord('s42_hide_menu_item_feed_mine_unread', e.currentTarget.checked ? '1' : '0');
+                        ManageModule('hide_menu_item_feed_mine_unread', e.currentTarget.checked);
+                      },
+                    },
+                    {
                       name: 'bookmarkslinkdisabled',
                       title: 'Скрыть кнопку «Закладки»',
                       checked: GetRecord('s42_bookmarkslinkdisabled') === '1',
@@ -977,6 +987,21 @@ navigationUserThemes.id = 'navigation-user-themes';
                     text: 'Другие модули',
                   },
                   ...[
+                    {
+                      name: 'remove_plus_popup',
+                      title: 'Скрывать попап Plus',
+                      subtitle: [
+                        'Всегда скрывать попап с предложением подписки Plus –',
+                        'эта опция будет блокировать попап даже в случае, если вы умышленно хотите его открыть',
+                        '(в этом случае, уберите галочку у этой опции, а затем поставьте заново)',
+                      ].join(' '),
+                      checked: GetRecord('s42_remove_plus_popup') !== '0',
+                      onchange: (e) => {
+                        SetRecord('s42_remove_plus_popup', e.currentTarget.checked ? '1' : '0');
+
+                        SetRemovePlusPopup(e.currentTarget.checked);
+                      },
+                    },
                     {
                       name: 'snow_by_neko',
                       title: 'Добавить снег на фоне',

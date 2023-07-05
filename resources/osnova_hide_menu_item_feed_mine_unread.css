@@ -1,0 +1,10 @@
+/**
+ * Hide unread marker next to Personal feed
+ * @serguun42
+ * Jul 2023
+ */
+
+.sidebar-tree-list-item__unread {
+	display: none !important;
+	visibility: hidden !important;
+}
