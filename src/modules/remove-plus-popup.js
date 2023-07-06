@@ -5,6 +5,7 @@
  * @license 'The Unlicense'
  */
 
+const { WaitForElement } = require('../util/dom.js');
 const { GetRecord } = require('../util/storage.js');
 
 const RemovePlusPopup = {
@@ -31,9 +32,8 @@ const RemovePlusPopup = {
    * @returns {HTMLElement}
    */
   getContainer: () => document.querySelector('.app--content-entry') || document.body,
-  observer: new MutationObserver(() => {
-    if (RemovePlusPopup.interruptingChecker) return;
-
+  /** Actual removing part */
+  removePopup() {
     const plusPopup = document.querySelector('.plus-sheet');
 
     /** If popup is present */
@@ -43,9 +43,18 @@ const RemovePlusPopup = {
 
       /** Restore scroll */
       container.style.overflow = '';
+      setTimeout(() => {
+        /** Repeat in case windows freezes again */
+        container.style.overflow = '';
+      }, 200);
       /** Remove actual popup element */
       container.removeChild(plusPopup.parentNode.parentNode.parentNode);
     }
+  },
+  observer: new MutationObserver(() => {
+    if (RemovePlusPopup.interruptingChecker) return;
+
+    RemovePlusPopup.removePopup();
   }),
 };
 
@@ -61,7 +70,10 @@ const SetRemovePlusPopup = (plusPopupRemovalStatus) => {
   else RemovePlusPopup.disabled();
 };
 
-if (GetRecord('s42_remove_plus_popup') !== '0') setTimeout(() => SetRemovePlusPopup(true), Math.random() * 1000 + 1000);
+if (GetRecord('s42_remove_plus_popup') !== '0') {
+  WaitForElement('.plus-sheet').then(() => RemovePlusPopup.removePopup());
+  setTimeout(() => SetRemovePlusPopup(true), Math.random() * 1000 + 1000);
+}
 
 module.exports = {
   RemovePlusPopup,

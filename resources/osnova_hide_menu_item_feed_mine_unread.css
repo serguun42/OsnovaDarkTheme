@@ -4,7 +4,8 @@
  * Jul 2023
  */
 
-.sidebar-tree-list-item__unread {
+.sidebar-tree-list-item__unread,
+.feed-navigation .v-tab__unread {
 	display: none !important;
 	visibility: hidden !important;
 }

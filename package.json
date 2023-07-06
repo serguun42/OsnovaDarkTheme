@@ -1,6 +1,6 @@
 {
   "name": "osnova-dark-theme",
-  "version": "11.1.1",
+  "version": "11.1.2",
   "description": "Userscript bringing dark theme to Osnova platform. Contains multiple subthemes and modules.",
   "main": "webpack.config.js",
   "type": "commonjs",
