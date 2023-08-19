@@ -1,0 +1,13 @@
+/**
+ * Hide fire effect in comments
+ * @serguun42
+ * Aug 2023
+ */
+
+.comment-effect,
+.comment-effect-restart,
+.comment-effect-attacher.thesis__attach_something {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}

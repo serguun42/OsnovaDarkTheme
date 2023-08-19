@@ -116,6 +116,18 @@ const ADDITIONAL_MODULES = [
     priority: 5,
   },
   {
+    name: 'hide_stats_in_feed',
+    title: 'Скрыть статистику просмотров в ленте',
+    default: true,
+    priority: 5,
+  },
+  {
+    name: 'hide_fire_effect',
+    title: 'Скрывать эффект огонька у выделенных комментариев',
+    default: true,
+    priority: 5,
+  },
+  {
     name: 'snow_by_neko',
     title: 'Добавить снег на фоне',
     default: false,

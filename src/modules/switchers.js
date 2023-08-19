@@ -858,6 +858,16 @@ navigationUserThemes.id = 'navigation-user-themes';
                         ManageModule('hide_recommendation_feed_after_comments', e.currentTarget.checked);
                       },
                     },
+                    {
+                      name: 'hide_stats_in_feed',
+                      title: 'Скрыть статистику просмотров в ленте',
+                      subtitle: 'Статистика остаётся видимой внутри постов',
+                      checked: GetRecord('s42_hide_stats_in_feed') !== '0',
+                      onchange: (e) => {
+                        SetRecord('s42_hide_stats_in_feed', e.currentTarget.checked ? '1' : '0');
+                        ManageModule('hide_stats_in_feed', e.currentTarget.checked);
+                      },
+                    },
                   ].map(CheckboxBuilder),
                   {
                     class: 'switcher-layout__list__separator',
@@ -1000,6 +1010,16 @@ navigationUserThemes.id = 'navigation-user-themes';
                         SetRecord('s42_remove_plus_popup', e.currentTarget.checked ? '1' : '0');
 
                         SetRemovePlusPopup(e.currentTarget.checked);
+                      },
+                    },
+                    {
+                      name: 'hide_fire_effect',
+                      title: 'Скрывать эффект огонька у выделенных комментариев',
+                      subtitle: 'Также скрывать кнопку покупки этого эффекта',
+                      checked: GetRecord('s42_hide_fire_effect') !== '0',
+                      onchange: (e) => {
+                        SetRecord('s42_hide_fire_effect', e.currentTarget.checked ? '1' : '0');
+                        ManageModule('hide_fire_effect', e.currentTarget.checked);
                       },
                     },
                     {

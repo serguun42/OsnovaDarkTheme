@@ -1980,3 +1980,11 @@ html body .ce-redactor a.andropov_link {
 .sheet-benefits {
 	--benefits-bg: var(--tc2);
 }
+
+
+
+
+.effect-attachment {
+	background-color: var(--tc5);
+	border-color: var(--tc6);
+}

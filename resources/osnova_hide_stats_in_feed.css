@@ -1,0 +1,11 @@
+/**
+ * Hide stats with view from feed
+ * @serguun42
+ * Aug 2023
+ */
+
+.feed__item .content-counters {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}

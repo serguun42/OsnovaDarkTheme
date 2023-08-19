@@ -8321,7 +8321,12 @@ a.comment__author:hover {
 
 
 
-.plus-sheet {
+.lbs-sheet {
+	background-color: transparent;
+}
+
+.plus-sheet,
+.comment-effect-sheet {
 	background: linear-gradient(220deg, #2d3e5c 12.97%, #292b64 34.26%, #2c3476 55.44%, #382d70 86.69%);
 }
 
@@ -8352,3 +8357,48 @@ a.comment__author:hover {
 .plus-info__until {
 	color: #888 !important;
 }
+
+
+
+
+.comment-effect-restart__button {
+	background-color: var(--primary-color--faded50);
+}
+
+.comment-effect-preview__wrapper {
+	background-color: #121212;
+}
+
+.comment-effect-preview__date {
+	color: #888;
+}
+
+.effect-attachment {
+	background-color: #333;
+	border: 1px solid #444;
+}
+
+
+
+.post-counters__value,
+.popup-post-counters__value {
+	color: #BBB;
+}
+
+.post-counters__label {
+	color: #888;
+}
+
+.popup-post-counters__label {
+	color: #888 !important;
+}
+
+.post-counters__item:hover {
+	opacity: 1;
+}
+
+.post-counters__item:hover .post-counters__value,
+.post-counters__item:hover .post-counters__label {
+	color: var(--lighter-color);
+}
+
